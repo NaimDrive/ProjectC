@@ -38,11 +38,18 @@ typedef struct soins{
   int effet;
 } Soins;
 
-
+/*
+typedef struct personnage {
+  Champion *champion;
+  Armes **armes;
+  Protection **protection;
+  Soins **soins;
+} Personnage;
+*/
 /*
   Create and return a new champion.
   @Param the champion name and the current champion number.
-  @Return the new champion. 
+  @Return the new champion.
 */
 Champion * createChampion(char *name, int *nbChampions) {
   Champion *champion;
@@ -187,7 +194,7 @@ int main() {
 
   nbChampions = malloc(sizeof(int));
   *nbChampions = 0;
-  
+
   initGame(champion, nbChampions);
   testAfficher(champion[0]);
 

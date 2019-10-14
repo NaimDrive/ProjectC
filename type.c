@@ -38,14 +38,30 @@ typedef struct soins{
   int effet;
 } Soins;
 
-/*
+
 typedef struct personnage {
   Champion *champion;
-  Armes **armes;
+  Arme **armes;
   Protection **protection;
   Soins **soins;
 } Personnage;
+
+/*
+Champion * testCreateChampion(Personnage **p, int n) {
+  FILE * fichier = NULL;
+  int i;
+  fichier = fopen("champions.csv", "r");
+
+  for (i = 0; i < n; i++)
+  {
+    fscanf(fichier,"%d %s %s %d %d %d %d", p[i]->champion);
+  }
+  
+
+  fclose(fichier);
+}
 */
+
 /*
   Create and return a new champion.
   @Param the champion name and the current champion number.
@@ -63,16 +79,16 @@ Champion * createChampion(char *name, int *nbChampions) {
     (*champion).resistance = 10;
     (*champion).PVMax = 40;
     (*champion).CE = 5;
-  } /*else if (strcmp(name, "Fenouil") == 0)
+  } else if (strcmp(name, "Fenouil") == 0)
   {
-    champion.num = (*nbChampions)++;
-    champion.variete = "Fenouil";
-    champion.type = "Légume";
-    champion.force = 12;
-    champion.resistance = 15;
-    champion.PVMax = 40;
-    champion.CE = 7;
-  } else if (strcmp(name, "Poireau") == 0)
+    (*champion).num = (*nbChampions)++;
+    (*champion).variete = "Fenouil";
+    (*champion).type = "Légume";
+    (*champion).force = 12;
+    (*champion).resistance = 15;
+    (*champion).PVMax = 40;
+    (*champion).CE = 7;
+  } /*else if (strcmp(name, "Poireau") == 0)
   {
     champion.num = (*nbChampions)++;
     champion.variete = "Poireau";
@@ -169,34 +185,40 @@ Champion * createChampion(char *name, int *nbChampions) {
   return champion;
 }
 
-void initChampions(Champion **champion, int *nbChampions, size_t sz) {
-  champion[0] = createChampion("Haricot", nbChampions);
-}
-
-void initGame(Champion **champion, int *nbChampions) {
-  initChampions(champion, nbChampions, 5);
+Champion * initChampions(char *nom, int *nbChampions) {
+  return createChampion(nom, nbChampions);
 }
 
 void testAfficher(Champion *c) {
-  printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
+  printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
+}
+
+void initPersonnage(Personnage **p, int n, int *nbChampions) {
+  int i;
+  p = malloc(sizeof(Personnage *)*n);
+  for (i = 0; i < n; i++)
+  {
+    p[i] = malloc(sizeof(Personnage));
+  }
+  /*
+  testCreateChampion(p, n);
+  */
+}
+
+void initGame(Personnage **p, int n, int *nbChampions) {
+  initPersonnage(p, n, nbChampions);
 }
 
 int main() {
-  Champion **champion;
+  Personnage **personnage;
   int *nbChampions;
-  /*
-  Arme *arme;
-  Protection *protection;
-  Soins *soins;
-  int *nbChampions, *nbArmes, *nbProtections, *nbSoins;
-  */
-  champion = malloc(sizeof(Champion *)*5);
-
   nbChampions = malloc(sizeof(int));
   *nbChampions = 0;
+  /*
+  int *nbChampions, *nbArmes, *nbProtections, *nbSoins;
+  */
 
-  initGame(champion, nbChampions);
-  testAfficher(champion[0]);
+  initGame(personnage, 5, nbChampions);
 
   return 0;
 }

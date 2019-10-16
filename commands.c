@@ -1,5 +1,6 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 void showVegetables() {
   printf("%s\n", "show vegetables");
@@ -41,24 +42,23 @@ void showCare(int id) {
 }
 
 void quitGame() {
-  printf("%s\n", "exit");
+  exit(0);
 }
 
 void readCommands() {
-  char *command;
-  printf("%s", "Veuillez saisir votre commande : ");
-  scanf("%s", command);
-  //printf("Entered command : '%s'\n", command);
+  char *command = (char*)malloc(255*sizeof(char));
+  while(1) {
+    printf("%s", "Veuillez saisir votre commande : ");
+    scanf("%s", command);
+    printf("Entered command : '%s'\n", command);
+    if(strcmp(command, "quit") == 0) quitGame();
+  }
 
   // free(command);
 }
 
 int main(int argc, char *argv[]) {
-  /*int i = 1;
-  while(i <= 2) {
-    readCommands();
-    i++;
-  }*/
+
   readCommands();
 
   return 0;

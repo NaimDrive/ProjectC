@@ -1,6 +1,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
+#include <errno.h>
+
+#define MAX_FILES_LENGTH 128
+
 
 typedef struct champion {
   int num;
@@ -39,28 +43,59 @@ typedef struct soins{
 } Soins;
 
 
-typedef struct personnage {
-  Champion *champion;
-  Arme **armes;
-  Protection **protection;
-  Soins **soins;
-} Personnage;
 
-/*
-Champion * testCreateChampion(Personnage **p, int n) {
+int testCreateChampion() {
   FILE * fichier = NULL;
-  int i;
+  char * buffer, *tmp; /* Tableau dans lequel on stocke la ligne du fichier  */
+  int nbSeparateur;
+  Champion *champion;
+
   fichier = fopen("champions.csv", "r");
 
-  for (i = 0; i < n; i++)
-  {
-    fscanf(fichier,"%d %s %s %d %d %d %d", p[i]->champion);
+  /* Si l'ouverture du fichier s'est bien passé */
+  if(fichier == NULL) {
+    fprintf(stderr, "Cannot load champions file");
+    exit(20);
+  }
+
+  buffer = malloc(MAX_FILES_LENGTH);
+  tmp = buffer;
+
+  /* Tant qu'il reste un caractète à lire dans le fichier */
+  while(!feof(fichier)) {
+    fgets(buffer, MAX_FILES_LENGTH, fichier);
+    tmp = buffer;
+
+    /* Si il y a eu une erreur lors de la lecture du fichier */
+    if(ferror(fichier)) {
+      fprintf(stderr, "Reading error with code %d\n", errno);
+      break;
+    }
+
+    champion = malloc(sizeof(Champion));
+    nbSeparateur = 0;
+
+    while(*tmp != '\0') {
+      if(*tmp == ',') {
+        nbSeparateur++;
+        printf("Séparateur %d\n", nbSeparateur);
+      } else {
+        if(nbSeparateur == 0) {
+          printf("Num %d\n", atoi(tmp));
+        }
+        
+      }
+      tmp++;
+    }
+
+    buffer[0] = '\0';
   }
   
-
+  free(buffer);
   fclose(fichier);
+  return 0;
 }
-*/
+
 
 /*
   Create and return a new champion.
@@ -193,32 +228,13 @@ void testAfficher(Champion *c) {
   printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
 }
 
-void initPersonnage(Personnage **p, int n, int *nbChampions) {
-  int i;
-  p = malloc(sizeof(Personnage *)*n);
-  for (i = 0; i < n; i++)
-  {
-    p[i] = malloc(sizeof(Personnage));
-  }
-  /*
-  testCreateChampion(p, n);
-  */
-}
 
-void initGame(Personnage **p, int n, int *nbChampions) {
-  initPersonnage(p, n, nbChampions);
+void initGame(int n, int *nbChampions) {
 }
 
 int main() {
-  Personnage **personnage;
-  int *nbChampions;
-  nbChampions = malloc(sizeof(int));
-  *nbChampions = 0;
-  /*
-  int *nbChampions, *nbArmes, *nbProtections, *nbSoins;
-  */
-
-  initGame(personnage, 5, nbChampions);
-
+  int p;
+  p = testCreateChampion();
+  printf("Code retour fonction %d\n", p);
   return 0;
 }

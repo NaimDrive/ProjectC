@@ -14,7 +14,7 @@ void showFruits() {
 }
 
 void showFruit(int id) {
-  printf("%s\n", "show vegetable i");
+  printf("%s\n", "show fruit i");
 }
 
 void weapons() {
@@ -60,16 +60,16 @@ void readCommands() {
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
     if(strcmp(command, "quit") == 0) quitGame();
-    else if(strcmp(command, ) == 0) showVegetables();
-    else if(strcmp(command, ) == 0) showVegetables(fakeID);
-    else if(strcmp(command, ) == 0) showFruits();
-    else if(strcmp(command, ) == 0) showFruit(fakeID);
-    else if(strcmp(command, ) == 0) weapons();
-    else if(strcmp(command, ) == 0) weapon(fakeID);
-    else if(strcmp(command, ) == 0) showProtections();
-    else if(strcmp(command, ) == 0) showProtection(fakeID);
-    else if(strcmp(command, ) == 0) showCares();
-    else if(strcmp(command, ) == 0) showCare(fakeID);
+    else if(strcmp(command, "show vegetables") == 0) showVegetables();
+    else if(strcmp(command, "show vegetable i") == 0) showVegetables(fakeID);
+    else if(strcmp(command, "show fruits") == 0) showFruits();
+    else if(strcmp(command, "show fruit i") == 0) showFruit(fakeID);
+    else if(strcmp(command, "show weapons") == 0) weapons();
+    else if(strcmp(command, "show weapon i") == 0) weapon(fakeID);
+    else if(strcmp(command, "show protections") == 0) showProtections();
+    else if(strcmp(command, "show protection i") == 0) showProtection(fakeID);
+    else if(strcmp(command, "show cares") == 0) showCares();
+    else if(strcmp(command, "show care i") == 0) showCare(fakeID);
     else if(strcmp(command, "save") == 0) save();
   }
 

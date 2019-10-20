@@ -44,27 +44,31 @@ typedef struct soins{
 
 
 
-int testCreateChampion() {
+Champion ** testCreateChampion() {
   FILE * fichier = NULL;
-  char * buffer, *tmp; /* Tableau dans lequel on stocke la ligne du fichier  */
-  int nbSeparateur;
-  Champion *champion;
+  Champion **champions, *champion;
+  char *buffer, *ptBuffer, *chaine;
+  int nbSeparateur, tailleChaine, tailleChampions, posChaine;
+
+  champions = malloc(sizeof(Champion *));
+  printf("  Malloc champions\n");
+  tailleChampions = 1;
 
   fichier = fopen("champions.csv", "r");
 
   /* Si l'ouverture du fichier s'est bien passé */
   if(fichier == NULL) {
-    fprintf(stderr, "Cannot load champions file");
+    fprintf(stderr, "Cannot load champions.csv file\n");
     exit(20);
   }
 
   buffer = malloc(MAX_FILES_LENGTH);
-  tmp = buffer;
+  printf("  Malloc buffer\n");
 
   /* Tant qu'il reste un caractète à lire dans le fichier */
   while(!feof(fichier)) {
     fgets(buffer, MAX_FILES_LENGTH, fichier);
-    tmp = buffer;
+    ptBuffer = buffer;
 
     /* Si il y a eu une erreur lors de la lecture du fichier */
     if(ferror(fichier)) {
@@ -73,35 +77,60 @@ int testCreateChampion() {
     }
 
     champion = malloc(sizeof(Champion));
+    printf("Malloc un petit champion\n");
+
+    tailleChaine = 1;
+
+    chaine = malloc(sizeof(char)*tailleChaine);
+    printf("Malloc chaine variété\n");
+
+    posChaine = 0;
     nbSeparateur = 0;
 
-    while(*tmp != '\0') {
-      if(*tmp == ',') {
+    while(*ptBuffer != '\0') {
+      if(*ptBuffer == ',') {
         nbSeparateur++;
-        printf("Séparateur %d\n", nbSeparateur);
       } else {
         if(nbSeparateur == 0) {
-          printf("Num %d\n", atoi(tmp));
+          champion->num = atoi(ptBuffer);
+        } else if (nbSeparateur == 1) {
+
+          chaine = realloc(chaine, sizeof(char)*++tailleChaine);
+          printf("Realloc chaine variété\n");
+          chaine[posChaine++] = *ptBuffer;
         }
-        
       }
-      tmp++;
+      ptBuffer++;
     }
+    chaine[posChaine] = '\0';
+    *buffer = '\0';
+    if(strcmp(chaine,"\0")) {
+      tailleChampions++;
+      champions = realloc(champions, sizeof(Champion *) * tailleChampions);
+      printf("  Realloc champions\n");
+      champions[tailleChampions-1] = champion;
 
-    buffer[0] = '\0';
+      champions[tailleChampions-1]->variete = chaine;
+      printf("MA CHIENNE DE CARACTERE %s\n",chaine);
+      printf("ENCORE MA CHIENNE DE CARACTERE %s\n",champions[tailleChampions-1]->variete);
+    } else {
+      free(chaine);
+    }
   }
-  
-  free(buffer);
-  fclose(fichier);
-  return 0;
-}
+  champions[tailleChampions-1] = NULL;
 
+  free(buffer);
+  printf("  Free Buffer\n");
+  fclose(fichier);
+  return champions;
+}
 
 /*
   Create and return a new champion.
   @Param the champion name and the current champion number.
   @Return the new champion.
 */
+/*
 Champion * createChampion(char *name, int *nbChampions) {
   Champion *champion;
   champion = malloc(sizeof(champion));
@@ -123,7 +152,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     (*champion).resistance = 15;
     (*champion).PVMax = 40;
     (*champion).CE = 7;
-  } /*else if (strcmp(name, "Poireau") == 0)
+  } else if (strcmp(name, "Poireau") == 0)
   {
     champion.num = (*nbChampions)++;
     champion.variete = "Poireau";
@@ -213,7 +242,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     champion.resistance = 25;
     champion.PVMax = 80;
     champion.CE = 25;
-  } */else {
+  } else {
     fprintf(stderr, "Champion name error\n");
     exit(1);
   }
@@ -222,10 +251,14 @@ Champion * createChampion(char *name, int *nbChampions) {
 
 Champion * initChampions(char *nom, int *nbChampions) {
   return createChampion(nom, nbChampions);
-}
+}*/
 
 void testAfficher(Champion *c) {
+  /*
   printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
+  */
+  printf("Num %d\nVariété %s\n\n", c->num, c->variete);
+
 }
 
 
@@ -233,8 +266,18 @@ void initGame(int n, int *nbChampions) {
 }
 
 int main() {
-  int p;
-  p = testCreateChampion();
-  printf("Code retour fonction %d\n", p);
+  Champion **champions;
+  int i;
+  champions = testCreateChampion();
+
+  for (i = 0; champions[i] != NULL; i++) {
+    free(champions[i]->variete);
+    printf("Free variété\n");
+    free(champions[i]);
+    printf("Free un petit champion\n");
+  }
+
+  free(champions);
+  printf("  Free champions\n");
   return 0;
 }

@@ -2,11 +2,31 @@
 #include <stdlib.h>
 #include <string.h>
 
+char* substring(char *src, int beg, int end) {
+  int i = beg;
+  char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
+
+  for(;(*(src+i) != '\0') && i < end; i++) {
+    *cpy = *(src+i);
+    cpy++;
+  }
+  *cpy = '\0';
+
+  return cpy - (end-beg);
+}
+
+int getID(char *command, int n) {
+  char *c = substring(command, n, strlen(command));
+  int id = atoi(c);
+  free(c);
+  return id;
+}
+
 void showVegetables() {
   printf("%s\n", "show vegetables");
 }
 void showVegetable(int id) {
-  printf("%s\n", "show vegetable i");
+  printf("show vegetable %d\n", id);
 }
 
 void showFruits() {
@@ -14,7 +34,7 @@ void showFruits() {
 }
 
 void showFruit(int id) {
-  printf("%s\n", "show fruit i");
+  printf("show fruit %d\n", id);
 }
 
 void weapons() {
@@ -22,7 +42,7 @@ void weapons() {
 }
 
 void weapon(int id) {
-  printf("%s\n", "show weapon i");
+  printf("show weapon %d\n", id);
 }
 
 void showProtections() {
@@ -30,7 +50,7 @@ void showProtections() {
 }
 
 void showProtection(int id) {
-  printf("%s\n", "show protection i");
+  printf("show protection %d\n", id);
 }
 
 void showCares() {
@@ -38,11 +58,15 @@ void showCares() {
 }
 
 void showCare(int id) {
-  printf("%s\n", "show care i");
+  printf("show care %d\n", id);
 }
 
 void save() {
   printf("%s\n", "save");
+}
+
+void help() {
+  printf("Show every possible command");
 }
 
 void quitGame() {
@@ -51,25 +75,34 @@ void quitGame() {
 
 void readCommands() {
   char *command = (char*)malloc(256*sizeof(char));
-  int fakeID = 1;
 
   while(1) {
-    printf("%s", "Veuillez saisir votre commande : ");
+    printf("Veuillez saisir votre commande : ");
     fgets(command, 256, stdin);
     printf("Entered command : %s", command);
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
+    // ~~~ Cases ~~~ //
     if(strcmp(command, "quit") == 0) quitGame();
     else if(strcmp(command, "show vegetables") == 0) showVegetables();
-    else if(strcmp(command, "show vegetable i") == 0) showVegetables(fakeID);
+    else if(strncmp(command, "show vegetable ", 15) == 0) {
+      // char *c = substring(command, 15, strlen(command));
+      // int id = atoi(c);
+      showVegetable(getID(command, 15));
+    } 
+
     else if(strcmp(command, "show fruits") == 0) showFruits();
-    else if(strcmp(command, "show fruit i") == 0) showFruit(fakeID);
+    else if(strcmp(command, "show fruit ") == 0) showFruit(getID(command, 11));
+
     else if(strcmp(command, "show weapons") == 0) weapons();
-    else if(strcmp(command, "show weapon i") == 0) weapon(fakeID);
+    else if(strcmp(command, "show weapon ") == 0) weapon(getID(command, 12));
+
     else if(strcmp(command, "show protections") == 0) showProtections();
-    else if(strcmp(command, "show protection i") == 0) showProtection(fakeID);
+    else if(strcmp(command, "show protection ") == 0) showProtection(getID(command, 16));
+
     else if(strcmp(command, "show cares") == 0) showCares();
-    else if(strcmp(command, "show care i") == 0) showCare(fakeID);
+    else if(strcmp(command, "show care ") == 0) showCare(getID(command, 10));
+
     else if(strcmp(command, "save") == 0) save();
   }
 
@@ -79,7 +112,9 @@ void readCommands() {
 int main(int argc, char *argv[]) {
 
   readCommands();
-
+  // char *c = "show vegetable 12";
+  // char *cpy = substring(c, 5, strlen(c));
+  // printf("%s\n", cpy);
 
   return 0;
 

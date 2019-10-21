@@ -383,7 +383,7 @@ void afficherSoins(Healing **healings, int *nbHealings) {
         printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
     }
 }
-
+/*
 int main() {
     Champion **champions;
     Weapon **weapons;
@@ -414,3 +414,4 @@ int main() {
     afficherSoins(healings, nbHealings);
     return 0;
 }
+*/

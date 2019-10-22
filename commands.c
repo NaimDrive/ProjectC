@@ -1,12 +1,13 @@
+#include "initGame.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
 char* substring(char *src, int beg, int end) {
-  int i = beg;
   char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
+  int i;
 
-  for(;(*(src+i) != '\0') && i < end; i++) {
+  for(i = beg;(*(src+i) != '\0') && i < end; i++) {
     *cpy = *(src+i);
     cpy++;
   }

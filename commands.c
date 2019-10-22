@@ -61,6 +61,10 @@ void showCare(int id) {
   printf("show care %d\n", id);
 }
 
+void fight(char *command) {
+  printf("'Versus' présent ? %d\n", (strstr(command, "versus") != NULL));
+}
+
 void save() {
   printf("%s\n", "save");
 }
@@ -92,10 +96,10 @@ void readCommands() {
     } 
 
     else if(strcmp(command, "show fruits") == 0) showFruits();
-    else if(strcmp(command, "show fruit ") == 0) showFruit(getID(command, 11));
+    else if(strncmp(command, "show fruit ", 11) == 0) showFruit(getID(command, 11));
 
     else if(strcmp(command, "show weapons") == 0) weapons();
-    else if(strcmp(command, "show weapon ") == 0) weapon(getID(command, 12));
+    else if(strncmp(command, "show weapon ", 12) == 0) weapon(getID(command, 12));
 
     else if(strcmp(command, "show protections") == 0) showProtections();
     else if(strcmp(command, "show protection ") == 0) showProtection(getID(command, 16));
@@ -103,19 +107,17 @@ void readCommands() {
     else if(strcmp(command, "show cares") == 0) showCares();
     else if(strcmp(command, "show care ") == 0) showCare(getID(command, 10));
 
+    else if(strncmp(command, "fight ", 6) == 0) {
+      fight(substring(command, 6, strlen(command)));
+    }
+
     else if(strcmp(command, "save") == 0) save();
   }
 
   free(command);
 }
 
-int main(int argc, char *argv[]) {
-
+int main() {
   readCommands();
-  // char *c = "show vegetable 12";
-  // char *cpy = substring(c, 5, strlen(c));
-  // printf("%s\n", cpy);
-
   return 0;
-
 }

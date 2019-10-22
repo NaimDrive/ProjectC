@@ -1,12 +1,16 @@
-#include "initGame.c"
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
+#include "initGame.h"
 #include "fight.h"
 
 int weaponDamage(Weapon *weapon) {
     return (rand() % (weapon->degatsMax - weapon->degatsMin + 1)) + weapon->degatsMin;
 }
 
+/*
 int main(void) {
     Champion **champions;
     Weapon **weapons;
@@ -37,3 +41,4 @@ int main(void) {
 
     return 0;
 }
+*/

@@ -1,3 +1,6 @@
+#ifndef __COMMANDES_H__
+#define __COMMANDES_H__
+
 char* substring(char *src, int beg, int end);
 
 int getID(char *command, int n);
@@ -29,3 +32,5 @@ void help();
 void quitGame();
 
 void readCommands();
+
+#endif

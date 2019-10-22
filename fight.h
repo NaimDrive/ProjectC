@@ -1,3 +1,6 @@
+#ifndef __FIGHT_H__
+#define __FIGHT_H__
+
 void startFight();
 
 void moveForward();
@@ -16,3 +19,5 @@ void end();
     @Return integer
 */
 int weaponDamage(Weapon *weapon);
+
+#endif

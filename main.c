@@ -1,13 +1,13 @@
+#include "initGame.h"
+#include "fight.h"
+#include "commands.h"
+#include "endGame.h"
+#include "main.h"
+
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
 #include <time.h>
-
-#include "initGame.h"
-#include "fight.h"
-#include "commands.h"
-#include "main.h"
-
 
 int main() {
   Champion **champions;
@@ -40,7 +40,7 @@ int main() {
   afficherProtections(protections, nbProtections);
   afficherSoins(healings, nbHealings);
   
-  printf("Damage : %d\n", weaponDamage(weapons[3]));
+  deallocateChampions(champions, nbChampions);
 
   return 0;
 }

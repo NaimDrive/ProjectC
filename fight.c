@@ -1,10 +1,10 @@
+#include "initGame.h"
+#include "fight.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
-
-#include "initGame.h"
-#include "fight.h"
 
 Team * initTeam() {
   Team *team;

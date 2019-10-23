@@ -1,8 +1,8 @@
+#include "initGame.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "initGame.h"
 
 Champion * createChampion(char *name, int nbChampions) {
   Champion *champion;
@@ -363,6 +363,7 @@ void afficherSoins(Healing **healings, int *nbHealings) {
     }
 }
 
+/*
 int main() {
     Champion **champions;
     Weapon **weapons;
@@ -393,3 +394,4 @@ int main() {
     afficherSoins(healings, nbHealings);
     return 0;
 }
+*/

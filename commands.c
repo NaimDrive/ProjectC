@@ -1,8 +1,8 @@
+#include "commands.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "commands.h"
 
 char* substring(char *src, int beg, int end) {
   int i = beg;

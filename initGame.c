@@ -82,9 +82,9 @@ Champion * createChampion(char *name, int *nbChampions) {
     champion->CE = 25;
   } else if (strcmp(name, "Banane") == 0) {
     champion = malloc(sizeof(Champion));
-    sizeType = strlen("Légume");
+    sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
-    strcpy(champion->type, "Légume");
+    strcpy(champion->type, "Fruit");
     
     champion->num = (*nbChampions)++;
     champion->variete = name;

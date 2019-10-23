@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <string.h>
 
+#include "commands.h"
+
 char* substring(char *src, int beg, int end) {
   char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
   int i;
@@ -118,7 +120,9 @@ void readCommands() {
   free(command);
 }
 
+/*
 int main() {
   readCommands();
   return 0;
 }
+*/

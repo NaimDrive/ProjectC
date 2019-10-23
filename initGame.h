@@ -1,7 +1,5 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-
+#ifndef __INITGAME_H__
+#define __INITGAME_H__
 
 typedef struct champion {
   int num;
@@ -40,6 +38,18 @@ typedef struct healing{
   int effetMin;
   int effetMax;
 } Healing;
+
+/*
+  A SUPPRIMER
+*/
+void afficherChampions(Champion **champions, int *nbChampions);
+void afficherWeapons(Weapon **weapons, int *nbWeapons);
+void afficherProtections(Protection **protections, int *nbProtections);
+void afficherSoins(Healing **healings, int *nbHealings);
+/*
+  A SUPPRIMER
+*/
+
 
 /*
   Create and return a new champion.
@@ -118,3 +128,5 @@ void initHealings(Healing **healings, int *nbHealings);
     @Return void
 */
 void initGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings);
+
+#endif

@@ -2,6 +2,8 @@
 #define __FIGHT_H__
 
 typedef struct {
+  int id;
+  int position;
   int CA;
   int CE;
   int CE_USED;
@@ -66,9 +68,23 @@ void buyProtection(Protection *protection, Team *team, int maxCE);
 */
 void buyHealing(Healing *healing, Team *team, int maxCE);
 
-void startFight();
+/*
+  The champion move foward.
+  @Param1 the first team
+  @Param2 the second team
+  @Param3 number of case
+  @Return void
+*/
+void moveForward(Team *team1, Team *team2, int n);
 
-void moveForward();
+/*
+  The champion move backward.
+  @Param1 the team
+  @Param2 number of case
+  @Param3 the maximum position of the area
+  @Return void
+*/
+void moveBackward(Team *team, int n, int maxX);
 
 /*
   The first team attack the second team n times
@@ -79,9 +95,25 @@ void moveForward();
 */
 void useWeapon(Team *team1, Team *team2, int n);
 
-void useProtection();
+/*
+  Activate the weapon.
+  @Param1 the team
+  @Retun void
+*/
+void useProtection(Team *team);
 
-void useCare(int n);
+/*
+  Use care to heal the champion.
+*/
+void useCare(Team *team, int n);
+
+/*
+  Calculate the distance between the champions.
+  @Param1 the first team.
+  @Param2 the second team.
+  @Return integer
+*/
+int distanceBetweenChampions(Team *team1, Team *team2);
 
 void end();
 

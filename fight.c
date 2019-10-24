@@ -1,4 +1,4 @@
-#include "initGame.h"
+#include "initGame.c"
 #include "fight.h"
 
 #include <stdio.h>
@@ -6,9 +6,14 @@
 #include <string.h>
 #include <time.h>
 
-Team * initTeam() {
+Team * initTeam(int id) {
   Team *team;
   team = malloc(sizeof(Team));
+  team->id = id;
+  if(id == 0)
+    team->position = 0;
+  else
+    team->position = 5;
   team->CE = 1000;
   team->CA = 0;
   team->CE_USED = 0;
@@ -51,6 +56,7 @@ void buyChampion(Champion *champion, Team *team, int maxCE) {
       team->champion = createChampion(champion->variete, champion->num);
       team->CE_USED += champion->CE;
       team->CE -= champion->CE;
+      printf("Achat du champion %s.\n", team->champion->variete);
     }
   }
 }
@@ -67,6 +73,7 @@ void buyWeapon(Weapon *weapon, Team *team, int maxCE) {
       team->weapon = createWeapon(weapon->nom, weapon->num);
       team->CE_USED += weapon->CE;
       team->CE -= weapon->CE;
+      printf("Achat de l'arme %s.\n", team->weapon->nom);
     }
   }
 }
@@ -83,6 +90,7 @@ void buyProtection(Protection *protection, Team *team, int maxCE) {
       team->protection = createProtection(protection->nom, protection->num);
       team->CE_USED += protection->CE;
       team->CE -= protection->CE;
+      printf("Achat de la protection %s.\n", team->protection->nom);
     }
   }
 }
@@ -99,6 +107,83 @@ void buyHealing(Healing *healing, Team *team, int maxCE) {
       team->healing = createHealing(healing->nom, healing->num);
       team->CE_USED += healing->CE;
       team->CE -= healing->CE;
+      printf("Achat du soin %s.\n", team->healing->nom);
+    }
+  }
+}
+
+void moveForward(Team *team1, Team *team2, int n) {
+  if(n > 0) {
+    if(team1->id == 0) {
+      if(team1->position+1 == team2->position) {
+        printf("Vous êtes déjà au plus près du champion ennemie.\n");
+      } else {
+        if(team1->position+n >= team2->position) {
+          printf("Vous ne pouvez pas avancer de %d cases car vous allez dépasser le champion ennemie.\n", n);
+        } else {
+          if(team1->CA < n) {
+            printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);
+          } else {
+            team1->position+=n;
+            team1->CA-=n;
+            printf("Vous avancez de %d cases.\n", n);
+          }
+        }
+      }
+    } else {
+      if(team1->position-1 == team2->position) {
+        printf("Vous êtes déjà au plus près du champion ennemie.\n");
+      } else {
+        if(team1->position-n <= team2->position) {
+          printf("Vous ne pouvez pas avancer de %d cases car vous allez dépasser le champion ennemie.\n", n);
+        } else {
+          if(team1->CA < n) {
+            printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);
+          } else {
+            team1->position-=n;
+            team1->CA-=n;
+            printf("Vous avancez de %d cases.\n", n);
+          }
+        }
+      }
+    }
+  }
+}
+
+void moveBackward(Team *team, int n, int maxX) {
+  if(n > 0) {
+    if(team->id == 0) {
+      if(team->position == 0) {
+        printf("Vous ne pouvez pas reculer plus.\n");
+      } else {
+        if(team->position-n < 0) {
+          printf("Vous ne pouvez pas reculer de %d cases.\n", n);
+        } else {
+          if(team->CA < (n*2)) {
+            printf("Vous n'avez pas assez de CA pour reculer de %d cases.\n", n);
+          } else {
+            team->position-=n;
+            team->CA-=(n*2);
+            printf("Vous reculez de %d cases.\n", n);
+          }
+        }
+      }
+    } else {
+      if(team->position == maxX) {
+        printf("Vous ne pouvez pas reculer plus.\n");
+      } else {
+        if(team->position+n > maxX) {
+          printf("Vous ne pouvez pas reculer de %d cases.\n", n);
+        } else {
+          if(team->CA < (n*2)) {
+            printf("Vous n'avez pas assez de CA pour reculer de %d cases.\n", n);
+          } else {
+            team->position+=n;
+            team->CA-=(n*2);
+            printf("Vous reculez de %d cases.\n", n);
+          }
+        }
+      }
     }
   }
 }
@@ -115,7 +200,8 @@ int effectiveProtection(int protection) {
 }
 
 void useWeapon(Team *team1, Team *team2, int n) {
-  int damage = 0, i;
+  int i, damage;
+  float dmg, strength, resistance, weapon;
   if(team1->champion == NULL || team2->champion == NULL || team1->weapon == NULL || n > 0) {
 
     if(team1->weapon->CA * n > team1->CA) {
@@ -125,28 +211,74 @@ void useWeapon(Team *team1, Team *team2, int n) {
         team1->CA -= team1->weapon->CA;
         printf("L'attaquant perd %d crédits d'attaques.\n", team1->weapon->CA);
 
-        if(team2->protectionActivated && team2->protection != NULL)
-          if(effectiveProtection(team2->protection->probabilite) == 1) {
-            printf("La protection a contré l'attaque !\n");
-            continue;
+        if(distanceBetweenChampions(team1, team2) <= team1->weapon->portee) {
+          if(team2->protectionActivated && team2->protection != NULL) {
+            if(effectiveProtection(team2->protection->probabilite) == 1) {
+              printf("La protection a contré l'attaque !\n");
+              continue;
+            }
           }
-        printf("WHAT %d\n", damage);
-        damage = weaponDamage(team1->weapon) * ((100 + team1->champion->force) / 100);
-        printf("WHAT %d\n", damage);
-        damage *= ((100 - team2->champion->resistance) / 100);
-        printf("WHAT %d\n", damage);
-        
-        printf("Le défenseur perd %d points de vie.\n", damage);
-        if(damage > team2->champion->PVMax)
-          team2->champion->PVMax = 0;
-        else
-          team2->champion->PVMax -= damage;
+
+          strength = 100 + team1->champion->force;
+          weapon = weaponDamage(team1->weapon);
+          dmg = weapon * (strength / 100);
+          resistance = 100 - team2->champion->resistance;
+          dmg = dmg * (resistance / 100);
+          damage = dmg + 0.5;
+
+          if(damage > team2->champion->PVMax) {
+            printf("Le défenseur perd %d points de vie.\n", damage - team2->champion->PVMax);
+            team2->champion->PVMax = 0;
+          } else {
+            printf("Le défenseur perd %d points de vie.\n", damage);
+            team2->champion->PVMax -= damage;
+          }
+          printf("Il reste %d points de vie.\n", team2->champion->PVMax);
+        } else {
+          printf("Impossible d'attaquer, le champion est trop loin !\n");
+          break;
+        }
       }
+    }
+  } else {
+    printf("Attaque impossible. Vérifiez que les deux équipes ont un champion et une arme.\n");
+  }
+}
+
+void useProtection(Team *team) {
+  if(team->weapon != NULL) {
+    team->protectionActivated = 1;
+    printf("La protection %s est désormais active pendant 1 tour.\n", team->weapon->nom);
+  }
+}
+
+int randHeal(Healing *healing) {
+  return (rand() % (healing->effetMin - healing->effetMax + 1)) + healing->effetMin;
+}
+
+void useCare(Team *team, int n) {
+  if(team->healing == NULL) {
+    printf("Vous n'avez aucune potion à utiliser.\n");
+  } else {
+    if(team->healing->volume < n) {
+      printf("Vous n'avez pas assez de %s pour vous soigner %d fois \n", team->healing->nom, n);
+    } else {
+      /*
+        Soigner le champion
+        Ajouter un attribut à champion pour les pv courant
+
+        team->champion->PVMax += randHeal(team->healing);
+      */
+      printf("Le champion %s a été soigné.\n", team->champion->variete);
     }
   }
 }
 
-/*
+int distanceBetweenChampions(Team *team1, Team *team2) {
+  return team2->position - team1->position;
+}
+
+
 int main(void) {
     Champion **champions;
     Weapon **weapons;
@@ -174,23 +306,30 @@ int main(void) {
 
     initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 
-    team1 = initTeam();
-    team2 = initTeam();
+    team1 = initTeam(0);
+    team2 = initTeam(1);
 
     buyCA(team1, 20);
     buyCA(team2, 20);
 
     maximumCE = maxCE(team1, team2);
-    buyChampion(champions[0], team1, maximumCE);
-    buyChampion(champions[6], team2, maximumCE);
+    buyChampion(champions[11], team1, maximumCE);
+    buyChampion(champions[0], team2, maximumCE);
 
-    buyWeapon(weapons[0], team1, maximumCE);
+    buyWeapon(weapons[3], team1, maximumCE);
     buyWeapon(weapons[1], team2, maximumCE);
+
+    buyHealing(healings[2], team2, maximumCE);
 
     buyProtection(protections[2], team2, maximumCE);
 
-    useWeapon(team1, team2, 2);
-    
+    useProtection(team2);
+    moveForward(team1, team2, 3);
+
+    useWeapon(team1, team2, 1);
+
+    moveBackward(team2, 5, 50);
+    useCare(team2, 2);
+
     return 0;
 }
-*/

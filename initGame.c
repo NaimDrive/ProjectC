@@ -1,172 +1,222 @@
+#include "initGame.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-#include "initGame.h"
-
-Champion * createChampion(char *name, int *nbChampions) {
+Champion * createChampion(char *name, int nbChampions) {
   Champion *champion;
-  int sizeType;
 
   if(strcmp("Haricot", name) == 0) {
     champion = malloc(sizeof(Champion));
-    sizeType = strlen("Légume");
-    champion->type = malloc(sizeof(char) * (sizeType));
-    strcpy(champion->type, "Légume");
 
-    champion->num = (*nbChampions)++;
+    champion->num = nbChampions;
     champion->variete = name;
+    champion->type = "Légume";
     champion->force = 10;
     champion->resistance = 10;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 5;
   } else if (strcmp(name, "Fenouil") == 0) {
     champion = malloc(sizeof(Champion));
-    sizeType = strlen("Légume");
-    champion->type = malloc(sizeof(char) * (sizeType));
-    strcpy(champion->type, "Légume");
 
-    champion->num = (*nbChampions)++;
+    champion->num = nbChampions;
     champion->variete = name;
+    champion->type = "Légume";
     champion->force = 12;
     champion->resistance = 15;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 7;
   } else if (strcmp(name, "Poireau") == 0) {
     champion = malloc(sizeof(Champion));
-    sizeType = strlen("Légume");
-    champion->type = malloc(sizeof(char) * (sizeType));
-    strcpy(champion->type, "Légume");
 
-    champion->num = (*nbChampions)++;
+    champion->num = nbChampions;
     champion->variete = name;
+    champion->type = "Légume";
     champion->force = 15;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 10;
   } else if (strcmp(name, "Aubergine") == 0) {
     champion = malloc(sizeof(Champion));
-    sizeType = strlen("Légume");
-    champion->type = malloc(sizeof(char) * (sizeType));
-    strcpy(champion->type, "Légume");
 
-    champion->num = (*nbChampions)++;
+    champion->num = nbChampions;
     champion->variete = name;
+    champion->type = "Légume";
     champion->force = 20;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 15;
   } else if (strcmp(name, "Courgette") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Légume");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Légume");
 
     champion->num = (*nbChampions)++;
+=======
+    
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Légume";
     champion->force = 20;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 20;
   } else if (strcmp(name, "Carotte") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Légume");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Légume");
 
     champion->num = (*nbChampions)++;
+=======
+    
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Légume";
     champion->force = 25;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 25;
   } else if (strcmp(name, "Banane") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
 
     champion->num = (*nbChampions)++;
+=======
+    
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Fruit";
     champion->force = 10;
     champion->resistance = 10;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 5;
   } else if (strcmp(name, "Kiwi") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
 
     champion->num = (*nbChampions)++;
+=======
+    
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Fruit";
     champion->force = 12;
     champion->resistance = 15;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 7;
   } else if (strcmp(name, "Poire") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
 
     champion->num = (*nbChampions)++;
+=======
+    
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Fruit";
     champion->force = 15;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 10;
   } else if (strcmp(name, "Pomme") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
 
     champion->num = (*nbChampions)++;
+=======
+
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Fruit";
     champion->force = 20;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 15;
   } else if (strcmp(name, "Ananas") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
 
     champion->num = (*nbChampions)++;
+=======
+    
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Fruit";
     champion->force = 20;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 20;
   } else if (strcmp(name, "Durian") == 0) {
     champion = malloc(sizeof(Champion));
+<<<<<<< HEAD
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
 
     champion->num = (*nbChampions)++;
+=======
+    
+    champion->num = nbChampions;
+>>>>>>> origin/master
     champion->variete = name;
+    champion->type = "Fruit";
     champion->force = 25;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 25;
   } else {
     fprintf(stderr, "Champion name error\n");
-    exit(1);
   }
 
   return champion;
 }
 
-Weapon * createWeapon(char *name, int *nbWeapons) {
+Weapon * createWeapon(char *name, int nbWeapons) {
     Weapon *weapon;
 
     if(strcmp("Eplucheur Laser", name) == 0) {
         weapon = malloc(sizeof(Weapon));
 
-        weapon->num = (*nbWeapons)++;
+        weapon->num = nbWeapons;
         weapon->nom = name;
         weapon->CE = 2;
         weapon->CA = 1;
@@ -176,7 +226,7 @@ Weapon * createWeapon(char *name, int *nbWeapons) {
     } else if(strcmp("Mandoline Sonique", name) == 0) {
         weapon = malloc(sizeof(Weapon));
 
-        weapon->num = (*nbWeapons)++;
+        weapon->num = nbWeapons;
         weapon->nom = name;
         weapon->CE = 5;
         weapon->CA = 3;
@@ -186,7 +236,7 @@ Weapon * createWeapon(char *name, int *nbWeapons) {
     } else if(strcmp("Couperet Laser", name) == 0) {
         weapon = malloc(sizeof(Weapon));
 
-        weapon->num = (*nbWeapons)++;
+        weapon->num = nbWeapons;
         weapon->nom = name;
         weapon->CE = 10;
         weapon->CA = 5;
@@ -196,7 +246,7 @@ Weapon * createWeapon(char *name, int *nbWeapons) {
     } else if(strcmp("Hachoir Neuronique", name) == 0) {
         weapon = malloc(sizeof(Weapon));
 
-        weapon->num = (*nbWeapons)++;
+        weapon->num = nbWeapons;
         weapon->nom = name;
         weapon->CE = 20;
         weapon->CA = 7;
@@ -206,7 +256,7 @@ Weapon * createWeapon(char *name, int *nbWeapons) {
     } else if(strcmp("Mixeur Blaster", name) == 0) {
         weapon = malloc(sizeof(Weapon));
 
-        weapon->num = (*nbWeapons)++;
+        weapon->num = nbWeapons;
         weapon->nom = name;
         weapon->CE = 30;
         weapon->CA = 10;
@@ -215,19 +265,18 @@ Weapon * createWeapon(char *name, int *nbWeapons) {
         weapon->portee = 11;
     } else {
         fprintf(stderr, "Weapon name error\n");
-        exit(2);
     }
 
   return weapon;
 }
 
-Protection * createProtection(char *name, int *nbProtection) {
+Protection * createProtection(char *name, int nbProtection) {
     Protection *protection;
 
     if(strcmp("Casque-Egouttoir", name) == 0) {
         protection = malloc(sizeof(Protection));
 
-        protection->num = (*nbProtection)++;
+        protection->num = nbProtection;
         protection->nom = name;
         protection->CE = 1;
         protection->CA = 2;
@@ -235,7 +284,7 @@ Protection * createProtection(char *name, int *nbProtection) {
     } else if(strcmp("Casque-Entonnoir", name) == 0) {
         protection = malloc(sizeof(Protection));
 
-        protection->num = (*nbProtection)++;
+        protection->num = nbProtection;
         protection->nom = name;
         protection->CE = 3;
         protection->CA = 4;
@@ -243,7 +292,7 @@ Protection * createProtection(char *name, int *nbProtection) {
     } else if(strcmp("Woklier", name) == 0) {
         protection = malloc(sizeof(Protection));
 
-        protection->num = (*nbProtection)++;
+        protection->num = nbProtection;
         protection->nom = name;
         protection->CE = 5;
         protection->CA = 6;
@@ -251,26 +300,25 @@ Protection * createProtection(char *name, int *nbProtection) {
     } else if(strcmp("Tablier-Armure", name) == 0) {
         protection = malloc(sizeof(Protection));
 
-        protection->num = (*nbProtection)++;
+        protection->num = nbProtection;
         protection->nom = name;
         protection->CE = 10;
         protection->CA = 8;
         protection->probabilite = 80;
     } else {
         fprintf(stderr, "Protection name error\n");
-        exit(3);
     }
 
     return protection;
 }
 
-Healing * createHealing(char *name, int *nbHealings){
+Healing * createHealing(char *name, int nbHealings){
     Healing *healing;
 
     if(strcmp("Humus-Neutronique", name) == 0) {
         healing = malloc(sizeof(Healing));
 
-        healing->num = (*nbHealings)++;
+        healing->num = nbHealings;
         healing->nom = name;
         healing->CE = 1;
         healing->CA = 5;
@@ -280,7 +328,7 @@ Healing * createHealing(char *name, int *nbHealings){
     } else if(strcmp("Compost-Protonique", name) == 0) {
         healing = malloc(sizeof(Healing));
 
-        healing->num = (*nbHealings)++;
+        healing->num = nbHealings;
         healing->nom = name;
         healing->CE = 5;
         healing->CA = 10;
@@ -290,7 +338,7 @@ Healing * createHealing(char *name, int *nbHealings){
     } else if(strcmp("Engrais-Ionique", name) == 0) {
         healing = malloc(sizeof(Healing));
 
-        healing->num = (*nbHealings)++;
+        healing->num = nbHealings;
         healing->nom = name;
         healing->CE = 7;
         healing->CA = 15;
@@ -299,46 +347,45 @@ Healing * createHealing(char *name, int *nbHealings){
         healing->effetMax = 12;
     } else {
         fprintf(stderr, "Healing name error\n");
-        exit(4);
     }
 
     return healing;
 }
 
 void initChampions(Champion **champions, int *nbChampions) {
-    champions[0] = createChampion("Haricot", nbChampions);
-    champions[1] = createChampion("Fenouil", nbChampions);
-    champions[2] = createChampion("Poireau", nbChampions);
-    champions[3] = createChampion("Aubergine", nbChampions);
-    champions[4] = createChampion("Courgette", nbChampions);
-    champions[5] = createChampion("Carotte", nbChampions);
-    champions[6] = createChampion("Banane", nbChampions);
-    champions[7] = createChampion("Kiwi", nbChampions);
-    champions[8] = createChampion("Poire", nbChampions);
-    champions[9] = createChampion("Pomme", nbChampions);
-    champions[10] = createChampion("Ananas", nbChampions);
-    champions[11] = createChampion("Durian", nbChampions);
+    champions[0] = createChampion("Haricot", (*nbChampions)++);
+    champions[1] = createChampion("Fenouil", (*nbChampions)++);
+    champions[2] = createChampion("Poireau", (*nbChampions)++);
+    champions[3] = createChampion("Aubergine", (*nbChampions)++);
+    champions[4] = createChampion("Courgette", (*nbChampions)++);
+    champions[5] = createChampion("Carotte", (*nbChampions)++);
+    champions[6] = createChampion("Banane", (*nbChampions)++);
+    champions[7] = createChampion("Kiwi", (*nbChampions)++);
+    champions[8] = createChampion("Poire", (*nbChampions)++);
+    champions[9] = createChampion("Pomme", (*nbChampions)++);
+    champions[10] = createChampion("Ananas", (*nbChampions)++);
+    champions[11] = createChampion("Durian", (*nbChampions)++);
 }
 
 void initWeapons(Weapon **weapons, int *nbWeapons) {
-    weapons[0] = createWeapon("Eplucheur Laser", nbWeapons);
-    weapons[1] = createWeapon("Mandoline Sonique", nbWeapons);
-    weapons[2] = createWeapon("Couperet Laser", nbWeapons);
-    weapons[3] = createWeapon("Hachoir Neuronique", nbWeapons);
-    weapons[4] = createWeapon("Mixeur Blaster", nbWeapons);
+    weapons[0] = createWeapon("Eplucheur Laser", (*nbWeapons)++);
+    weapons[1] = createWeapon("Mandoline Sonique", (*nbWeapons)++);
+    weapons[2] = createWeapon("Couperet Laser", (*nbWeapons)++);
+    weapons[3] = createWeapon("Hachoir Neuronique", (*nbWeapons)++);
+    weapons[4] = createWeapon("Mixeur Blaster", (*nbWeapons)++);
 }
 
 void initProtections(Protection **protections, int *nbProtections) {
-    protections[0] = createProtection("Casque-Egouttoir", nbProtections);
-    protections[1] = createProtection("Casque-Entonnoir", nbProtections);
-    protections[2] = createProtection("Woklier", nbProtections);
-    protections[3] = createProtection("Tablier-Armure", nbProtections);
+    protections[0] = createProtection("Casque-Egouttoir", (*nbProtections)++);
+    protections[1] = createProtection("Casque-Entonnoir", (*nbProtections)++);
+    protections[2] = createProtection("Woklier", (*nbProtections)++);
+    protections[3] = createProtection("Tablier-Armure", (*nbProtections)++);
 }
 
 void initHealings(Healing **healings, int *nbHealings) {
-    healings[0] = createHealing("Humus-Neutronique", nbHealings);
-    healings[1] = createHealing("Compost-Protonique", nbHealings);
-    healings[2] = createHealing("Engrais-Ionique", nbHealings);
+    healings[0] = createHealing("Humus-Neutronique", (*nbHealings)++);
+    healings[1] = createHealing("Compost-Protonique", (*nbHealings)++);
+    healings[2] = createHealing("Engrais-Ionique", (*nbHealings)++);
 }
 
 void initGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
@@ -354,8 +401,13 @@ void afficherChampions(Champion **champions, int *nbChampions) {
     for(i = 0; i < *nbChampions; i++)
     {
         c = champions[i];
+<<<<<<< HEAD
         printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
     }
+=======
+        printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nPV %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax,c->PV, c->CE);
+    } 
+>>>>>>> origin/master
 }
 
 void afficherWeapons(Weapon **weapons, int *nbWeapons) {
@@ -386,6 +438,7 @@ void afficherSoins(Healing **healings, int *nbHealings) {
         h = healings[i];
         printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
     }
+<<<<<<< HEAD
 }
 /*
 int main() {
@@ -419,3 +472,6 @@ int main() {
     return 0;
 }
 */
+=======
+}
+>>>>>>> origin/master

@@ -1,6 +1,11 @@
+<<<<<<< HEAD
 #include "initGame.h"
 #include "commands.h"
 #include "fight.h"
+=======
+#include "commands.h"
+
+>>>>>>> origin/master
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

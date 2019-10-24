@@ -8,6 +8,7 @@ typedef struct champion {
   int force;
   int resistance;
   int PVMax;
+  int PV;
   int CE;
 } Champion;
 
@@ -57,7 +58,7 @@ void afficherSoins(Healing **healings, int *nbHealings);
   @Param2 the current champion number.
   @Return the new champion.
 */
-Champion * createChampion(char *name, int *nbChampions);
+Champion * createChampion(char *name, int nbChampions);
 
 /*
   Create and return a new weapon.
@@ -65,7 +66,7 @@ Champion * createChampion(char *name, int *nbChampions);
   @Param2 the current weapon number.
   @Return the new weapon.
 */
-Weapon * createWeapon(char *name, int *nbWeapons);
+Weapon * createWeapon(char *name, int nbWeapons);
 
 /*
   Create and return a new protection.
@@ -73,7 +74,7 @@ Weapon * createWeapon(char *name, int *nbWeapons);
   @Param2 the current protection number.
   @Return the new protection.
 */
-Protection * createProtection(char *name, int *nbProtection);
+Protection * createProtection(char *name, int nbProtection);
 
 /*
   Create and return a new healing.
@@ -81,7 +82,7 @@ Protection * createProtection(char *name, int *nbProtection);
   @Param2 the current healing number.
   @Return the new healing.
 */
-Healing * createHealing(char *name, int *nbHeal);
+Healing * createHealing(char *name, int nbHeal);
 
 /*
     Create and return the table of champion

@@ -61,7 +61,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Légume");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Légume");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 20;
@@ -73,7 +73,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Légume");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Légume");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 25;
@@ -85,7 +85,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 10;
@@ -97,7 +97,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 12;
@@ -109,7 +109,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 15;
@@ -121,7 +121,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 20;
@@ -133,7 +133,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 20;
@@ -145,7 +145,7 @@ Champion * createChampion(char *name, int *nbChampions) {
     sizeType = strlen("Fruit");
     champion->type = malloc(sizeof(char) * (sizeType));
     strcpy(champion->type, "Fruit");
-    
+
     champion->num = (*nbChampions)++;
     champion->variete = name;
     champion->force = 25;
@@ -352,27 +352,27 @@ void afficherChampions(Champion **champions, int *nbChampions) {
     Champion *c;
     int i;
     for(i = 0; i < *nbChampions; i++)
-    {   
+    {
         c = champions[i];
         printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
-    } 
+    }
 }
 
 void afficherWeapons(Weapon **weapons, int *nbWeapons) {
     Weapon *w;
     int i;
     for(i = 0; i < *nbWeapons; i++)
-    {   
+    {
         w = weapons[i];
         printf("Num %d\nNom %s\nCE %d\nCA %d\nDégâts min %d\nDégâts max %d\nCE %d\n\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
-    } 
+    }
 }
 
 void afficherProtections(Protection **protections, int *nbProtections) {
     Protection *p;
     int i;
     for(i = 0; i < *nbProtections; i++)
-    {   
+    {
         p = protections[i];
         printf("Num %d\nNom %s\nCE %d\nCA %d\nProbabilité %d %c \n\n", p->num, p->nom, p->CE, p->CA, p->probabilite, '%');
     }
@@ -382,7 +382,7 @@ void afficherSoins(Healing **healings, int *nbHealings) {
     Healing *h;
     int i;
     for(i = 0; i < *nbHealings; i++)
-    {   
+    {
         h = healings[i];
         printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
     }

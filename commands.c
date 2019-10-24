@@ -121,11 +121,17 @@ void fight(char *vegetable, char* fruit, Champion **champions, int *nbChampions)
   // Team team2 = initTeam(1);
   // int maximumCE = maxCE(team1, team2);
 
-  /* recup les champs */
+  /* recup les champions */
+  int i = 0;
+  int indexVege, indexFruit;
+  /*for(; i < *nbChampions; i++) {
+    if(champions[i]->variete)
+  }*/
+  /* end recup */
   // buyChampion(champion[0], team1, maximumCE);
   // buyChampion(champion[1], team2, maximumCE);
 
-  /* choose arme, soins, protections pour team1 et pour team2*/
+  /* choose arme, soins, protections pour team1 et pour team2 */
   /* commence infinite loop avec le tour par tour */
 }
 
@@ -140,10 +146,12 @@ void help() {
 }
 
 void exitGame() {
+  // faire les free
   exit(0);
 }
 
 void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+  printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
   char *command = (char*)malloc(256*sizeof(char));
 
   while(1) {
@@ -182,15 +190,11 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         continue;
       }
 
-      while((tmp+i) != indexVersus) {
-        i++;
-      }
+      while((tmp+i) != indexVersus) i++; // get index 'v' de "versus"
 
-      legume = substring(tmp, 0, i-1); //
-
+      legume = substring(tmp, 0, i-1); // nom du legume
+      fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
       printf("Legume : /%s/\n", legume);
-      tmp = substring(tmp, i+7, strlen(tmp));
-      fruit = substring(tmp, 0, strlen(tmp));
       printf("Fruit : /%s/\n", fruit);
 
     }

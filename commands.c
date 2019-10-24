@@ -25,6 +25,14 @@ int getID(char *command, int n) {
   return id;
 }
 
+int getChampIndex(char *champName, Champion **champion, int *nbChampions) {
+  int i = 0;
+  for(; i < *nbChampions; i++) {
+    if(strcmp(champName, champion[i]->variete) == 0) return i;
+  }
+  return -1;
+}
+
 void showVegetables(Champion **champions, int *nbChampions) {
   Champion *c;
   int i;
@@ -116,23 +124,26 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void fight(char *vegetable, char* fruit, Champion **champions, int *nbChampions) {
-  // Team team1 = initTeam(0);
-  // Team team2 = initTeam(1);
-  // int maximumCE = maxCE(team1, team2);
+void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+  Team *team1 = initTeam(0);
+  Team *team2 = initTeam(1);
+  int maximumCE = maxCE(team1, team2);
 
-  /* recup les champions */
-  int i = 0;
-  int indexVege, indexFruit;
-  /*for(; i < *nbChampions; i++) {
-    if(champions[i]->variete)
-  }*/
-  /* end recup */
-  // buyChampion(champion[0], team1, maximumCE);
-  // buyChampion(champion[1], team2, maximumCE);
+  buyChampion(vegetable, team1, maximumCE);
+  buyChampion(fruit, team2, maximumCE);
 
   /* choose arme, soins, protections pour team1 et pour team2 */
   /* commence infinite loop avec le tour par tour */
+  char *command = malloc(256*sizeof(char));
+  int veg = 1;
+  int fru = 0;
+  while(1) {
+    printf("%s %d> ", (veg?vegetable->variete : fruit->variete), (veg?vegetable->variete : fruit->));
+    fgets(command, 256, stdin);
+    // printf("Entered command : %s", command);
+    if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
+  }
+
 }
 
 /*
@@ -194,8 +205,11 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
       legume = substring(tmp, 0, i-1); // nom du legume
       fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
-      printf("Legume : /%s/\n", legume);
-      printf("Fruit : /%s/\n", fruit);
+      free(tmp);
+      // printf("Legume : /%s/\n", legume);
+      // printf("Fruit : /%s/\n", fruit);
+
+
 
     }
 

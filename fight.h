@@ -118,6 +118,13 @@ int distanceBetweenChampions(Team *team1, Team *team2);
 void end();
 
 /*
+  Free all the allocated memory for the fight.
+  @Param1 the first team
+  @Param2 the second team
+*/
+void endBattle(Team *team1, Team *team2);
+
+/*
     Calculate the random damage of the weapon between degatsMin and degatsMax
     @Param the weapon
     @Return integer

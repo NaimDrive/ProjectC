@@ -1,4 +1,4 @@
-#include "initGame.c"
+#include "initGame.h"
 #include "fight.h"
 
 #include <stdio.h>
@@ -207,7 +207,7 @@ void useWeapon(Team *team1, Team *team2, int n) {
     if(team1->weapon->CA * n > team1->CA) {
       printf("Pas assez de crédit d'action pour utiliser %d fois l'arme.\n", n);
     } else {
-      for(i = 0 ; i < n && team2->champion->PVMax > 0 ; i++) {
+      for(i = 0 ; i < n && team2->champion->PV > 0 ; i++) {
         team1->CA -= team1->weapon->CA;
         printf("L'attaquant perd %d crédits d'attaques.\n", team1->weapon->CA);
 
@@ -226,14 +226,14 @@ void useWeapon(Team *team1, Team *team2, int n) {
           dmg = dmg * (resistance / 100);
           damage = dmg + 0.5;
 
-          if(damage > team2->champion->PVMax) {
-            printf("Le défenseur perd %d points de vie.\n", damage - team2->champion->PVMax);
-            team2->champion->PVMax = 0;
+          if(damage > team2->champion->PV) {
+            printf("Le défenseur perd %d points de vie.\n", damage - team2->champion->PV);
+            team2->champion->PV = 0;
           } else {
             printf("Le défenseur perd %d points de vie.\n", damage);
-            team2->champion->PVMax -= damage;
+            team2->champion->PV -= damage;
           }
-          printf("Il reste %d points de vie.\n", team2->champion->PVMax);
+          printf("Il reste %d points de vie.\n", team2->champion->PV);
         } else {
           printf("Impossible d'attaquer, le champion est trop loin !\n");
           break;
@@ -247,8 +247,12 @@ void useWeapon(Team *team1, Team *team2, int n) {
 
 void useProtection(Team *team) {
   if(team->weapon != NULL) {
-    team->protectionActivated = 1;
-    printf("La protection %s est désormais active pendant 1 tour.\n", team->weapon->nom);
+    if(team->CA < team->protection->CA) {
+      printf("Vous n'avez pas assez de CA pour activer la protection.\n");
+    } else {
+      team->protectionActivated = 1;
+      printf("La protection %s est désormais active pendant 1 tour.\n", team->weapon->nom);
+    }
   }
 }
 
@@ -263,13 +267,26 @@ void useCare(Team *team, int n) {
     if(team->healing->volume < n) {
       printf("Vous n'avez pas assez de %s pour vous soigner %d fois \n", team->healing->nom, n);
     } else {
-      /*
-        Soigner le champion
-        Ajouter un attribut à champion pour les pv courant
-
-        team->champion->PVMax += randHeal(team->healing);
-      */
-      printf("Le champion %s a été soigné.\n", team->champion->variete);
+      if(team->CA < team->healing->CA * n) {
+        printf("Vous n'avez pas assez de CA pour vous soignez %d fois.\n", n);
+      } else {
+        int soin;
+        for (int i = 0; i < n; i++) {
+          soin = randHeal(team->healing);
+          team->CA -= team->healing->CA;
+          team->healing->volume--;
+          if(team->champion->PV + soin > team->champion->PVMax)
+            team->champion->PV = team->champion->PVMax;
+          else
+            team->champion->PV += soin;
+        }
+        printf("Le champion %s a été soigné.\n", team->champion->variete);
+        if(team->healing->volume == 0) {
+          printf("Vous avez utilisé tous vos soins.\n");
+          free(team->healing);
+          team->healing = NULL;
+        }
+      }
     }
   }
 }
@@ -278,58 +295,16 @@ int distanceBetweenChampions(Team *team1, Team *team2) {
   return team2->position - team1->position;
 }
 
+void endBattle(Team *team1, Team *team2) {
+  free(team1->champion);
+  free(team1->weapon);
+  free(team1->protection);
+  free(team1->healing);
+  free(team1);
 
-int main(void) {
-    Champion **champions;
-    Weapon **weapons;
-    Protection **protections;
-    Healing **healings;
-    Team *team1, *team2;
-    int *nbChampions, *nbWeapons, *nbProtections, *nbHealings, maximumCE;
-
-    srand(time(NULL));
-
-    champions = malloc(sizeof(Champion *) * 12);
-    weapons = malloc(sizeof(Weapon *) * 5);
-    protections = malloc(sizeof(Protection *) * 4);
-    healings = malloc(sizeof(Healing *) * 3);
-
-    nbChampions = malloc(sizeof(int));
-    nbWeapons = malloc(sizeof(int));
-    nbProtections = malloc(sizeof(int));
-    nbHealings = malloc(sizeof(int));
-
-    *nbChampions = 0;
-    *nbWeapons = 0;
-    *nbProtections = 0;
-    *nbHealings = 0;
-
-    initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
-
-    team1 = initTeam(0);
-    team2 = initTeam(1);
-
-    buyCA(team1, 20);
-    buyCA(team2, 20);
-
-    maximumCE = maxCE(team1, team2);
-    buyChampion(champions[11], team1, maximumCE);
-    buyChampion(champions[0], team2, maximumCE);
-
-    buyWeapon(weapons[3], team1, maximumCE);
-    buyWeapon(weapons[1], team2, maximumCE);
-
-    buyHealing(healings[2], team2, maximumCE);
-
-    buyProtection(protections[2], team2, maximumCE);
-
-    useProtection(team2);
-    moveForward(team1, team2, 3);
-
-    useWeapon(team1, team2, 1);
-
-    moveBackward(team2, 5, 50);
-    useCare(team2, 2);
-
-    return 0;
+  free(team2->champion);
+  free(team2->weapon);
+  free(team2->protection);
+  free(team2->healing);
+  free(team2);
 }

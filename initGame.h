@@ -8,6 +8,7 @@ typedef struct champion {
   int force;
   int resistance;
   int PVMax;
+  int PV;
   int CE;
 } Champion;
 

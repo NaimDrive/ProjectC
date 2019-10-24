@@ -16,6 +16,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 10;
     champion->resistance = 10;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 5;
   } else if (strcmp(name, "Fenouil") == 0) {
     champion = malloc(sizeof(Champion));
@@ -26,6 +27,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 12;
     champion->resistance = 15;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 7;
   } else if (strcmp(name, "Poireau") == 0) {
     champion = malloc(sizeof(Champion));
@@ -36,6 +38,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 15;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 10;
   } else if (strcmp(name, "Aubergine") == 0) {
     champion = malloc(sizeof(Champion));
@@ -46,6 +49,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 20;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 15;
   } else if (strcmp(name, "Courgette") == 0) {
     champion = malloc(sizeof(Champion));
@@ -56,6 +60,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 20;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 20;
   } else if (strcmp(name, "Carotte") == 0) {
     champion = malloc(sizeof(Champion));
@@ -66,6 +71,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 25;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 25;
   } else if (strcmp(name, "Banane") == 0) {
     champion = malloc(sizeof(Champion));
@@ -76,6 +82,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 10;
     champion->resistance = 10;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 5;
   } else if (strcmp(name, "Kiwi") == 0) {
     champion = malloc(sizeof(Champion));
@@ -86,6 +93,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 12;
     champion->resistance = 15;
     champion->PVMax = 40;
+    champion->PV = 40;
     champion->CE = 7;
   } else if (strcmp(name, "Poire") == 0) {
     champion = malloc(sizeof(Champion));
@@ -96,6 +104,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 15;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 10;
   } else if (strcmp(name, "Pomme") == 0) {
     champion = malloc(sizeof(Champion));
@@ -106,6 +115,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 20;
     champion->resistance = 20;
     champion->PVMax = 60;
+    champion->PV = 60;
     champion->CE = 15;
   } else if (strcmp(name, "Ananas") == 0) {
     champion = malloc(sizeof(Champion));
@@ -116,6 +126,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 20;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 20;
   } else if (strcmp(name, "Durian") == 0) {
     champion = malloc(sizeof(Champion));
@@ -126,10 +137,10 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->force = 25;
     champion->resistance = 25;
     champion->PVMax = 80;
+    champion->PV = 80;
     champion->CE = 25;
   } else {
     fprintf(stderr, "Champion name error\n");
-    exit(1);
   }
 
   return champion;
@@ -190,7 +201,6 @@ Weapon * createWeapon(char *name, int nbWeapons) {
         weapon->portee = 11;
     } else {
         fprintf(stderr, "Weapon name error\n");
-        exit(2);
     }
 
   return weapon;
@@ -233,7 +243,6 @@ Protection * createProtection(char *name, int nbProtection) {
         protection->probabilite = 80;
     } else {
         fprintf(stderr, "Protection name error\n");
-        exit(3);
     }
 
     return protection;
@@ -274,7 +283,6 @@ Healing * createHealing(char *name, int nbHealings){
         healing->effetMax = 12;
     } else {
         fprintf(stderr, "Healing name error\n");
-        exit(4);
     }
 
     return healing;
@@ -329,7 +337,7 @@ void afficherChampions(Champion **champions, int *nbChampions) {
     for(i = 0; i < *nbChampions; i++)
     {   
         c = champions[i];
-        printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
+        printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nPV %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax,c->PV, c->CE);
     } 
 }
 
@@ -362,36 +370,3 @@ void afficherSoins(Healing **healings, int *nbHealings) {
         printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
     }
 }
-
-/*
-int main() {
-    Champion **champions;
-    Weapon **weapons;
-    Protection **protections;
-    Healing **healings;
-    int *nbChampions, *nbWeapons, *nbProtections, *nbHealings;
-
-    champions = malloc(sizeof(Champion *) * 12);
-    weapons = malloc(sizeof(Weapon *) * 5);
-    protections = malloc(sizeof(Protection *) * 4);
-    healings = malloc(sizeof(Healing *) * 3);
-
-    nbChampions = malloc(sizeof(int));
-    nbWeapons = malloc(sizeof(int));
-    nbProtections = malloc(sizeof(int));
-    nbHealings = malloc(sizeof(int));
-
-    *nbChampions = 0;
-    *nbWeapons = 0;
-    *nbProtections = 0;
-    *nbHealings = 0;
-
-    initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
-
-    afficherChampions(champions, nbChampions);
-    afficherWeapons(weapons, nbWeapons);
-    afficherProtections(protections, nbProtections);
-    afficherSoins(healings, nbHealings);
-    return 0;
-}
-*/

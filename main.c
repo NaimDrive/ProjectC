@@ -14,7 +14,8 @@ int main() {
   Weapon **weapons;
   Protection **protections;
   Healing **healings;
-  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings;
+  Team *team1, *team2;
+  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings, maximumCE;
 
   srand(time(NULL));
 
@@ -39,8 +40,35 @@ int main() {
   afficherWeapons(weapons, nbWeapons);
   afficherProtections(protections, nbProtections);
   afficherSoins(healings, nbHealings);
+
+  team1 = initTeam(0);
+  team2 = initTeam(1);
+
+  buyCA(team1, 20);
+  buyCA(team2, 30);
+
+  maximumCE = maxCE(team1, team2);
+  buyChampion(champions[11], team1, maximumCE);
+  buyChampion(champions[0], team2, maximumCE);
+
+  buyWeapon(weapons[3], team1, maximumCE);
+  buyWeapon(weapons[1], team2, maximumCE);
+
+  buyHealing(healings[0], team2, maximumCE);
+
+  buyProtection(protections[2], team2, maximumCE);
+
+  useProtection(team2);
+  moveForward(team1, team2, 3);
+
+  useWeapon(team1, team2, 1);
+
+  moveBackward(team2, 5, 50);
+  useCare(team2, 4);
   
-  deallocateChampions(champions, nbChampions);
+  endBattle(team1, team2);
+
+  deallocateMemory(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 
   return 0;
 }

@@ -25,7 +25,7 @@ void showCares(Healing **healings, int *nbHealings);
 
 void showCare(Healing **healings, int *nbHealings, int id);
 
-void fight(char *command);
+void fight(char *vegetable, char* fruit, Champion **champions, int *nbChampions);
 
 // void save();
 

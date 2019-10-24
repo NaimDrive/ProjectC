@@ -1,10 +1,9 @@
 #include "initGame.h"
+#include "commands.h"
+#include "fight.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-#include "initGame.h"
-#include "commands.h"
 
 char* substring(char *src, int beg, int end) {
   char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
@@ -30,7 +29,7 @@ void showVegetables(Champion **champions, int *nbChampions) {
   Champion *c;
   int i;
   for(i = 0; i < ((*nbChampions)-6); i++)
-  {   
+  {
     c = champions[i];
     printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
   }
@@ -48,7 +47,7 @@ void showFruits(Champion **champions, int *nbChampions) {
  Champion *c;
   int i;
   for(i = 6; i < *nbChampions; i++)
-  {   
+  {
     c = champions[i];
     printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
   }
@@ -67,7 +66,7 @@ void showWeapons(Weapon **weapons, int *nbWeapons) {
   Weapon *w;
   int i;
   for(i = 0; i < *nbWeapons; i++)
-  {   
+  {
     w = weapons[i];
     printf("Num %d\nNom %s\nCE %d\nCA %d\nDégâts min %d\nDégâts max %d\nCE %d\n\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
   }
@@ -85,7 +84,7 @@ void showProtections(Protection **protections, int *nbProtections) {
   Protection *p;
   int i;
   for(i = 0; i < *nbProtections; i++)
-  {   
+  {
     p = protections[i];
     printf("Num %d\nNom %s\nCE %d\nCA %d\nProbabilité %d %c \n\n", p->num, p->nom, p->CE, p->CA, p->probabilite, '%');
   }
@@ -103,7 +102,7 @@ void showCares(Healing **healings, int *nbHealings) {
   Healing *h;
   int i;
   for(i = 0; i < *nbHealings; i++)
-  {   
+  {
     h = healings[i];
     printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
   }
@@ -117,9 +116,19 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void fight(char *command) {
-  printf("'Versus' présent ? %d\n", (strstr(command, "versus") != NULL));
+void fight(char *vegetable, char* fruit, Champion **champions, int *nbChampions) {
+  // Team team1 = initTeam(0);
+  // Team team2 = initTeam(1);
+  // int maximumCE = maxCE(team1, team2);
+
+  /* recup les champs */
+  // buyChampion(champion[0], team1, maximumCE);
+  // buyChampion(champion[1], team2, maximumCE);
+
+  /* choose arme, soins, protections pour team1 et pour team2*/
+  /* commence infinite loop avec le tour par tour */
 }
+
 /*
 void save() {
   printf("%s\n", "save");
@@ -138,7 +147,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
   char *command = (char*)malloc(256*sizeof(char));
 
   while(1) {
-    printf("Veuillez saisir votre commande : ");
+    printf("> ");
     fgets(command, 256, stdin);
     // printf("Entered command : %s", command);
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
@@ -162,10 +171,31 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
     else if(strncmp(command, "fight ", 6) == 0) {
       /* Work in progress */
-      fight(substring(command, 6, strlen(command)));
+      char *tmp = substring(command, 6, strlen(command));
+      char *indexVersus = strstr(tmp, "versus");
+      char *fruit;
+      char *legume;
+      int i = 0;
+
+      if(indexVersus == NULL) {
+        printf("! Utilisation ! : fight <legume> versus <fruit>\n");
+        continue;
+      }
+
+      while((tmp+i) != indexVersus) {
+        i++;
+      }
+
+      legume = substring(tmp, 0, i-1); //
+
+      printf("Legume : /%s/\n", legume);
+      tmp = substring(tmp, i+7, strlen(tmp));
+      fruit = substring(tmp, 0, strlen(tmp));
+      printf("Fruit : /%s/\n", fruit);
+
     }
 
-    else if(strcmp(command, "save") == 0) save();
+    //else if(strcmp(command, "save") == 0) save();
   }
 
   free(command);
@@ -180,16 +210,16 @@ int main() {
   Healing **healings = malloc(sizeof(Healing *) * 3);
 
   int *nbChampions = calloc(1, sizeof(int));
-  int *nbWeapons = calloc(1, sizeof(int)); 
-  int *nbProtections = calloc(1, sizeof(int)); 
+  int *nbWeapons = calloc(1, sizeof(int));
+  int *nbProtections = calloc(1, sizeof(int));
   int *nbHealings = calloc(1, sizeof(int));
-  
+
   initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
   // afficherChampions(champions, nbChampions);
   // afficherWeapons(weapons, nbWeapons);
   // afficherProtections(protections, nbProtections);
   // afficherSoins(healings, nbHealings);
-  
+
   readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 
 

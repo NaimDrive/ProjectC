@@ -219,7 +219,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
   free(command);
 }
 
-
+/*
 int main() {
 
   Champion **champions = malloc(sizeof(Champion *) * 12);
@@ -243,3 +243,4 @@ int main() {
 
   return 0;
 }
+*/

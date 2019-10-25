@@ -1,6 +1,7 @@
 #include "initGame.h"
 #include "commands.h"
 #include "fight.h"
+#include "fightMode.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -76,13 +77,13 @@ void showWeapons(Weapon **weapons, int *nbWeapons) {
   for(i = 0; i < *nbWeapons; i++)
   {
     w = weapons[i];
-    printf("Num %d\nNom %s\nCE %d\nCA %d\nDégâts min %d\nDégâts max %d\nCE %d\n\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | CE : %d\n\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
   }
 }
 
 void showWeapon(Weapon **weapons, int *nbWeapons, int id) {
   if(id < *nbWeapons && id >= 0) {
-    printf("Num %d\nNom %s\nCE %d\nCA %d\nDégâts min %d\nDégâts max %d\nCE %d\n\n", weapons[id]->num, weapons[id]->nom, weapons[id]->CE, weapons[id]->CA, weapons[id]->degatsMin, weapons[id]->degatsMax, weapons[id]->portee);
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | CE : %d\n\n", weapons[id]->num, weapons[id]->nom, weapons[id]->CE, weapons[id]->CA, weapons[id]->degatsMin, weapons[id]->degatsMax, weapons[id]->portee);
   } else {
     printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbWeapons);
   }
@@ -124,27 +125,36 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
   Team *team1 = initTeam(0);
   Team *team2 = initTeam(1);
   int maximumCE = maxCE(team1, team2);
-
+  int *end = malloc(sizeof(int));
+  *end = 0;
+  // char *command = malloc(256*sizeof(char));
+  
+  /* Set up fight */
   buyChampion(vegetable, team1, maximumCE);
+  printf("Vous avez choisis %s ? Un combat qui s'annonce... Vitaminé !\n", team1->champion->variete);
+  
   buyChampion(fruit, team2, maximumCE);
+  printf("Vous avez choisis %s ? Un combat qui s'annonce... Vitaminé !\n", team2->champion->variete);
+
+  /* fin Set up fight */
 
   /* choose arme, soins, protections pour team1 et pour team2 */
   /* commence infinite loop avec le tour par tour */
-  /*
-  char *command = malloc(256*sizeof(char));
-  int veg = 1;
-  int fru = 0;
-  while(1) {
-    printf("%s %d> ", (veg?vegetable->variete : fruit->variete), (veg?vegetable->variete : fruit->));
-    fgets(command, 256, stdin);
-    // printf("Entered command : %s", command);
-    if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-  }*/
+  
+  while((team1->champion->PV != 0 && team2->champion->PV != 0) && *end == 0) {
+    fightingMode(team1, end);
+    if(*end == 1) {
+      free(end);
+      return;
+    }
+    fightingMode(team2, end);
+  }
 
+  free(end);
 }
 
 /*
@@ -207,11 +217,11 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       legume = substring(tmp, 0, i-1); // nom du legume
       fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
       free(tmp);
+      int indexVeg = getChampIndex(legume, champions, nbChampions);
+      int indexFruit = getChampIndex(fruit, champions, nbChampions);
       // printf("Legume : /%s/\n", legume);
       // printf("Fruit : /%s/\n", fruit);
-
-
-
+      initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
     }
 
     //else if(strcmp(command, "save") == 0) save();

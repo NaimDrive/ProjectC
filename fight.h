@@ -18,7 +18,7 @@ typedef struct {
   Create a new team
   @return the new team
 */
-Team * initTeam();
+Team * initTeam(int id);
 
 /*
   Calculate the maximum of CE which can be used during the round

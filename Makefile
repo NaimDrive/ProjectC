@@ -16,7 +16,7 @@ fight.o: fight.c fight.h initGame.h
 commands.o: commands.c commands.h
 	$(CC) $(CFLAGS) -c $<
 
-endGame.o: endGame.c endGame.h
+endGame.o: endGame.c endGame.h initGame.h
 	$(CC) $(CFLAGS) -c $<
 
 main.o: main.c main.h fight.h commands.h initGame.h endGame.h

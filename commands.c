@@ -134,6 +134,7 @@ void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **
 
   /* choose arme, soins, protections pour team1 et pour team2 */
   /* commence infinite loop avec le tour par tour */
+  /*
   char *command = malloc(256*sizeof(char));
   int veg = 1;
   int fru = 0;
@@ -142,7 +143,7 @@ void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **
     fgets(command, 256, stdin);
     // printf("Entered command : %s", command);
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-  }
+  }*/
 
 }
 

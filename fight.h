@@ -117,8 +117,6 @@ void useCare(Team *team, int n);
 */
 int distanceBetweenChampions(Team *team1, Team *team2);
 
-void end();
-
 /*
   Free all the allocated memory for the fight.
   @Param1 the first team

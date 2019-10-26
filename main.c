@@ -37,7 +37,5 @@ int main() {
 
   readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 
-  deallocateMemory(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
-
   return 0;
 }

@@ -13,7 +13,7 @@ initGame.o: initGame.c initGame.h
 fight.o: fight.c fight.h initGame.h
 	$(CC) $(CFLAGS) -c $<
 
-commands.o: commands.c commands.h initGame.h fight.h fightMode.h 
+commands.o: commands.c commands.h initGame.h fight.h fightMode.h endGame.h
 	$(CC) $(CFLAGS) -c $<
 
 fightMode.o : fightMode.c fightMode.h initGame.h fight.h commands.h

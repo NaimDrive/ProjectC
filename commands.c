@@ -2,6 +2,7 @@
 #include "commands.h"
 #include "fight.h"
 #include "fightMode.h"
+#include "endGame.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -154,21 +155,14 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
     fightingMode(team2);
   }
   */
-
 }
-
-/*
-void save() {
-  printf("%s\n", "save");
-}
-*/
 
 void help() {
   printf("Show every possible command");
 }
 
-void exitGame() {
-  // faire les free
+void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+  deallocateMemory(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
   exit(0);
 }
 
@@ -179,11 +173,10 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
   while(1) {
     printf("> ");
     fgets(command, 256, stdin);
-    // printf("Entered command : %s", command);
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
     // ~~~ Cases ~~~ //
-    if(strcmp(command, "exit") == 0) exitGame();
+    if(strcmp(command, "exit") == 0) exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
     else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
     else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));
 
@@ -219,41 +212,12 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       free(tmp);
       int indexVeg = getChampIndex(legume, champions, nbChampions);
       int indexFruit = getChampIndex(fruit, champions, nbChampions);
-      // printf("Legume : /%s/\n", legume);
-      // printf("Fruit : /%s/\n", fruit);
       if(indexVeg != -1 && indexFruit != -1) {
         initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
       }
     } else if(strcmp(command,"clear") == 0) system("clear");
 
-    //else if(strcmp(command, "save") == 0) save();
   }
 
   free(command);
 }
-
-/*
-int main() {
-
-  Champion **champions = malloc(sizeof(Champion *) * 12);
-  Weapon **weapons = malloc(sizeof(Weapon *) * 5);
-  Protection **protections = malloc(sizeof(Protection *) * 4);
-  Healing **healings = malloc(sizeof(Healing *) * 3);
-
-  int *nbChampions = calloc(1, sizeof(int));
-  int *nbWeapons = calloc(1, sizeof(int));
-  int *nbProtections = calloc(1, sizeof(int));
-  int *nbHealings = calloc(1, sizeof(int));
-
-  initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
-  // afficherChampions(champions, nbChampions);
-  // afficherWeapons(weapons, nbWeapons);
-  // afficherProtections(protections, nbProtections);
-  // afficherSoins(healings, nbHealings);
-
-  readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
-
-
-  return 0;
-}
-*/

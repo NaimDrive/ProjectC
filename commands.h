@@ -31,7 +31,7 @@ void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **
 
 void help();
 
-void exitGame();
+void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings);
 
 void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings);
 

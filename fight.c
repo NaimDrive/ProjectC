@@ -83,7 +83,7 @@ void buyWeapon(Weapon *weapon, Team *team) {
   }
 }
 
-void buyProtection(Protection *protection, Team *team, int maxCE) {
+void buyProtection(Protection *protection, Team *team) {
   if(team->maxCE == 0)
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
   else {
@@ -100,7 +100,7 @@ void buyProtection(Protection *protection, Team *team, int maxCE) {
   }
 }
 
-void buyHealing(Healing *healing, Team *team, int maxCE) {
+void buyHealing(Healing *healing, Team *team) {
   if(team->maxCE == 0)
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
   else {

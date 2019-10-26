@@ -11,7 +11,8 @@ void enterToContinue() {
 }
 
 void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
-    int num = -1;
+    long num = -1;
+    char *endptr;
     printf("Commençons par choisir de quoi tuer l'adversaire.\n");
 
     while(num >= *nbWeapons || num < 0) {
@@ -21,7 +22,9 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
         num = getID(command, 0);
 
-        if(num >= *nbWeapons || num < 0) {
+        num = strtoul(command, &endptr, 10);
+
+        if((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d\n", *nbWeapons-1);
         }

@@ -58,7 +58,7 @@ void buyWeapon(Weapon *weapon, Team *team);
   @Param2 the team which need a protection
   @Return void
 */
-void buyProtection(Protection *protection, Team *team, int maxCE);
+void buyProtection(Protection *protection, Team *team);
 
 /*
   Buy a healing
@@ -66,7 +66,7 @@ void buyProtection(Protection *protection, Team *team, int maxCE);
   @Param2 the team which need a healing
   @Return void
 */
-void buyHealing(Healing *healing, Team *team, int maxCE);
+void buyHealing(Healing *healing, Team *team);
 
 /*
   The champion move foward.

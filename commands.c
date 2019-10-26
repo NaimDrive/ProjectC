@@ -134,13 +134,12 @@ void showCare(Healing **healings, int *nbHealings, int id) {
 void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
   Team *team1 = initTeam(0);
   Team *team2 = initTeam(1);
-  int maximumCE = maxCE(team1, team2);
   // char *command = malloc(256*sizeof(char));
 
   /* choose arme, soins, protections pour team1 et pour team2 */
   /* Set up fight */
-  buyChampion(vegetable, team1, maximumCE);  
-  buyChampion(fruit, team2, maximumCE);
+  buyChampion(vegetable, team1);  
+  buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
 

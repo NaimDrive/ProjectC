@@ -140,19 +140,20 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   /* Set up fight */
   buyChampion(vegetable, team1, maximumCE);  
   buyChampion(fruit, team2, maximumCE);
-  printf("%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
+  printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
 
   /* fin Set up fight */
 
   
   /* commence infinite loop avec le tour par tour */
-  
+  /*
   while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
     fightingMode(team1);
     if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead 
     fightingMode(team2);
   }
+  */
 
 }
 

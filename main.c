@@ -14,8 +14,7 @@ int main() {
   Weapon **weapons;
   Protection **protections;
   Healing **healings;
-  Team *team1, *team2;
-  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings, maximumCE;
+  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings;
 
   srand(time(NULL));
 
@@ -36,37 +35,7 @@ int main() {
 
   initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 
-  afficherChampions(champions, nbChampions);
-  afficherWeapons(weapons, nbWeapons);
-  afficherProtections(protections, nbProtections);
-  afficherSoins(healings, nbHealings);
-
-  team1 = initTeam(0);
-  team2 = initTeam(1);
-
-  buyCA(team1, 20);
-  buyCA(team2, 30);
-
-  maximumCE = maxCE(team1, team2);
-  buyChampion(champions[11], team1, maximumCE);
-  buyChampion(champions[0], team2, maximumCE);
-
-  buyWeapon(weapons[3], team1, maximumCE);
-  buyWeapon(weapons[1], team2, maximumCE);
-
-  buyHealing(healings[0], team2, maximumCE);
-
-  buyProtection(protections[2], team2, maximumCE);
-
-  useProtection(team2);
-  moveForward(team1, team2, 3);
-
-  useWeapon(team1, team2, 1);
-
-  moveBackward(team2, 5, 50);
-  useCare(team2, 4);
-  
-  endBattle(team1, team2);
+  readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 
   deallocateMemory(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 

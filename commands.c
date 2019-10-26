@@ -67,7 +67,7 @@ void showFruits(Champion **champions, int *nbChampions) {
 void showFruit(Champion **champions, int *nbChampions, int id) {
   id = id <= 6 ? id+5 : id;
   if(id < *nbChampions && id > 0) {
-    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", champions[id]->num, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
+    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", champions[id]->num-5, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
   } else {
     printf("Veuillez re-vérifier l'ID entré.\n");
   }
@@ -124,7 +124,7 @@ void showCares(Healing **healings, int *nbHealings) {
 
 void showCare(Healing **healings, int *nbHealings, int id) {
   if(id < *nbHealings && id >= 0) {
-    printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", healings[id]->num, healings[id]->nom, healings[id]->CE, healings[id]->CA, healings[id]->volume, healings[id]->effetMin, healings[id]->effetMax);
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Volume : %d | Effet : %d-%d\n", healings[id]->num, healings[id]->nom, healings[id]->CE, healings[id]->CA, healings[id]->volume, healings[id]->effetMin, healings[id]->effetMax);
   } else {
     printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbHealings);
   }
@@ -194,10 +194,10 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     else if(strncmp(command, "show weapon ", 12) == 0) showWeapon(weapons, nbWeapons, getID(command, 12));
 
     else if(strcmp(command, "show protections") == 0) showProtections(protections, nbProtections);
-    else if(strcmp(command, "show protection ") == 0) showProtection(protections, nbProtections, getID(command, 16));
+    else if(strncmp(command, "show protection ", 16) == 0) showProtection(protections, nbProtections, getID(command, 16));
 
     else if(strcmp(command, "show cares") == 0) showCares(healings, nbHealings);
-    else if(strcmp(command, "show care ") == 0) showCare(healings, nbHealings, getID(command, 10));
+    else if(strncmp(command, "show care ", 10) == 0) showCare(healings, nbHealings, getID(command, 10));
 
     else if(strncmp(command, "fight ", 6) == 0) {
       /* Work in progress */

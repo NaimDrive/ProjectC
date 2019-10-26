@@ -16,7 +16,7 @@ Team * initTeam(int id) {
     team->position = 5;
   team->CE = 1000;
   team->CA = 0;
-  team->CE_USED = 0;
+  team->maxCE = 50;
   team->champion = NULL;
   team->weapon = NULL;
   team->protection = NULL;
@@ -26,52 +26,57 @@ Team * initTeam(int id) {
   return team;
 }
 
-int maxCE(Team *team1, Team *team2) {
-  if(team1->CE >= 50 && team2->CE >= 50)
-    return 50;
-  else {
-    if(team1->CE >= team2->CE)
-      return team1->CE;
-    else
-      return team2->CE;
+void maxCE(Team *team1, Team *team2) {
+  if(team1->CE >= 50 && team2->CE >= 50) {
+    team1->maxCE = 50;
+    team2->maxCE = 50;
+  } else {
+    if(team1->CE >= team2->CE) {
+      team1->maxCE = team2->CE;
+      team2->maxCE = team2->CE;
+    } else {
+      team1->maxCE = team1->CE;
+      team2->maxCE = team1->CE;
+    }
   }
 }
 
 void buyCA(Team *team, int number) {
-  if(team->CE >= number) {
+  if(team->maxCE - number >= 0 && team->CE >= number) {
     team->CE -= number;
+    team->maxCE -= number;
     team->CA += number;
   }
 }
 
-void buyChampion(Champion *champion, Team *team, int maxCE) {
-  if(team->CE_USED == maxCE)
+void buyChampion(Champion *champion, Team *team) {
+  if(team->maxCE == 0)
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
   else {
-    if(team->CE_USED + champion->CE > maxCE)
+    if(team->maxCE - champion->CE < 0)
       printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
     else {
       if(team->champion != NULL)
         free(team->champion);
       team->champion = createChampion(champion->variete, champion->num);
-      team->CE_USED += champion->CE;
+      team->maxCE -= champion->CE;
       team->CE -= champion->CE;
       printf("Achat du champion %s.\n", team->champion->variete);
     }
   }
 }
 
-void buyWeapon(Weapon *weapon, Team *team, int maxCE) {
-  if(team->CE_USED == maxCE)
+void buyWeapon(Weapon *weapon, Team *team) {
+  if(team->maxCE == 0)
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
   else {
-    if(team->CE_USED + weapon->CE > maxCE)
+    if(team->maxCE - weapon->CE < 0)
       printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
     else {
       if(team->weapon != NULL)
         free(team->weapon);
       team->weapon = createWeapon(weapon->nom, weapon->num);
-      team->CE_USED += weapon->CE;
+      team->maxCE -= weapon->CE;
       team->CE -= weapon->CE;
       printf("Achat de l'arme %s.\n", team->weapon->nom);
     }
@@ -79,16 +84,16 @@ void buyWeapon(Weapon *weapon, Team *team, int maxCE) {
 }
 
 void buyProtection(Protection *protection, Team *team, int maxCE) {
-  if(team->CE_USED == maxCE)
+  if(team->maxCE == 0)
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
   else {
-    if(team->CE_USED + protection->CE > maxCE)
+    if(team->maxCE - protection->CE < 0)
       printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
     else {
       if(team->protection != NULL)
         free(team->protection);
       team->protection = createProtection(protection->nom, protection->num);
-      team->CE_USED += protection->CE;
+      team->maxCE -= protection->CE;
       team->CE -= protection->CE;
       printf("Achat de la protection %s.\n", team->protection->nom);
     }
@@ -96,16 +101,16 @@ void buyProtection(Protection *protection, Team *team, int maxCE) {
 }
 
 void buyHealing(Healing *healing, Team *team, int maxCE) {
-  if(team->CE_USED == maxCE)
+  if(team->maxCE == 0)
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
   else {
-    if(team->CE_USED + healing->CE > maxCE)
+    if(team->maxCE - healing->CE < 0)
       printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
     else {
       if(team->healing != NULL)
         free(team->healing);
       team->healing = createHealing(healing->nom, healing->num);
-      team->CE_USED += healing->CE;
+      team->maxCE -= healing->CE;
       team->CE -= healing->CE;
       printf("Achat du soin %s.\n", team->healing->nom);
     }

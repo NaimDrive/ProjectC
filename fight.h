@@ -6,7 +6,7 @@ typedef struct {
   int position;
   int CA;
   int CE;
-  int CE_USED;
+  int maxCE;
   Champion *champion;
   Weapon *weapon;
   Protection *protection;
@@ -24,9 +24,9 @@ Team * initTeam(int id);
   Calculate the maximum of CE which can be used during the round
   @Param1 the first team
   @Param2 the second team
-  @Return integer : number of CE
+  @Return void
 */
-int maxCE(Team *team1, Team *team2);
+void maxCE(Team *team1, Team *team2);
 
 /*
   Use CE to buy CA
@@ -42,7 +42,7 @@ void buyCA(Team *team, int number);
   @Param2 the team which need a champion
   @Return void
 */
-void buyChampion(Champion *champion, Team *team, int maxCE);
+void buyChampion(Champion *champion, Team *team);
 
 /*
   Buy a weapon
@@ -50,7 +50,7 @@ void buyChampion(Champion *champion, Team *team, int maxCE);
   @Param2 the team which need a weapon
   @Return void
 */
-void buyWeapon(Weapon *weapon, Team *team, int maxCE);
+void buyWeapon(Weapon *weapon, Team *team);
 
 /*
   Buy a protection

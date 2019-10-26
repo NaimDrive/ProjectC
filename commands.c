@@ -23,9 +23,14 @@ char* substring(char *src, int beg, int end) {
 
 int getID(char *command, int n) {
   char *c = substring(command, n, strlen(command));
-  int id = atoi(c);
+  char *endptr;
+  long id = strtoul(c, &endptr, 10);
   free(c);
-  return id;
+  if(*command != '\0' && *endptr == '\0') {
+    return id;
+  } else {
+    return -1;
+  }
 }
 
 int getChampIndex(char *champName, Champion **champion, int *nbChampions) {

@@ -128,7 +128,7 @@ void fightingMode(Team *team) {
         else if(strcmp(command, "use protection") == 0) printf("use la protection lo\n");
         else if(strncmp(command, "use care ", 9) == 0) printf("use %d heal lo\n", getID(command, 9));
         else if(strcmp(command, "end") == 0) {
-            printf("Tour terminé\n"); 
+            printf("Tour terminé\n");
             return;
         }
     }

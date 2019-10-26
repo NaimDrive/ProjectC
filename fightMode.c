@@ -115,17 +115,18 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
 void fightingMode(Team *team) {
     char *command = malloc(256*sizeof(char));
     int end = 0;
-    
-    printf("%s %d> ", team->champion->variete, team->CA);
 
     while(team->maxCE > 0 && !end) {
+        printf("%s %d> ", team->champion->variete, team->CA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-        
+
         // ~~~ Cases ~~~ //
         if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
         else if(strncmp(command, "move forward ", 13) == 0) printf("move forward %d truc\n", getID(command, 13));
+        // Faire pareil avec move forward sans param
         else if(strncmp(command, "move backward ", 14) == 0) printf("move backward %d truc\n", getID(command, 14));
+        // Faire pareil avec move backward sans param
         else if(strncmp(command, "use weapon ", 11) == 0) printf("use %d weapon lo\n", getID(command, 11));
         else if(strcmp(command, "use protection") == 0) printf("use la protection lo\n");
         else if(strncmp(command, "use care ", 9) == 0) printf("use %d heal lo\n", getID(command, 9));

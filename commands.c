@@ -137,10 +137,7 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void initFight(Team *team1, Team *team2, Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Winsize screenSize) {
-  // Take console size
-  ioctl(0, TIOCGWINSZ, &screenSize);
-
+void initFight(Team *team1, Team *team2, Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
   /* Set up fight */
   buyChampion(vegetable, team1);  
   buyChampion(fruit, team2);
@@ -155,6 +152,9 @@ void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **
 
   team1 = initTeam(0, screenSize);
   team2 = initTeam(1, screenSize);
+
+  ioctl(0, TIOCGWINSZ, &screenSize); // Take console size
+
   /*  WORK IN PROGRESS
   while(team1->CE > 0 && team2->CE > 0) {
     initFight(team1, team2, vegetable, fruit, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, screenSize);

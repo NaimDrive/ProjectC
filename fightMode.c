@@ -114,13 +114,13 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
 
 void fightingMode(Team *team) {
     char *command = malloc(256*sizeof(char));
+    int end = 0;
     
     printf("%s %d> ", team->champion->variete, team->CA);
     fgets(command, 256, stdin);
-    // printf("Entered command : %s", command);
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
-    while(team->CE <= 50) {
+    while(team->maxCE > 0 && !end) {
         if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
         else if(strncmp(command, "move forward ", 13) == 0) printf("move forward %d truc\n", getID(command, 13));
         else if(strncmp(command, "move backward ", 14) == 0) printf("move backward %d truc\n", getID(command, 14));
@@ -129,9 +129,8 @@ void fightingMode(Team *team) {
         else if(strncmp(command, "use care ", 9) == 0) printf("use %d heal lo\n", getID(command, 9));
         else if(strcmp(command, "end") == 0) {
             printf("Tour terminé\n"); 
-            return;
+            end = 1;
         }
     }
-
     free(command);
 }

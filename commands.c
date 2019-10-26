@@ -221,7 +221,9 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       int indexFruit = getChampIndex(fruit, champions, nbChampions);
       // printf("Legume : /%s/\n", legume);
       // printf("Fruit : /%s/\n", fruit);
-      initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+      if(indexVeg != -1 && indexFruit != -1) {
+        initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+      }
     } else if(strcmp(command,"clear") == 0) system("clear");
 
     //else if(strcmp(command, "save") == 0) save();

@@ -15,12 +15,11 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
     char *endptr;
     printf("Commençons par choisir de quoi tuer l'adversaire.\n");
 
-    while(num >= *nbWeapons || num < 0) {
+    while((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
         showWeapons(weapons, nbWeapons);
         printf("Je choisis l'arme numéro... ");
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-        num = getID(command, 0);
 
         num = strtoul(command, &endptr, 10);
 
@@ -38,18 +37,19 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
 }
 
 void protectionChoice(Team *team, Protection **protections, int *nbProtections, char *command) {
-    int num = -2;
+    long num = -2;
+    char *endptr;
     printf("Ensuite il faut de quoi se protéger.\n");
     
-    while(num >= *nbProtections || num < -1) {
+    while((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
         showProtections(protections, nbProtections);
         printf("(Entrez '-1' si vous ne voulez pas de protection)\n");
         printf("Je choisis la protection numéro... ");
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-        num = getID(command, 0);
+        num = strtoul(command, &endptr, 10);
         
-        if(num >= *nbProtections || num < -1) {
+        if((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d ou '-1' si vous ne voulez pas de protection.\n", *nbProtections-1);
         }
@@ -70,18 +70,19 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 }
 
 void healingChoice(Team *team, Healing **healings, int *nbHealings, char *command) {
-    int num = -2;
+    long num = -2;
+    char *endptr;
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
     
-    while(num >= *nbHealings || num < -1) {
+    while((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
         showCares(healings, nbHealings);
         printf("(Entrez '-1' si vous ne voulez pas de soin)\n");
         printf("Je choisis le soin numéro... ");
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-        num = getID(command, 0);
+        num = strtoul(command, &endptr, 10);
         
-        if(num >= *nbHealings || num < -1) {
+        if((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d ou '-1' si vous ne voulez pas de soin.\n", *nbHealings-1);
         }

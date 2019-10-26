@@ -117,10 +117,12 @@ void fightingMode(Team *team) {
     int end = 0;
     
     printf("%s %d> ", team->champion->variete, team->CA);
-    fgets(command, 256, stdin);
-    if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
     while(team->maxCE > 0 && !end) {
+        fgets(command, 256, stdin);
+        if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
+        
+        // ~~~ Cases ~~~ //
         if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
         else if(strncmp(command, "move forward ", 13) == 0) printf("move forward %d truc\n", getID(command, 13));
         else if(strncmp(command, "move backward ", 14) == 0) printf("move backward %d truc\n", getID(command, 14));

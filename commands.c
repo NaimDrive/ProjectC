@@ -155,6 +155,7 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
     fightingMode(team2);
   }
   */
+  endBattle(team1, team2);
 }
 
 void help() {
@@ -176,7 +177,10 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
     // ~~~ Cases ~~~ //
-    if(strcmp(command, "exit") == 0) exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+    if(strcmp(command, "exit") == 0) {
+      free(command);
+      exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+    } 
     else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
     else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));
 

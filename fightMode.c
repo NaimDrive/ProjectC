@@ -54,6 +54,8 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 
     if(num == -1) {
         printf("Vous avez décidez de ne prendre aucune protections !\n");
+        enterToContinue();
+        system("clear");
         return;
     }
 
@@ -84,6 +86,8 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
 
     if(num == -1) {
         printf("Vous avez décidez de ne prendre aucun soin !\n");
+        enterToContinue();
+        system("clear");
         return;
     }
 
@@ -112,7 +116,7 @@ void fightingMode(Team *team) {
     // printf("Entered command : %s", command);
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
-    while(team->CE != 0) {
+    while(team->CE <= 50) {
         if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
         else if(strncmp(command, "move forward ", 13) == 0) printf("move forward %d truc\n", getID(command, 13));
         else if(strncmp(command, "move backward ", 14) == 0) printf("move backward %d truc\n", getID(command, 14));

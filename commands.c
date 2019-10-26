@@ -133,7 +133,7 @@ void showCare(Healing **healings, int *nbHealings, int id) {
 }
 
 void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
-  // Recover console size
+  // Take console size
   Winsize screenSize;
   ioctl(0, TIOCGWINSZ, &screenSize);
   // screenSize.ws_col number of column
@@ -223,6 +223,8 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       free(tmp);
       int indexVeg = getChampIndex(legume, champions, nbChampions);
       int indexFruit = getChampIndex(fruit, champions, nbChampions);
+      free(legume);
+      free(fruit);
       if(indexVeg != -1 && indexFruit != -1) {
         initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
       }

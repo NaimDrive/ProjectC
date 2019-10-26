@@ -135,17 +135,17 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   Team *team2 = initTeam(1);
   int maximumCE = maxCE(team1, team2);
   // char *command = malloc(256*sizeof(char));
-  
+
+  /* choose arme, soins, protections pour team1 et pour team2 */
   /* Set up fight */
-  buyChampion(vegetable, team1, maximumCE);
-  printf("Vous avez choisis %s ? Riche en minéraux !\n", team1->champion->variete);
-  
+  buyChampion(vegetable, team1, maximumCE);  
   buyChampion(fruit, team2, maximumCE);
-  printf("Vous avez choisis %s ? Un combat qui s'annonce... Vitaminé !\n", team2->champion->variete);
+  printf("%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
+  equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
 
   /* fin Set up fight */
 
-  /* choose arme, soins, protections pour team1 et pour team2 */
+  
   /* commence infinite loop avec le tour par tour */
   
   while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
@@ -221,7 +221,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       // printf("Legume : /%s/\n", legume);
       // printf("Fruit : /%s/\n", fruit);
       initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
-    }
+    } else if(strcmp(command,"clear") == 0) system("clear");
 
     //else if(strcmp(command, "save") == 0) save();
   }

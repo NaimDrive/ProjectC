@@ -137,34 +137,32 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+void initFight(Team *team1, Team *team2, Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Winsize screenSize) {
   // Take console size
-  Winsize screenSize;
   ioctl(0, TIOCGWINSZ, &screenSize);
-  // screenSize.ws_col number of column
-  // screenSize.ws_row number of row
-  // printf("Screen width: %i  Screen height: %i\n", screenSize.ws_col, screenSize.ws_row);
-  
-  Team *team1 = initTeam(0, screenSize);
-  Team *team2 = initTeam(1, screenSize);
-  // char *command = malloc(256*sizeof(char));
 
-  /* choose arme, soins, protections pour team1 et pour team2 */
   /* Set up fight */
   buyChampion(vegetable, team1);  
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+  /* fin Set up fight */  
+}
 
-  /* fin Set up fight */
+void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+  Team *team1, *team2;
+  Winsize screenSize;
 
-  
-  /* commence infinite loop avec le tour par tour */
-  /*
-  while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
-    fightingMode(team1);
-    if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead 
-    fightingMode(team2);
+  team1 = initTeam(0, screenSize);
+  team2 = initTeam(1, screenSize);
+  /*  WORK IN PROGRESS
+  while(team1->CE > 0 && team2->CE > 0) {
+    initFight(team1, team2, vegetable, fruit, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, screenSize);
+    while(team1->champion->PV > 0 && team2->champion->PV > 0) {
+      fightingMode(team1, team2);
+      if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead 
+      fightingMode(team2, team1);
+    }
   }
   */
   endBattle(team1, team2);
@@ -231,7 +229,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       free(legume);
       free(fruit);
       if(indexVeg != -1 && indexFruit != -1) {
-        initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+        fight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
       }
     } else if(strcmp(command,"clear") == 0) system("clear");
 

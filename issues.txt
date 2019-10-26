@@ -5,33 +5,8 @@ Issue n°1
 1. Aucun code d'erreur
 2. Commandes
 ./game
-fight Haricot versus Kiwi
----
-Je choisis l'arme numéro...
-Achat de l'arme Eplucheur Laser.
-Arme 'Eplucheur Laser' équipée !
-3. Commentaires
-Lorsque aucun numéro n'est saisi le premier est automatiquement choisi.
-
-Issue n°2
-1. Aucun code d'erreur
-2. Commandes
-./game
 fight Haricot versus Haricot
 ---
 fight Pomme versus Poire
 3. Commentaires
 Le joueur peut choisir deux légumes ou deux fruits pour combattre alors que normalement c'est 1 légume et 1 fruit.
-
-Issue n°3
-1. Aucun code d'erreur
-2. Commandes
-./game
-fight Haricot versus Poire
----
-Je choisis l'arme numéro... a
-Achat de l'arme Eplucheur Laser.
-Arme 'Eplucheur Laser' équipée !
----
-3. Commentaires
-Le joueur peut également saisir des caractères lors du choix de l'équipement.

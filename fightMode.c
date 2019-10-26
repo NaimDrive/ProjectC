@@ -112,12 +112,12 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
     free(command);
 }
 
-void fightingMode(Team *team) {
+void fightingMode(Team *team1, Team *team2) {
     char *command = malloc(256*sizeof(char));
     int end = 0;
 
-    while(team->maxCE > 0 && !end) {
-        printf("%s %d> ", team->champion->variete, team->CA);
+    while(team1->maxCE > 0 && !end) {
+        printf("%s %d> ", team1->champion->variete, team1->CA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 

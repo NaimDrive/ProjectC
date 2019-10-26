@@ -6,6 +6,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/ioctl.h>
 
 char* substring(char *src, int beg, int end) {
   char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
@@ -132,8 +133,15 @@ void showCare(Healing **healings, int *nbHealings, int id) {
 }
 
 void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
-  Team *team1 = initTeam(0);
-  Team *team2 = initTeam(1);
+  // Recover console size
+  Winsize screenSize;
+  ioctl(0, TIOCGWINSZ, &screenSize);
+  // screenSize.ws_col number of column
+  // screenSize.ws_row number of row
+  // printf("Screen width: %i  Screen height: %i\n", screenSize.ws_col, screenSize.ws_row);
+  
+  Team *team1 = initTeam(0, screenSize);
+  Team *team2 = initTeam(1, screenSize);
   // char *command = malloc(256*sizeof(char));
 
   /* choose arme, soins, protections pour team1 et pour team2 */

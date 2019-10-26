@@ -14,11 +14,13 @@ typedef struct {
   int protectionActivated;
 } Team;
 
+typedef struct winsize Winsize;
+
 /*
   Create a new team
   @return the new team
 */
-Team * initTeam(int id);
+Team * initTeam(int id, Winsize sz);
 
 /*
   Calculate the maximum of CE which can be used during the round

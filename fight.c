@@ -1,19 +1,20 @@
 #include "initGame.h"
 #include "fight.h"
 
+#include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-Team * initTeam(int id) {
+Team * initTeam(int id, Winsize sz) {
   Team *team;
   team = malloc(sizeof(Team));
   team->id = id;
   if(id == 0)
-    team->position = 0;
+    team->position = 1;
   else
-    team->position = 5;
+    team->position = sz.ws_col-2;
   team->CE = 1000;
   team->CA = 0;
   team->maxCE = 50;

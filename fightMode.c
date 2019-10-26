@@ -29,6 +29,9 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
 
     buyWeapon(weapons[num], team, team->CE);
     printf("Arme '%s' équipée !\n", team->weapon->nom);
+
+    enterToContinue();
+    system("clear");
 }
 
 void protectionChoice(Team *team, Protection **protections, int *nbProtections, char *command) {
@@ -56,6 +59,9 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 
     buyProtection(protections[num], team, team->CE);
     printf("Protection '%s' équipée !\n", team->protection->nom);
+
+    enterToContinue();
+    system("clear");
 }
 
 void healingChoice(Team *team, Healing **healings, int *nbHealings, char *command) {
@@ -83,20 +89,17 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
 
     buyHealing(healings[num], team, team->CE);
     printf("Soin '%s' équipée !\n", team->healing->nom);
+
+    enterToContinue();
+    system("clear");
 }
 
 void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing **healings, int *nbWeapons, int*nbProtections, int *nbHealings) {
     char *command = malloc(256*sizeof(char));
 
     weaponChoice(team, weapons, nbWeapons, command);
-    enterToContinue();
-    system("clear");
     protectionChoice(team, protections, nbProtections, command);
-    enterToContinue();
-    system("clear");
     healingChoice(team, healings, nbHealings, command);
-    enterToContinue();
-    system("clear");
 
     free(command);
 }

@@ -40,13 +40,14 @@ void showVegetables(Champion **champions, int *nbChampions) {
   for(i = 0; i < ((*nbChampions)-6); i++)
   {
     c = champions[i];
-    printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
+    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
   }
+  printf("\n");
 }
 
 void showVegetable(Champion **champions, int *nbChampions, int id) {
   if(id <= ((*nbChampions)-7) && (id >= 0)) {
-    printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", champions[id]->num, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
+    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", champions[id]->num, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
   } else {
     printf("Veuillez choisir un ID compris entre 0 et %d\n", ((*nbChampions)-7));
   }
@@ -58,14 +59,15 @@ void showFruits(Champion **champions, int *nbChampions) {
   for(i = 6; i < *nbChampions; i++)
   {
     c = champions[i];
-    printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
+    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
   }
+  printf("\n");
 }
 
 void showFruit(Champion **champions, int *nbChampions, int id) {
   id = id <= 6 ? id+5 : id;
   if(id < *nbChampions && id > 0) {
-    printf("Num %d\nVariété %s\nType %s\nForce %d\nResistance %d\nPV Max %d\nCE %d\n\n", champions[id]->num, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
+    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", champions[id]->num, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
   } else {
     printf("Veuillez re-vérifier l'ID entré.\n");
   }
@@ -77,8 +79,9 @@ void showWeapons(Weapon **weapons, int *nbWeapons) {
   for(i = 0; i < *nbWeapons; i++)
   {
     w = weapons[i];
-    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | CE : %d\n\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | CE : %d\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
   }
+  printf("\n");
 }
 
 void showWeapon(Weapon **weapons, int *nbWeapons, int id) {
@@ -95,13 +98,14 @@ void showProtections(Protection **protections, int *nbProtections) {
   for(i = 0; i < *nbProtections; i++)
   {
     p = protections[i];
-    printf("Num %d\nNom %s\nCE %d\nCA %d\nProbabilité %d %c \n\n", p->num, p->nom, p->CE, p->CA, p->probabilite, '%');
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Probabilité : %d %c \n", p->num, p->nom, p->CE, p->CA, p->probabilite, '%');
   }
+  printf("\n");
 }
 
 void showProtection(Protection **protections, int *nbProtections, int id) {
   if(id < *nbProtections && id >= 0) {
-    printf("Num %d\nNom %s\nCE %d\nCA %d\nProbabilité %d %c \n\n", protections[id]->num, protections[id]->nom, protections[id]->CE, protections[id]->CA, protections[id]->probabilite, '%');
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Probabilité : %d %c \n\n", protections[id]->num, protections[id]->nom, protections[id]->CE, protections[id]->CA, protections[id]->probabilite, '%');
   } else {
     printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbProtections);
   }
@@ -113,8 +117,9 @@ void showCares(Healing **healings, int *nbHealings) {
   for(i = 0; i < *nbHealings; i++)
   {
     h = healings[i];
-    printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Volume : %d | Effet (min-max) : %d-%d\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
   }
+  printf("\n");
 }
 
 void showCare(Healing **healings, int *nbHealings, int id) {
@@ -129,13 +134,11 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   Team *team1 = initTeam(0);
   Team *team2 = initTeam(1);
   int maximumCE = maxCE(team1, team2);
-  int *end = malloc(sizeof(int));
-  *end = 0;
   // char *command = malloc(256*sizeof(char));
   
   /* Set up fight */
   buyChampion(vegetable, team1, maximumCE);
-  printf("Vous avez choisis %s ? Un combat qui s'annonce... Vitaminé !\n", team1->champion->variete);
+  printf("Vous avez choisis %s ? Riche en minéraux !\n", team1->champion->variete);
   
   buyChampion(fruit, team2, maximumCE);
   printf("Vous avez choisis %s ? Un combat qui s'annonce... Vitaminé !\n", team2->champion->variete);
@@ -145,16 +148,12 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   /* choose arme, soins, protections pour team1 et pour team2 */
   /* commence infinite loop avec le tour par tour */
   
-  while((team1->champion->PV != 0 && team2->champion->PV != 0) && *end == 0) {
-    fightingMode(team1, end);
-    if(*end == 1) {
-      free(end);
-      return;
-    }
-    fightingMode(team2, end);
+  while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
+    fightingMode(team1);
+    if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead 
+    fightingMode(team2);
   }
 
-  free(end);
 }
 
 /*

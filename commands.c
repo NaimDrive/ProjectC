@@ -26,7 +26,7 @@ int getID(char *command, int n) {
   char *endptr;
   long id = strtoul(c, &endptr, 10);
   free(c);
-  if(*command != '\0' && *endptr == '\0') {
+  if(*c != '\0' && *endptr == '\0') {
     return id;
   } else {
     return -1;
@@ -53,6 +53,7 @@ void showVegetables(Champion **champions, int *nbChampions) {
 }
 
 void showVegetable(Champion **champions, int *nbChampions, int id) {
+  printf("id reçu : %d\n", id);
   if(id <= ((*nbChampions)-7) && (id >= 0)) {
     printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", champions[id]->num, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
   } else {
@@ -137,39 +138,54 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void initFight(Team *team1, Team *team2, Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+  // Take console size
+  Winsize screenSize;
+  ioctl(0, TIOCGWINSZ, &screenSize);
+  // screenSize.ws_col number of column
+  // screenSize.ws_row number of row
+  // printf("Screen width: %i  Screen height: %i\n", screenSize.ws_col, screenSize.ws_row);
+  
+  Team *team1 = initTeam(0, screenSize);
+  Team *team2 = initTeam(1, screenSize);
+  // char *command = malloc(256*sizeof(char));
+
+  /* choose arme, soins, protections pour team1 et pour team2 */
   /* Set up fight */
   buyChampion(vegetable, team1);  
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
-  /* fin Set up fight */  
-}
 
-void fight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
-  Team *team1, *team2;
-  Winsize screenSize;
+  /* fin Set up fight */
 
-  team1 = initTeam(0, screenSize);
-  team2 = initTeam(1, screenSize);
-
-  ioctl(0, TIOCGWINSZ, &screenSize); // Take console size
-
-  /*  WORK IN PROGRESS
-  while(team1->CE > 0 && team2->CE > 0) {
-    initFight(team1, team2, vegetable, fruit, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, screenSize);
-    while(team1->champion->PV > 0 && team2->champion->PV > 0) {
-      fightingMode(team1, team2);
-      if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead 
-      fightingMode(team2, team1);
-    }
+  
+  /* commence infinite loop avec le tour par tour */
+  /*
+  while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
+    fightingMode(team1);
+    if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead 
+    fightingMode(team2);
   }
   */
   endBattle(team1, team2);
 }
 
 void help() {
-  printf("Show every possible command");
+  printf("Commandes :\n\n");
+  printf(" show vegetables - Affiche tous les légumes.\n");
+  printf(" show vegetable n - Affiche le légume numéro n.\n");
+  printf(" show fruits - Affiche tous les fruits.\n");
+  printf(" show fruit n - Affiche le fruit numéro n.\n");
+  printf(" show weapons - Affiche toutes les armes.\n");
+  printf(" show weapon n - Affiche l'arme numéro n.\n");
+  printf(" show protections - Affiche toutes les protections.\n");
+  printf(" show protection n - Affiche la protection numéro n.\n");
+  printf(" show cares - Affiche tous les soins.\n");
+  printf(" show care n - Affiche le soin numéro n.\n");
+  printf(" fight v versus f - Lance un combat opposant le légume v au fruit f.\n");
+  printf(" help - Affiche un rappel de toutes les commandes disponibles.\n");
+  printf(" exit - Quitte le jeu.\n\n");
 }
 
 void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
@@ -229,9 +245,10 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       free(legume);
       free(fruit);
       if(indexVeg != -1 && indexFruit != -1) {
-        fight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+        initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
       }
     } else if(strcmp(command,"clear") == 0) system("clear");
+    else if(strcmp(command, "help") == 0) help();
 
   }
 

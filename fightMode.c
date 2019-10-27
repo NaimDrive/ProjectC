@@ -124,9 +124,9 @@ void fightingMode(Team *team1, Team *team2) {
         // ~~~ Cases ~~~ //
         if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
         else if(strncmp(command, "move forward ", 13) == 0) printf("move forward %d truc\n", getID(command, 13));
-        // Faire pareil avec move forward sans param
+        else if(strcmp(command, "move forward") == 0) printf("move forward de 1 truc\n");
         else if(strncmp(command, "move backward ", 14) == 0) printf("move backward %d truc\n", getID(command, 14));
-        // Faire pareil avec move backward sans param
+        else if(strcmp(command, "move backward") == 0) printf("move backward de 1 truc\n");
         else if(strncmp(command, "use weapon ", 11) == 0) printf("use %d weapon lo\n", getID(command, 11));
         else if(strcmp(command, "use protection") == 0) printf("use la protection lo\n");
         else if(strncmp(command, "use care ", 9) == 0) printf("use %d heal lo\n", getID(command, 9));

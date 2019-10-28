@@ -25,12 +25,14 @@ int getID(char *command, int n) {
   char *c = substring(command, n, strlen(command));
   char *endptr;
   long id = strtoul(c, &endptr, 10);
-  free(c);
+  long res;
   if(*c != '\0' && *endptr == '\0') {
-    return id;
+    res = id;
   } else {
-    return -1;
+    res = -1;
   }
+  free(c);
+  return res;
 }
 
 int getChampIndex(char *champName, Champion **champion, int *nbChampions) {

@@ -174,10 +174,8 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
     }
     endRound(team1, team2);
   }
+  showEndGame(team1, team2);
   endBattle(team1, team2);
-
-  // AH ON GAGNE PAS COMME CA, C'EST LE PREMIER QUI A PLUS DE CE QUI PERD
-  printf(" -- Partie terminé ! -- \n");
 }
 
 void help() {

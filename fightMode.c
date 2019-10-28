@@ -171,7 +171,7 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
     free(command);
 }
 
-void endRound(Team *team1, Team *team2) {
+void roundWinner(Team *team1, Team *team2) {
     int CE_used_team1, CE_used_team2, max;
 
     CE_used_team1 = team1->maxCE;
@@ -190,7 +190,23 @@ void endRound(Team *team1, Team *team2) {
         team1->CE += 5 * max;
         printf("L'équipe %s gagne %d CE.\n", team1->champion->variete, 5 * max);
     }
+}
 
+void showEndGame(Team *team1, Team *team2) {
+    system("clear");
+    printf(" -- Partie terminé ! -- \n");
+    if(team1->CE == 0 && team2->CE == 0)
+        printf("C'est incroyable, le résultat est un ex-aequo !\n");
+    else {
+        if(team1->CE == 0)
+        printf("L'équipe %s gagne la partie !\n", team2->champion->variete);
+        else
+        printf("L'équipe %s gagne la partie !\n", team1->champion->variete);
+    }
+}
+
+void endRound(Team *team1, Team *team2) {
+    roundWinner(team1, team2);
     maxCE(team1, team2);
 
     team1->champion->PV = team1->champion->PVMax;

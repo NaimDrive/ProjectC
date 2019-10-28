@@ -9,7 +9,11 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbChampions, char *command)
 
 void protectionChoice(Team *team, Protection **protections, int *nbProtections, char *command);
 
+void showEndGame(Team *team1, Team *team2);
+
 void endRound(Team *team1, Team* team2);
+
+void roundWinner(Team *team1, Team *team2);
 
 void resetRound(Team *team1, Team *team2);
 

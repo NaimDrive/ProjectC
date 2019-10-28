@@ -10,6 +10,31 @@ void enterToContinue() {
     while(getchar() != '\n');
 }
 
+void actionCreditChoice(Team *team, char *command) {
+    long num = 0;
+    char *endptr;
+    printf("Et enfin ! Il nous faut des crédits d'action pour enclencher !\n");
+
+    while((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
+        printf("Je souhaite acheter...");
+        fgets(command, 256, stdin);
+        if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
+
+        num = strtoul(command, &endptr, 10);
+
+        if((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
+            system("clear");
+            printf("Pour rappel, vous avez %d crédits d'équipement.\n", team->CE);
+        }   
+    }
+
+    buyCA(team, num);
+    printf("Désormais %d crédits d'action disponibles !\n", team->CA);
+
+    enterToContinue();
+    system("clear");
+}
+
 void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
     long num = -1;
     char *endptr;
@@ -108,6 +133,7 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
     weaponChoice(team, weapons, nbWeapons, command);
     protectionChoice(team, protections, nbProtections, command);
     healingChoice(team, healings, nbHealings, command);
+    actionCreditChoice(team, command);
 
     free(command);
 }

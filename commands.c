@@ -7,6 +7,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <ctype.h>
 
 char* substring(char *src, int beg, int end) {
   char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
@@ -256,6 +257,8 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       legume = substring(tmp, 0, i-1); // nom du legume
       fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
       free(tmp);
+      legume[0] = toupper(legume[0]);
+      fruit[0] = toupper(fruit[0]);
       int indexVeg = getChampIndex(legume, champions, nbChampions);
       int indexFruit = getChampIndex(fruit, champions, nbChampions);
       free(legume);

@@ -1,8 +1,8 @@
 #include "initGame.h"
-#include "commands.h"
 #include "fight.h"
 #include "fightMode.h"
 #include "endGame.h"
+#include "commands.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -145,29 +145,29 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   // screenSize.ws_col number of column
   // screenSize.ws_row number of row
   // printf("Screen width: %i  Screen height: %i\n", screenSize.ws_col, screenSize.ws_row);
-  
+
   Team *team1 = initTeam(0, screenSize);
   Team *team2 = initTeam(1, screenSize);
   // char *command = malloc(256*sizeof(char));
 
   /* choose arme, soins, protections pour team1 et pour team2 */
   /* Set up fight */
-  buyChampion(vegetable, team1);  
+  buyChampion(vegetable, team1);
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
 
   /* fin Set up fight */
 
-  
+
   /* commence infinite loop avec le tour par tour */
-  /*
+
   while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
     fightingMode(team1);
-    if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead 
+    if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead
     fightingMode(team2);
   }
-  */
+
   endBattle(team1, team2);
 }
 
@@ -206,7 +206,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     if(strcmp(command, "exit") == 0) {
       free(command);
       exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
-    } 
+    }
     else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
     else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));
 

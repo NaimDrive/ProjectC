@@ -112,7 +112,7 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
     free(command);
 }
 
-void fightingMode(Team *team1) {
+void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
     int end = 0;
 
@@ -123,11 +123,11 @@ void fightingMode(Team *team1) {
 
         // ~~~ Cases ~~~ //
         if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
-        else if(strncmp(command, "move forward ", 13) == 0) printf("move forward %d truc\n", getID(command, 13));
-        else if(strcmp(command, "move forward") == 0) printf("move forward de 1 truc\n");
+        else if(strncmp(command, "move forward ", 13) == 0) moveForward(team1, team2, getID(command, 13));
+        else if(strcmp(command, "move forward") == 0) moveForward(team1, team2, 1);
 
-        else if(strncmp(command, "move backward ", 14) == 0) printf("move backward %d truc\n", getID(command, 14));
-        else if(strcmp(command, "move backward") == 0) printf("move backward de 1 truc\n");
+        else if(strncmp(command, "move backward ", 14) == 0) moveBackward(team1, getID(command, 14), screenSize);
+        else if(strcmp(command, "move backward") == 0) moveBackward(team1, 1, screenSize);
 
         else if(strncmp(command, "use weapon ", 11) == 0) printf("use %d weapon lo\n", getID(command, 11));
 	else if(strcmp(command, "use weapon") == 0) printf("use 1 fois weapon lo\n");

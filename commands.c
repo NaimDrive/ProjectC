@@ -179,7 +179,11 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
     endRound(team1, team2);
   }
   endBattle(team1, team2);
-  printf("GG TA FINI\n");
+  printf(" -- Partie terminé ! -- \n");
+  if(roundWinTeam1 > roundWinTeam2)
+    printf("Le joueur 1 gagne avec %d manches remportées.\nLe joueur 2 perds avec %d manches.\n", roundWinTeam1, roundWinTeam2);
+  else
+    printf("Le joueur 2 gagne avec %d manches remportées.\nLe joueur 1 perds avec %d manches.\n", roundWinTeam2, roundWinTeam1);
 }
 
 void help() {

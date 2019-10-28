@@ -129,13 +129,13 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         else if(strncmp(command, "move backward ", 14) == 0) moveBackward(team1, getID(command, 14), screenSize);
         else if(strcmp(command, "move backward") == 0) moveBackward(team1, 1, screenSize);
 
-        else if(strncmp(command, "use weapon ", 11) == 0) printf("use %d weapon lo\n", getID(command, 11));
-	else if(strcmp(command, "use weapon") == 0) printf("use 1 fois weapon lo\n");
+        else if(strncmp(command, "use weapon ", 11) == 0) useWeapon(team1, team2, getID(command, 11));
+	      else if(strcmp(command, "use weapon") == 0) useWeapon(team1, team2, 1);
 
-        else if(strcmp(command, "use protection") == 0) printf("use la protection lo\n");
+        else if(strcmp(command, "use protection") == 0) useProtection(team1);
 
-        else if(strncmp(command, "use care ", 9) == 0) printf("use %d heal lo\n", getID(command, 9));
-	else if(strcmp(command, "use care") == 0) printf("use 1 fois le heal lo\n");
+        else if(strncmp(command, "use care ", 9) == 0) useCare(team1, getID(command, 9));
+	      else if(strcmp(command, "use care") == 0) useCare(team1, 1);
 
         else if(strcmp(command, "end") == 0) {
             printf("Tour terminé\n");

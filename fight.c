@@ -16,7 +16,7 @@ Team * initTeam(int id, Winsize sz) {
   else
     team->position = sz.ws_col-2;
   team->CE = 1000;
-  team->CA = 0;
+  team->CA = 500;
   team->maxCE = 50;
   team->champion = NULL;
   team->weapon = NULL;
@@ -159,10 +159,10 @@ void moveForward(Team *team1, Team *team2, int n) {
 void moveBackward(Team *team, int n, int maxX) {
   if(n > 0) {
     if(team->id == 0) {
-      if(team->position == 0) {
+      if(team->position == 1) {
         printf("Vous ne pouvez pas reculer plus.\n");
       } else {
-        if(team->position-n < 0) {
+        if(team->position-n < 1) {
           printf("Vous ne pouvez pas reculer de %d cases.\n", n);
         } else {
           if(team->CA < (n*2)) {
@@ -175,10 +175,10 @@ void moveBackward(Team *team, int n, int maxX) {
         }
       }
     } else {
-      if(team->position == maxX) {
+      if(team->position == maxX-2) {
         printf("Vous ne pouvez pas reculer plus.\n");
       } else {
-        if(team->position+n > maxX) {
+        if(team->position+n > maxX-2) {
           printf("Vous ne pouvez pas reculer de %d cases.\n", n);
         } else {
           if(team->CA < (n*2)) {
@@ -267,30 +267,32 @@ int randHeal(Healing *healing) {
 }
 
 void useCare(Team *team, int n) {
-  if(team->healing == NULL) {
-    printf("Vous n'avez aucune potion à utiliser.\n");
-  } else {
-    if(team->healing->volume < n) {
-      printf("Vous n'avez pas assez de %s pour vous soigner %d fois \n", team->healing->nom, n);
+  if(n > 0) {
+    if(team->healing == NULL) {
+      printf("Vous n'avez aucune potion à utiliser.\n");
     } else {
-      if(team->CA < team->healing->CA * n) {
-        printf("Vous n'avez pas assez de CA pour vous soignez %d fois.\n", n);
+      if(team->healing->volume < n) {
+        printf("Vous n'avez pas assez de %s pour vous soigner %d fois \n", team->healing->nom, n);
       } else {
-        int soin;
-        for (int i = 0; i < n; i++) {
-          soin = randHeal(team->healing);
-          team->CA -= team->healing->CA;
-          team->healing->volume--;
-          if(team->champion->PV + soin > team->champion->PVMax)
-            team->champion->PV = team->champion->PVMax;
-          else
-            team->champion->PV += soin;
-        }
-        printf("Le champion %s a été soigné.\n", team->champion->variete);
-        if(team->healing->volume == 0) {
-          printf("Vous avez utilisé tous vos soins.\n");
-          free(team->healing);
-          team->healing = NULL;
+        if(team->CA < team->healing->CA * n) {
+          printf("Vous n'avez pas assez de CA pour vous soignez %d fois.\n", n);
+        } else {
+          int soin;
+          for (int i = 0; i < n; i++) {
+            soin = randHeal(team->healing);
+            team->CA -= team->healing->CA;
+            team->healing->volume--;
+            if(team->champion->PV + soin > team->champion->PVMax)
+              team->champion->PV = team->champion->PVMax;
+            else
+              team->champion->PV += soin;
+          }
+          printf("Le champion %s a été soigné.\n", team->champion->variete);
+          if(team->healing->volume == 0) {
+            printf("Vous avez utilisé tous vos soins.\n");
+            free(team->healing);
+            team->healing = NULL;
+          }
         }
       }
     }

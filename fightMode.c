@@ -40,7 +40,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
     long num = -2;
     char *endptr;
     printf("Ensuite il faut de quoi se protéger.\n");
-    
+
     while((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
         showProtections(protections, nbProtections);
         printf("(Entrez '-1' si vous ne voulez pas de protection)\n");
@@ -48,7 +48,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
         num = strtoul(command, &endptr, 10);
-        
+
         if((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d ou '-1' si vous ne voulez pas de protection.\n", *nbProtections-1);
@@ -73,7 +73,7 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
     long num = -2;
     char *endptr;
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
-    
+
     while((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
         showCares(healings, nbHealings);
         printf("(Entrez '-1' si vous ne voulez pas de soin)\n");
@@ -81,7 +81,7 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
         num = strtoul(command, &endptr, 10);
-        
+
         if((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d ou '-1' si vous ne voulez pas de soin.\n", *nbHealings-1);
@@ -112,7 +112,7 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
     free(command);
 }
 
-void fightingMode(Team *team1, Team *team2) {
+void fightingMode(Team *team1) {
     char *command = malloc(256*sizeof(char));
     int end = 0;
 
@@ -131,7 +131,7 @@ void fightingMode(Team *team1, Team *team2) {
         else if(strcmp(command, "use protection") == 0) printf("use la protection lo\n");
         else if(strncmp(command, "use care ", 9) == 0) printf("use %d heal lo\n", getID(command, 9));
         else if(strcmp(command, "end") == 0) {
-            printf("Tour terminé\n"); 
+            printf("Tour terminé\n");
             end = 1;
         }
     }

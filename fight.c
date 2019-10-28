@@ -50,12 +50,20 @@ void buyCA(Team *team, int number) {
   }
 }
 
-void buyChampion(Champion *champion, Team *team) {
-  if(team->maxCE == 0)
+int buyChampion(Champion *champion, Team *team) {
+  if(team->maxCE == 0) {
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
+    return 0;
+  }
+  else if(team->CE - champion->CE < 0) {
+    printf("%s\n", "Vous n'avez plus assez de CE pour acheter ce champion.");
+    return 0;
+  }
   else {
-    if(team->maxCE - champion->CE < 0)
+    if(team->maxCE - champion->CE < 0) {
       printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
+      return 0;
+    }
     else {
       if(team->champion != NULL)
         free(team->champion);
@@ -63,16 +71,25 @@ void buyChampion(Champion *champion, Team *team) {
       team->maxCE -= champion->CE;
       team->CE -= champion->CE;
       printf("Achat du champion %s.\n", team->champion->variete);
+      return 1;
     }
   }
 }
 
-void buyWeapon(Weapon *weapon, Team *team) {
-  if(team->maxCE == 0)
+int buyWeapon(Weapon *weapon, Team *team) {
+  if(team->maxCE == 0) {
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
+    return 0;
+  }
+  else if(team->CE - weapon->CE < 0) {
+    printf("%s\n", "Vous n'avez plus assez de CE pour acheter cette arme.");
+    return 0;
+  }
   else {
-    if(team->maxCE - weapon->CE < 0)
-      printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
+    if(team->maxCE - weapon->CE < 0) {
+      printf("%s\n", "Vous ne pouvez pas acheter l'arme car vous allez dépasser la limite de CE.");
+      return 0;
+    }
     else {
       if(team->weapon != NULL)
         free(team->weapon);
@@ -80,16 +97,25 @@ void buyWeapon(Weapon *weapon, Team *team) {
       team->maxCE -= weapon->CE;
       team->CE -= weapon->CE;
       printf("Achat de l'arme %s.\n", team->weapon->nom);
+      return 1;
     }
   }
 }
 
-void buyProtection(Protection *protection, Team *team) {
-  if(team->maxCE == 0)
+int buyProtection(Protection *protection, Team *team) {
+  if(team->maxCE == 0) {
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
+    return 0;
+  }
+  else if(team->CE - protection->CE < 0) {
+    printf("%s\n", "Vous n'avez plus assez de CE pour acheter cette protection.");
+    return 0;
+  }
   else {
-    if(team->maxCE - protection->CE < 0)
-      printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
+    if(team->maxCE - protection->CE < 0) {
+      printf("%s\n", "Vous ne pouvez pas acheter la protection car vous allez dépasser la limite de CE.");
+      return 0;
+    }
     else {
       if(team->protection != NULL)
         free(team->protection);
@@ -97,16 +123,25 @@ void buyProtection(Protection *protection, Team *team) {
       team->maxCE -= protection->CE;
       team->CE -= protection->CE;
       printf("Achat de la protection %s.\n", team->protection->nom);
+      return 1;
     }
   }
 }
 
-void buyHealing(Healing *healing, Team *team) {
-  if(team->maxCE == 0)
+int buyHealing(Healing *healing, Team *team) {
+  if(team->maxCE == 0) {
     printf("%s\n", "Vous avez atteint la limite de CE à dépenser pendant le tour.");
+    return 0;
+  }
+  else if(team->CE - healing->CE < 0) {
+    printf("%s\n", "Vous n'avez plus assez de CE pour acheter ce soin.");
+    return 0;
+  }
   else {
-    if(team->maxCE - healing->CE < 0)
-      printf("%s\n", "Vous ne pouvez pas acheter le champion car vous allez dépasser la limite de CE.");
+    if(team->maxCE - healing->CE < 0) {
+      printf("%s\n", "Vous ne pouvez pas acheter le soin car vous allez dépasser la limite de CE.");
+      return 0;
+    }
     else {
       if(team->healing != NULL)
         free(team->healing);
@@ -114,6 +149,7 @@ void buyHealing(Healing *healing, Team *team) {
       team->maxCE -= healing->CE;
       team->CE -= healing->CE;
       printf("Achat du soin %s.\n", team->healing->nom);
+      return 1;
     }
   }
 }

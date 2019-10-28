@@ -15,9 +15,12 @@ void showEquipment(Team *team) {
     Protection *p = team->protection;
     Healing *h = team->healing;
 
-    printf("Arme : '%s' faisant %d-%d de dégats, avec un portée de %d, chaque coup %d CA.\n", w->nom, w->degatsMin, w->degatsMax, w->portee, w->CA);
-    printf("Protection : '%s' a une probabilité de blocage de %d%c, son activation coûte %d CA.\n", p->nom, p->probabilite, '%', p->CA);
-    printf("Soin : '%s' permet de récupérer %d-%d PV. Stock : %d\n", h->nom, h->effetMin, h->effetMax, h->volume);
+    if(w != NULL)
+        printf("Arme : '%s' faisant %d-%d de dégats, avec un portée de %d, chaque coup %d CA.\n", w->nom, w->degatsMin, w->degatsMax, w->portee, w->CA);
+    if(p != NULL)
+        printf("Protection : '%s' a une probabilité de blocage de %d%c, son activation coûte %d CA.\n", p->nom, p->probabilite, '%', p->CA);
+    if(h != NULL)
+        printf("Soin : '%s' permet de récupérer %d-%d PV. Stock : %d\n", h->nom, h->effetMin, h->effetMax, h->volume);
 }
 
 void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
@@ -49,6 +52,7 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
 
 void protectionChoice(Team *team, Protection **protections, int *nbProtections, char *command) {
     long num = -2;
+    int ajout;
     char *endptr;
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
     printf("Ensuite il faut de quoi se protéger.\n");
@@ -74,7 +78,14 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
         return;
     }
 
-    buyProtection(protections[num], team);
+    ajout = buyProtection(protections[num], team);
+
+    if(ajout == 0) {
+        enterToContinue();
+        system("clear");
+        return;
+    }
+
     printf("Protection '%s' équipée !\n", team->protection->nom);
 
     enterToContinue();
@@ -83,6 +94,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 
 void healingChoice(Team *team, Healing **healings, int *nbHealings, char *command) {
     long num = -2;
+    int ajout;
     char *endptr;
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
@@ -108,7 +120,14 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
         return;
     }
 
-    buyHealing(healings[num], team);
+    ajout = buyHealing(healings[num], team);
+
+    if(ajout == 0) {
+        enterToContinue();
+        system("clear");
+        return;
+    }
+
     printf("Soin '%s' équipée !\n", team->healing->nom);
 
     enterToContinue();
@@ -121,7 +140,7 @@ void actionCreditChoice(Team *team, char *command) {
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
     printf("Et enfin ! Il nous faut des crédits d'action pour enclencher !\n");
 
-    while((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
+    while((num > team->maxCE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
         printf("Je souhaite acheter...");
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';

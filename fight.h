@@ -42,33 +42,33 @@ void buyCA(Team *team, int number);
   Buy a champion
   @Param1 the champion
   @Param2 the team which need a champion
-  @Return void
+  @Return int
 */
-void buyChampion(Champion *champion, Team *team);
+int buyChampion(Champion *champion, Team *team);
 
 /*
   Buy a weapon
   @Param1 the weapon
   @Param2 the team which need a weapon
-  @Return void
+  @Return int
 */
-void buyWeapon(Weapon *weapon, Team *team);
+int buyWeapon(Weapon *weapon, Team *team);
 
 /*
   Buy a protection
   @Param1 the protection
   @Param2 the team which need a protection
-  @Return void
+  @Return int
 */
-void buyProtection(Protection *protection, Team *team);
+int buyProtection(Protection *protection, Team *team);
 
 /*
   Buy a healing
   @Param1 the healing
   @Param2 the team which need a healing
-  @Return void
+  @Return int
 */
-void buyHealing(Healing *healing, Team *team);
+int buyHealing(Healing *healing, Team *team);
 
 /*
   The champion move foward.

@@ -198,6 +198,7 @@ void exitGame(Champion **champions, Weapon **weapons, Protection **protections, 
 void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
   printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
   char *command = (char*)malloc(256*sizeof(char));
+  int erreur = 0;
 
   while(1) {
     printf("> ");
@@ -251,6 +252,16 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       }
     } else if(strcmp(command,"clear") == 0) system("clear");
     else if(strcmp(command, "help") == 0) help();
+    else {
+		if(erreur == 3) { 
+			printf("Commande invalide.\n");
+			help();
+			erreur = 0;
+		} else {
+			printf("Commande invalide. (commande 'help' pour afficher les commandes disponibles)\n");
+			erreur++;
+		}
+	}
 
   }
 

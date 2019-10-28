@@ -172,22 +172,54 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
 }
 
 void endRound(Team *team1, Team *team2) {
-  team1->champion->PV = team1->champion->PVMax;
-  team2->champion->PV = team2->champion->PVMax;
+    int CE_used_team1, CE_used_team2, max;
 
-  free(team1->weapon);
-  team1->weapon = NULL;
-  free(team1->protection);
-  team1->protection = NULL;
-  free(team1->healing);
-  team1->healing = NULL;
+    CE_used_team1 = team1->maxCE;
+    CE_used_team2 = team2->maxCE;
 
-  free(team2->weapon);
-  team2->weapon = NULL;
-  free(team2->protection);
-  team2->protection = NULL;
-  free(team2->healing);
-  team2->healing = NULL;
+    if(team1->champion->PV == 0) {
+        max = CE_used_team1 - CE_used_team2;
+        if(max < 1)
+            max = 1;
+        team2->CE += 5 * max;
+        printf("L'équipe %s gagne %d CE.\n", team2->champion->variete, 5 * max);
+    } else {
+        max = CE_used_team2- CE_used_team1;
+        if(max < 1)
+            max = 1;
+        team1->CE += 5 * max;
+        printf("L'équipe %s gagne %d CE.\n", team1->champion->variete, 5 * max);
+    }
+
+    maxCE(team1, team2);
+
+    team1->champion->PV = team1->champion->PVMax;
+    team2->champion->PV = team2->champion->PVMax;
+
+    free(team1->weapon);
+    team1->weapon = NULL;
+    free(team1->protection);
+    team1->protection = NULL;
+    free(team1->healing);
+    team1->healing = NULL;
+
+    free(team2->weapon);
+    team2->weapon = NULL;
+    free(team2->protection);
+    team2->protection = NULL;
+    free(team2->healing);
+    team2->healing = NULL;
+}
+
+void resetRound(Team *team1, Team *team2) {
+    if(team1->protectionActivated == 1) {
+        team1->protectionActivated = 0;
+        printf("La protection %s est déactivée pour %s.\n", team1->protection->nom, team1->champion->variete);
+    }
+    if(team2->protectionActivated == 1) {
+        team2->protectionActivated = 0;
+        printf("La protection %s est déactivée pour %s.\n", team2->protection->nom, team2->champion->variete);
+    }
 }
 
 void fightingMode(Team *team1, Team *team2, int screenSize) {

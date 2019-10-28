@@ -11,6 +11,8 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 
 void endRound(Team *team1, Team* team2);
 
+void resetRound(Team *team1, Team *team2);
+
 void healingChoice(Team *team, Healing **healings, int *nbHealings, char *command);
 
 #endif

@@ -125,11 +125,18 @@ void fightingMode(Team *team1) {
         if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
         else if(strncmp(command, "move forward ", 13) == 0) printf("move forward %d truc\n", getID(command, 13));
         else if(strcmp(command, "move forward") == 0) printf("move forward de 1 truc\n");
+
         else if(strncmp(command, "move backward ", 14) == 0) printf("move backward %d truc\n", getID(command, 14));
         else if(strcmp(command, "move backward") == 0) printf("move backward de 1 truc\n");
+
         else if(strncmp(command, "use weapon ", 11) == 0) printf("use %d weapon lo\n", getID(command, 11));
+	else if(strcmp(command, "use weapon") == 0) printf("use 1 fois weapon lo\n");
+
         else if(strcmp(command, "use protection") == 0) printf("use la protection lo\n");
+
         else if(strncmp(command, "use care ", 9) == 0) printf("use %d heal lo\n", getID(command, 9));
+	else if(strcmp(command, "use care") == 0) printf("use 1 fois le heal lo\n");
+
         else if(strcmp(command, "end") == 0) {
             printf("Tour terminé\n");
             end = 1;

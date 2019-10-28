@@ -157,20 +157,29 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   buyChampion(vegetable, team1);
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
-  equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
 
   /* fin Set up fight */
 
+  int roundWinTeam1 = 0;
+  int roundWinTeam2 = 0;
 
   /* commence infinite loop avec le tour par tour */
-
-  while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
-    fightingMode(team1, team2, screenSize.ws_col);
-    if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead
-    fightingMode(team2, team1, screenSize.ws_col);
+  while(team1->CE > 0 && team2->CE > 0 && team1->CE >= weapons[0]->CE && team2->CE >= weapons[0]->CE) {
+    equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+    equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+    while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
+      fightingMode(team1, team2, screenSize.ws_col);
+      if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead
+      fightingMode(team2, team1, screenSize.ws_col);
+    }
+    if(team1->champion->PV == 0)
+      roundWinTeam2++;
+    else
+      roundWinTeam1++;
+    endRound(team1, team2);
   }
-
   endBattle(team1, team2);
+  printf("GG TA FINI\n");
 }
 
 void help() {
@@ -253,7 +262,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     } else if(strcmp(command,"clear") == 0) system("clear");
     else if(strcmp(command, "help") == 0) help();
     else {
-		if(erreur == 3) { 
+		if(erreur == 3) {
 			printf("Commande invalide.\n");
 			help();
 			erreur = 0;

@@ -112,6 +112,25 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
     free(command);
 }
 
+void endRound(Team *team1, Team *team2) {
+  team1->champion->PV = team1->champion->PVMax;
+  team2->champion->PV = team2->champion->PVMax;
+
+  free(team1->weapon);
+  team1->weapon = NULL;
+  free(team1->protection);
+  team1->protection = NULL;
+  free(team1->healing);
+  team1->healing = NULL;
+
+  free(team2->weapon);
+  team2->weapon = NULL;
+  free(team2->protection);
+  team2->protection = NULL;
+  free(team2->healing);
+  team2->healing = NULL;
+}
+
 void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
     int end = 0;

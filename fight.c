@@ -16,7 +16,7 @@ Team * initTeam(int id, Winsize sz) {
   else
     team->position = sz.ws_col-2;
   team->CE = 1000;
-  team->CA = 500;
+  team->CA = 0;
   team->maxCE = 50;
   team->champion = NULL;
   team->weapon = NULL;
@@ -305,14 +305,22 @@ int distanceBetweenChampions(Team *team1, Team *team2) {
 
 void endBattle(Team *team1, Team *team2) {
   free(team1->champion);
+  team1->champion = NULL;
   free(team1->weapon);
+  team1->weapon = NULL;
   free(team1->protection);
+  team1->protection = NULL;
   free(team1->healing);
+  team1->healing = NULL;
   free(team1);
 
   free(team2->champion);
+  team2->champion = NULL;
   free(team2->weapon);
+  team2->weapon = NULL;
   free(team2->protection);
+  team2->protection = NULL;
   free(team2->healing);
+  team2->healing = NULL;
   free(team2);
 }

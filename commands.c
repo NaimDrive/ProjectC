@@ -165,9 +165,9 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   /* commence infinite loop avec le tour par tour */
 
   while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
-    fightingMode(team1);
+    fightingMode(team1, team2);
     if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead
-    fightingMode(team2);
+    fightingMode(team2, team1);
   }
 
   endBattle(team1, team2);

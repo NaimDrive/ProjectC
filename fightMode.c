@@ -10,34 +10,20 @@ void enterToContinue() {
     while(getchar() != '\n');
 }
 
-void actionCreditChoice(Team *team, char *command) {
-    long num = 0;
-    char *endptr;
-    printf("Et enfin ! Il nous faut des crédits d'action pour enclencher !\n");
+void showEquipment(Team *team) {
+    Weapon *w = team->weapon;
+    Protection *p = team->protection;
+    Healing *h = team->healing;
 
-    while((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
-        printf("Je souhaite acheter...");
-        fgets(command, 256, stdin);
-        if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-
-        num = strtoul(command, &endptr, 10);
-
-        if((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
-            system("clear");
-            printf("Pour rappel, vous avez %d crédits d'équipement.\n", team->CE);
-        }   
-    }
-
-    buyCA(team, num);
-    printf("Désormais %d crédits d'action disponibles !\n", team->CA);
-
-    enterToContinue();
-    system("clear");
+    printf("Arme : '%s' faisant %d-%d de dégats, avec un portée de %d, chaque coup %d CA.\n", w->nom, w->degatsMin, w->degatsMax, w->portee, w->CA);
+    printf("Protection : '%s' a une probabilité de blocage de %d%c, son activation coûte %d CA.\n", p->nom, p->probabilite, '%', p->CA);
+    printf("Soin : '%s' permet de récupérer %d-%d PV. Stock : %d\n", h->nom, h->effetMin, h->effetMax, h->volume);
 }
 
 void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
     long num = -1;
     char *endptr;
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
     printf("Commençons par choisir de quoi tuer l'adversaire.\n");
 
     while((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
@@ -64,6 +50,7 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
 void protectionChoice(Team *team, Protection **protections, int *nbProtections, char *command) {
     long num = -2;
     char *endptr;
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
     printf("Ensuite il faut de quoi se protéger.\n");
 
     while((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
@@ -97,6 +84,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 void healingChoice(Team *team, Healing **healings, int *nbHealings, char *command) {
     long num = -2;
     char *endptr;
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
 
     while((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
@@ -122,6 +110,32 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
 
     buyHealing(healings[num], team);
     printf("Soin '%s' équipée !\n", team->healing->nom);
+
+    enterToContinue();
+    system("clear");
+}
+
+void actionCreditChoice(Team *team, char *command) {
+    long num = 0;
+    char *endptr;
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
+    printf("Et enfin ! Il nous faut des crédits d'action pour enclencher !\n");
+
+    while((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
+        printf("Je souhaite acheter...");
+        fgets(command, 256, stdin);
+        if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
+
+        num = strtoul(command, &endptr, 10);
+
+        if((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
+            system("clear");
+            printf("Pour rappel, vous avez %d crédits d'équipement.\n", team->CE);
+        }   
+    }
+
+    buyCA(team, num);
+    printf("Désormais %d crédits d'action disponibles !\n", team->CA);
 
     enterToContinue();
     system("clear");
@@ -167,7 +181,7 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
         // ~~~ Cases ~~~ //
-        if(strcmp(command, "show") == 0) printf("je show des trucss lo\n");
+        if(strcmp(command, "show") == 0) showEquipment(team1);
         else if(strncmp(command, "move forward ", 13) == 0) moveForward(team1, team2, getID(command, 13));
         else if(strcmp(command, "move forward") == 0) moveForward(team1, team2, 1);
 

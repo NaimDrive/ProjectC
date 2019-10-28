@@ -161,8 +161,6 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
 
   /* fin Set up fight */
 
-  int roundWinTeam1 = 0;
-  int roundWinTeam2 = 0;
 
   /* commence infinite loop avec le tour par tour */
   while(team1->CE > 0 && team2->CE > 0 && team1->CE >= weapons[0]->CE && team2->CE >= weapons[0]->CE) {
@@ -172,19 +170,14 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
       fightingMode(team1, team2, screenSize.ws_col);
       if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead
       fightingMode(team2, team1, screenSize.ws_col);
+      resetRound(team1, team2);
     }
-    if(team1->champion->PV == 0)
-      roundWinTeam2++;
-    else
-      roundWinTeam1++;
     endRound(team1, team2);
   }
   endBattle(team1, team2);
+
+  // AH ON GAGNE PAS COMME CA, C'EST LE PREMIER QUI A PLUS DE CE QUI PERD
   printf(" -- Partie terminé ! -- \n");
-  if(roundWinTeam1 > roundWinTeam2)
-    printf("Le joueur 1 gagne avec %d manches remportées.\nLe joueur 2 perds avec %d manches.\n", roundWinTeam1, roundWinTeam2);
-  else
-    printf("Le joueur 2 gagne avec %d manches remportées.\nLe joueur 1 perds avec %d manches.\n", roundWinTeam2, roundWinTeam1);
 }
 
 void help() {

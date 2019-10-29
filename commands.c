@@ -163,9 +163,6 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   // Take console size
   Winsize screenSize;
   ioctl(0, TIOCGWINSZ, &screenSize);
-  // screenSize.ws_col number of column
-  // screenSize.ws_row number of row
-  // printf("Screen width: %i  Screen height: %i\n", screenSize.ws_col, screenSize.ws_row);
 
   Team *team1 = initTeam(0, screenSize);
   Team *team2 = initTeam(1, screenSize);
@@ -178,19 +175,21 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
 
   /* fin Set up fight */
-
-
+  int maximumCE = 0;
+  
   /* commence infinite loop avec le tour par tour */
   while(team1->CE > 0 && team2->CE > 0 && team1->CE >= weapons[0]->CE && team2->CE >= weapons[0]->CE) {
     equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
     equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+    maximumCE = team1->maxCE;
     while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
       fightingMode(team1, team2, screenSize.ws_col);
+      takeOffProtection(team2);
       if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead
       fightingMode(team2, team1, screenSize.ws_col);
-      resetRound(team1, team2);
+      takeOffProtection(team1);
     }
-    endRound(team1, team2);
+    endRound(team1, team2, maximumCE);
   }
   showEndGame(team1, team2);
   endBattle(team1, team2);

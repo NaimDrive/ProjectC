@@ -15,9 +15,9 @@ Team * initTeam(int id, Winsize sz) {
     team->position = 1;
   else
     team->position = sz.ws_col-2;
-  team->CE = 50;
+  team->CE = 1000;
   team->CA = 0;
-  team->maxCE = 1000;
+  team->maxCE = 50;
   team->champion = NULL;
   team->weapon = NULL;
   team->protection = NULL;
@@ -292,8 +292,9 @@ void useProtection(Team *team) {
     if(team->CA < team->protection->CA) {
       printf("Vous n'avez pas assez de CA pour activer la protection.\n");
     } else {
+      team->CA -= team->protection->CA;
       team->protectionActivated = 1;
-      printf("La protection %s est désormais active pendant 1 tour.\n", team->weapon->nom);
+      printf("La protection %s est désormais active pendant 1 tour.\n", team->protection->nom);
     }
   }
 }

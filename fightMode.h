@@ -11,11 +11,11 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 
 void showEndGame(Team *team1, Team *team2);
 
-void endRound(Team *team1, Team* team2);
+void endRound(Team *team1, Team* team2, int maximumCE);
 
-void roundWinner(Team *team1, Team *team2);
+void roundWinner(Team *team1, Team *team2, int maximumCE);
 
-void resetRound(Team *team1, Team *team2);
+void takeOffProtection(Team *team);
 
 void healingChoice(Team *team, Healing **healings, int *nbHealings, char *command);
 

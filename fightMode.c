@@ -172,11 +172,11 @@ void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing *
     free(command);
 }
 
-void roundWinner(Team *team1, Team *team2) {
+void roundWinner(Team *team1, Team *team2, int maximumCE) {
     int CE_used_team1, CE_used_team2, max;
 
-    CE_used_team1 = team1->maxCE;
-    CE_used_team2 = team2->maxCE;
+    CE_used_team1 = maximumCE - team1->maxCE;
+    CE_used_team2 = maximumCE - team2->maxCE;
 
     if(team1->champion->PV == 0) {
         max = CE_used_team1 - CE_used_team2;
@@ -206,8 +206,8 @@ void showEndGame(Team *team1, Team *team2) {
     }
 }
 
-void endRound(Team *team1, Team *team2) {
-    roundWinner(team1, team2);
+void endRound(Team *team1, Team *team2, int maximumCE) {
+    roundWinner(team1, team2, maximumCE);
     maxCE(team1, team2);
 
     team1->champion->PV = team1->champion->PVMax;
@@ -228,22 +228,19 @@ void endRound(Team *team1, Team *team2) {
     team2->healing = NULL;
 }
 
-void resetRound(Team *team1, Team *team2) {
-    if(team1->protectionActivated == 1) {
-        team1->protectionActivated = 0;
-        printf("La protection %s est déactivée pour %s.\n", team1->protection->nom, team1->champion->variete);
-    }
-    if(team2->protectionActivated == 1) {
-        team2->protectionActivated = 0;
-        printf("La protection %s est déactivée pour %s.\n", team2->protection->nom, team2->champion->variete);
+void takeOffProtection(Team *team) {
+    if(team->protectionActivated == 1) {
+        team->protectionActivated = 0;
+        printf("La protection %s est déactivée pour %s.\n", team->protection->nom, team->champion->variete);
     }
 }
+
 
 void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
     int end = 0;
 
-    while(team1->maxCE > 0 && !end) {
+    while(team1->CA > 0 && !end) {
         printf("%s %d> ", team1->champion->variete, team1->CA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
@@ -264,10 +261,12 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         else if(strncmp(command, "use care ", 9) == 0) useCare(team1, getID(command, 9));
 	      else if(strcmp(command, "use care") == 0) useCare(team1, 1);
 
-        else if(strcmp(command, "end") == 0) {
-            printf("Tour terminé\n");
-            end = 1;
-        }
+        else if(strcmp(command, "end") == 0) end = 1;
     }
+    if(team1->CA == 0)
+        printf("Tour terminé. Vous n'avez plus de CA.\n");
+    else
+        printf("Tour terminé\n");
+
     free(command);
 }

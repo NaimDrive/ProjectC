@@ -1,6 +1,7 @@
 #include "initGame.h"
 #include "commands.h"
 #include "fight.h"
+#include "colors.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -30,7 +31,7 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
     printf("Commençons par choisir de quoi tuer l'adversaire.\n");
 
     while((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
-        showWeapons(weapons, nbWeapons);
+        showWeapons(weapons, nbWeapons, team->CE);
         printf("Je choisis l'arme numéro... ");
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
@@ -58,7 +59,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
     printf("Ensuite il faut de quoi se protéger.\n");
 
     while((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
-        showProtections(protections, nbProtections);
+        showProtections(protections, nbProtections, team->CE);
         printf("(Entrez '-1' si vous ne voulez pas de protection)\n");
         printf("Je choisis la protection numéro... ");
         fgets(command, 256, stdin);
@@ -100,7 +101,7 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
 
     while((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
-        showCares(healings, nbHealings);
+        showCares(healings, nbHealings, team->CE);
         printf("(Entrez '-1' si vous ne voulez pas de soin)\n");
         printf("Je choisis le soin numéro... ");
         fgets(command, 256, stdin);

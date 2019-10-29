@@ -3,6 +3,7 @@
 #include "fightMode.h"
 #include "endGame.h"
 #include "commands.h"
+#include "colors.h"
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -84,15 +85,20 @@ void showFruit(Champion **champions, int *nbChampions, int id) {
   }
 }
 
-void showWeapons(Weapon **weapons, int *nbWeapons) {
+void showWeapons(Weapon **weapons, int *nbWeapons, int ce) {
   Weapon *w;
   int i;
   for(i = 0; i < *nbWeapons; i++)
   {
     w = weapons[i];
+    if(ce != -1) {
+      if(ce >= w->CE) green();
+      else { resetColor() , red(); }
+    }
     printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | CE : %d\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
   }
   printf("\n");
+  resetColor();
 }
 
 void showWeapon(Weapon **weapons, int *nbWeapons, int id) {
@@ -103,15 +109,22 @@ void showWeapon(Weapon **weapons, int *nbWeapons, int id) {
   }
 }
 
-void showProtections(Protection **protections, int *nbProtections) {
+void showProtections(Protection **protections, int *nbProtections, int ce) {
   Protection *p;
   int i;
+  
   for(i = 0; i < *nbProtections; i++)
   {
     p = protections[i];
+    if(ce != -1) {
+      if(ce >= p->CE) green();
+      else { resetColor() , red(); }
+    }
     printf("Num : %d | Nom : %s | CE : %d | CA : %d | Probabilité : %d %c \n", p->num, p->nom, p->CE, p->CA, p->probabilite, '%');
   }
   printf("\n");
+  resetColor();
+  
 }
 
 void showProtection(Protection **protections, int *nbProtections, int id) {
@@ -122,15 +135,20 @@ void showProtection(Protection **protections, int *nbProtections, int id) {
   }
 }
 
-void showCares(Healing **healings, int *nbHealings) {
+void showCares(Healing **healings, int *nbHealings, int ce) {
   Healing *h;
   int i;
   for(i = 0; i < *nbHealings; i++)
   {
     h = healings[i];
+    if(ce != -1) {
+      if(ce >= h->CE) green();
+      else { resetColor() , red(); }
+    }
     printf("Num : %d | Nom : %s | CE : %d | CA : %d | Volume : %d | Effet (min-max) : %d-%d\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
   }
   printf("\n");
+  resetColor();
 }
 
 void showCare(Healing **healings, int *nbHealings, int id) {
@@ -221,13 +239,13 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     else if(strcmp(command, "show fruits") == 0) showFruits(champions, nbChampions);
     else if(strncmp(command, "show fruit ", 11) == 0) showFruit(champions, nbChampions, getID(command, 11));
 
-    else if(strcmp(command, "show weapons") == 0) showWeapons(weapons, nbWeapons);
+    else if(strcmp(command, "show weapons") == 0) showWeapons(weapons, nbWeapons, -1);
     else if(strncmp(command, "show weapon ", 12) == 0) showWeapon(weapons, nbWeapons, getID(command, 12));
 
-    else if(strcmp(command, "show protections") == 0) showProtections(protections, nbProtections);
+    else if(strcmp(command, "show protections") == 0) showProtections(protections, nbProtections, -1);
     else if(strncmp(command, "show protection ", 16) == 0) showProtection(protections, nbProtections, getID(command, 16));
 
-    else if(strcmp(command, "show cares") == 0) showCares(healings, nbHealings);
+    else if(strcmp(command, "show cares") == 0) showCares(healings, nbHealings, -1);
     else if(strncmp(command, "show care ", 10) == 0) showCare(healings, nbHealings, getID(command, 10));
 
     else if(strncmp(command, "fight ", 6) == 0) {

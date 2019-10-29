@@ -179,9 +179,9 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
   
   /* commence infinite loop avec le tour par tour */
   while(team1->CE > 0 && team2->CE > 0 && team1->CE >= weapons[0]->CE && team2->CE >= weapons[0]->CE) {
+    maximumCE = team1->maxCE;
     equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
     equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
-    maximumCE = team1->maxCE;
     while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
       fightingMode(team1, team2, screenSize.ws_col);
       takeOffProtection(team2);

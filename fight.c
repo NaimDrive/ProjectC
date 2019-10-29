@@ -16,7 +16,7 @@ Team * initTeam(int id, Winsize sz) {
   else
     team->position = sz.ws_col-2;
   team->CE = 1000;
-  team->CA = 0;
+  team->CA = 500;
   team->maxCE = 50;
   team->champion = NULL;
   team->weapon = NULL;

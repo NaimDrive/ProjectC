@@ -185,7 +185,7 @@ void roundWinner(Team *team1, Team *team2, int maximumCE) {
         team2->CE += 5 * max;
         printf("L'équipe %s gagne %d CE.\n", team2->champion->variete, 5 * max);
     } else {
-        max = CE_used_team2- CE_used_team1;
+        max = CE_used_team2 - CE_used_team1;
         if(max < 1)
             max = 1;
         team1->CE += 5 * max;
@@ -234,7 +234,6 @@ void takeOffProtection(Team *team) {
         printf("La protection %s est déactivée pour %s.\n", team->protection->nom, team->champion->variete);
     }
 }
-
 
 void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));

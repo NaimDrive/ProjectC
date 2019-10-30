@@ -20,6 +20,10 @@ void white() {
     printf("\033[1;97m");
 }
 
+void black() {
+    printf("\033[1;30m");
+}
+
 void resetColor() {
     printf("\033[0m");
 }

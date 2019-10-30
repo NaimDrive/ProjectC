@@ -11,6 +11,8 @@ void magenta();
 
 void white();
 
+void black();
+
 void resetColor();
 
 #endif

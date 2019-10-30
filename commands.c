@@ -54,25 +54,24 @@ int checkingChamps(char *veg, char *fruit, int vegIndex, int fruitIndex, Champio
   fruit[0] = toupper(fruit[0]); // make first char an uppercase
   
   white();
-  printf("Index v : %d | Index f : %d\n", vegIndex, fruitIndex);
   
-  if(vegIndex >= 6) {
-    red();
-    printf("'%s' n'est pas un légume !\n", veg);
-  } else if(vegIndex == -1) {
+  if(vegIndex == -1) {
     red();
     printf("'%s' ne fait pas partie des champions jouables.\n", veg);
+  } else if(vegIndex >= 6) {
+    red();
+    printf("'%s' n'est pas un légume !\n", veg);
   }
 
-  if(fruitIndex < 6) {
-    red();
-    printf("'%s' n'est pas un fruit ! Index fruit : '%d'\n", fruit, fruitIndex);
-  } else if(fruitIndex == -1) {
+  if(fruitIndex == -1) {
     red();
     printf("'%s' ne fait pas partie des champions jouables.\n", fruit);
-  }
+  } else if(fruitIndex < 6) {
+    red();
+    printf("'%s' n'est pas un fruit !\n", fruit);
+  }  
 
-  if(vegIndex != -1 && fruitIndex != -1) output = 1;
+  if((vegIndex != -1 && fruitIndex != -1) && fruitIndex > 5 && vegIndex < 6) output = 1;
   resetColor();
 
   free(veg); // will never be used again

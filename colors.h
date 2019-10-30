@@ -5,6 +5,10 @@ void red();
 
 void green();
 
+void blue();
+
+void magenta();
+
 void white();
 
 void resetColor();

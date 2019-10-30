@@ -194,7 +194,7 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+void initFight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
   // Take console size
   Winsize screenSize;
   ioctl(0, TIOCGWINSZ, &screenSize);
@@ -212,9 +212,10 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
 
   /* fin Set up fight */
   int maximumCE = 0;
+  int nbRound = 0;
   
   /* commence infinite loop avec le tour par tour */
-  while(team1->CE > 0 && team2->CE > 0 && team1->CE >= weapons[0]->CE && team2->CE >= weapons[0]->CE) {
+  while( (team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE) ) {
     maximumCE = team1->maxCE;
     equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
     equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
@@ -225,6 +226,7 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
       fightingMode(team2, team1, screenSize.ws_col);
       takeOffProtection(team1);
     }
+    nbRound++;
     endRound(team1, team2, maximumCE);
   }
   showEndGame(team1, team2);
@@ -312,7 +314,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       ready = checkingChamps(legume, fruit, vegIndex, fruitIndex, champions, *nbChampions);
       
       if(ready) {
-        initFight(champions[vegIndex], champions[fruitIndex], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+        initFight(champions[vegIndex], champions[fruitIndex], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
       }
 
     } else if(strcmp(command,"clear") == 0) system("clear");

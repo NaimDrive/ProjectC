@@ -5,6 +5,8 @@ char* substring(char *src, int beg, int end);
 
 int getID(char *command, int n);
 
+int getChampIndex(char *champName, Champion **champion, int nbChampions);
+
 void showVegetables(Champion **champions, int *nbChampions);
 
 void showVegetable(Champion **champions, int *nbChampions, int id);

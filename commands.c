@@ -37,12 +37,48 @@ int getID(char *command, int n) {
   return res;
 }
 
-int getChampIndex(char *champName, Champion **champion, int *nbChampions) {
-  int i = 0;
-  for(; i < *nbChampions; i++) {
-    if(strcmp(champName, champion[i]->variete) == 0) return i;
+int getChampIndex(char *champName, Champion **champions, int nbChampions) {
+  champName[0] = toupper(champName[0]); // make first char an uppercase
+
+  int i;
+  for(i = 0; i < nbChampions; i++) {
+    if(strcmp(champName, champions[i]->variete) == 0) return i;
   }
+
   return -1;
+}
+
+int checkingChamps(char *veg, char *fruit, int vegIndex, int fruitIndex, Champion **champions, int nbChampions) {
+  int output = 0;
+  veg[0] = toupper(veg[0]); // make first char an uppercase
+  fruit[0] = toupper(fruit[0]); // make first char an uppercase
+  
+  white();
+  printf("Index v : %d | Index f : %d\n", vegIndex, fruitIndex);
+  
+  if(vegIndex >= 6) {
+    red();
+    printf("'%s' n'est pas un légume !\n", veg);
+  } else if(vegIndex == -1) {
+    red();
+    printf("'%s' ne fait pas partie des champions jouables.\n", veg);
+  }
+
+  if(fruitIndex < 6) {
+    red();
+    printf("'%s' n'est pas un fruit ! Index fruit : '%d'\n", fruit, fruitIndex);
+  } else if(fruitIndex == -1) {
+    red();
+    printf("'%s' ne fait pas partie des champions jouables.\n", fruit);
+  }
+
+  if(vegIndex != -1 && fruitIndex != -1) output = 1;
+  resetColor();
+
+  free(veg); // will never be used again
+  free(fruit); // will never be used again
+  
+  return output;
 }
 
 void showVegetables(Champion **champions, int *nbChampions) {
@@ -221,7 +257,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
   printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
   char *command = (char*)malloc(256*sizeof(char));
   int erreur = 0;
-
+  
   while(1) {
     printf("> ");
     fgets(command, 256, stdin);
@@ -253,6 +289,9 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       char *indexVersus = strstr(tmp, "versus");
       char *fruit;
       char *legume;
+      int vegIndex;
+      int fruitIndex;
+      int ready;
       int i = 0;
 
       if(indexVersus == NULL) {
@@ -265,26 +304,28 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       legume = substring(tmp, 0, i-1); // nom du legume
       fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
       free(tmp);
-      legume[0] = toupper(legume[0]);
-      fruit[0] = toupper(fruit[0]);
-      int indexVeg = getChampIndex(legume, champions, nbChampions);
-      int indexFruit = getChampIndex(fruit, champions, nbChampions);
-      free(legume);
-      free(fruit);
-      if(indexVeg != -1 && indexFruit != -1) {
-        initFight(champions[indexVeg], champions[indexFruit], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+      vegIndex = getChampIndex(legume, champions, *nbChampions);
+      fruitIndex = getChampIndex(fruit, champions, *nbChampions);
+
+      ready = checkingChamps(legume, fruit, vegIndex, fruitIndex, champions, *nbChampions);
+      
+      if(ready) {
+        initFight(champions[vegIndex], champions[fruitIndex], weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
       }
+
     } else if(strcmp(command,"clear") == 0) system("clear");
     else if(strcmp(command, "help") == 0) help();
     else {
-		if(erreur == 3) {
-			printf("Commande invalide.\n");
-			help();
-			erreur = 0;
-		} else {
-			printf("Commande invalide. (commande 'help' pour afficher les commandes disponibles)\n");
-			erreur++;
-		}
+      white();
+      if(erreur == 3) {
+        printf("Commande '%s' invalide.\n", command);
+        help();
+        erreur = 0;
+      } else {
+        printf("Commande '%s' invalide.\n(La commande 'help' permet d'afficher les commandes disponibles)\n", command);
+        erreur++;
+      }
+      resetColor();
 	}
 
   }

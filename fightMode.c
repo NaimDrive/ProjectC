@@ -27,7 +27,7 @@ void showEquipment(Team *team) {
 void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
     long num = -1;
     char *endptr;
-    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
     printf("Commençons par choisir de quoi tuer l'adversaire.\n");
 
     while((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
@@ -55,7 +55,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
     long num = -2;
     int ajout;
     char *endptr;
-    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
     printf("Ensuite il faut de quoi se protéger.\n");
 
     while((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
@@ -97,7 +97,7 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
     long num = -2;
     int ajout;
     char *endptr;
-    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
 
     while((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
@@ -138,7 +138,7 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
 void actionCreditChoice(Team *team, char *command) {
     long num = 0;
     char *endptr;
-    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->CE);
+    printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
     printf("Et enfin ! Il nous faut des crédits d'action pour enclencher !\n");
 
     while((num > team->maxCE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {

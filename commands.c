@@ -201,6 +201,7 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
 
   Team *team1 = initTeam(0, screenSize);
   Team *team2 = initTeam(1, screenSize);
+  
   // char *command = malloc(256*sizeof(char));
 
   /* choose arme, soins, protections pour team1 et pour team2 */
@@ -231,6 +232,7 @@ void initFight(Champion *vegetable, Champion* fruit, Weapon **weapons, Protectio
 }
 
 void help() {
+  white();
   printf("Commandes :\n\n");
   printf(" show vegetables - Affiche tous les légumes.\n");
   printf(" show vegetable n - Affiche le légume numéro n.\n");
@@ -245,6 +247,7 @@ void help() {
   printf(" fight v versus f - Lance un combat opposant le légume v au fruit f.\n");
   printf(" help - Affiche un rappel de toutes les commandes disponibles.\n");
   printf(" exit - Quitte le jeu.\n\n");
+  resetColor();
 }
 
 void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
@@ -325,7 +328,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         erreur++;
       }
       resetColor();
-	}
+	  }
 
   }
 

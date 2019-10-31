@@ -4,6 +4,7 @@
 #include "endGame.h"
 #include "main.h"
 
+#include <sys/ioctl.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -14,7 +15,9 @@ int main() {
   Weapon **weapons;
   Protection **protections;
   Healing **healings;
+  Team *team1, *team2;
   int *nbChampions, *nbWeapons, *nbProtections, *nbHealings;
+  Winsize screenSize;
 
   srand(time(NULL));
 
@@ -22,6 +25,9 @@ int main() {
   weapons = malloc(sizeof(Weapon *) * 5);
   protections = malloc(sizeof(Protection *) * 4);
   healings = malloc(sizeof(Healing *) * 3);
+
+  team1 = malloc(sizeof(Team));
+  team2 = malloc(sizeof(Team));
 
   nbChampions = malloc(sizeof(int));
   nbWeapons = malloc(sizeof(int));
@@ -33,9 +39,9 @@ int main() {
   *nbProtections = 0;
   *nbHealings = 0;
 
-  initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+  screenSize = initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
 
-  readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+  readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 
   return 0;
 }

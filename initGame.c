@@ -1,5 +1,6 @@
 #include "initGame.h"
 
+#include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -324,11 +325,18 @@ void initHealings(Healing **healings, int *nbHealings) {
     healings[2] = createHealing("Engrais-Ionique", (*nbHealings)++);
 }
 
-void initGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+Winsize initGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2) {
+    Winsize screenSize;
+    ioctl(0, TIOCGWINSZ, &screenSize);
+
     initChampions(champions, nbChampions);
     initWeapons(weapons, nbWeapons);
     initProtections(protections, nbProtections);
     initHealings(healings, nbHealings);
+    initTeam(team1, 0, screenSize);
+    initTeam(team2, 1, screenSize);
+
+    return screenSize;
 }
 
 void afficherChampions(Champion **champions, int *nbChampions) {
@@ -369,4 +377,22 @@ void afficherSoins(Healing **healings, int *nbHealings) {
         h = healings[i];
         printf("Num %d\nNom %s\nCE %d\nCA %d\nVolume %d\nEffet min %d\nEffet max %d\n\n", h->num, h->nom, h->CE, h->CA, h->volume, h->effetMin, h->effetMax);
     }
+}
+
+Team * initTeam(Team *team, int id, Winsize sz) {
+  team->id = id;
+  if(id == 0)
+    team->position = 1;
+  else
+    team->position = sz.ws_col-2;
+  team->CE = 20;
+  team->CA = 500;
+  team->maxCE = 20;
+  team->champion = NULL;
+  team->weapon = NULL;
+  team->protection = NULL;
+  team->healing = NULL;
+  team->protectionActivated = 0;
+
+  return team;
 }

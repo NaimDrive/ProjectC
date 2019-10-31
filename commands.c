@@ -194,43 +194,45 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-void initFight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
-  // Take console size
-  Winsize screenSize;
-  ioctl(0, TIOCGWINSZ, &screenSize);
+int replay(char *command) {
+  while(1) {
+    printf("Voulez-vous rejouer ?\n");
+    fgets(command, 256, stdin);
+    if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
+    if(strcmp(command, "oui") == 0)
+      return 2;
+    else if(strcmp(command, "non") == 0)
+      return 0;
+    system("clear");
+  }
+}
 
-  Team *team1 = initTeam(0, screenSize);
-  Team *team2 = initTeam(1, screenSize);
-  
-  // char *command = malloc(256*sizeof(char));
+void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+  int maximumCE = 0, end = 0;
 
-  /* choose arme, soins, protections pour team1 et pour team2 */
-  /* Set up fight */
   buyChampion(vegetable, team1);
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
-
-  /* fin Set up fight */
-  int maximumCE = 0;
-  int nbRound = 0;
   
-  /* commence infinite loop avec le tour par tour */
-  while( (team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE) ) {
-    maximumCE = team1->maxCE;
-    equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
-    equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
-    while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
-      fightingMode(team1, team2, screenSize.ws_col);
-      takeOffProtection(team2);
-      if(team2->champion->PV == 0) break; // Avoid j2 playing if he's dead
-      fightingMode(team2, team1, screenSize.ws_col);
-      takeOffProtection(team1);
-    }
-    nbRound++;
-    endRound(team1, team2, maximumCE);
+  maximumCE = team1->maxCE;
+  equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+  equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+
+  while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
+    fightingMode(team1, team2, screenSize.ws_col);
+    takeOffProtection(team2);
+
+    if(team2->champion->PV == 0) 
+      break; // Avoid j2 playing if he's dead
+
+    fightingMode(team2, team1, screenSize.ws_col);
+    takeOffProtection(team1);
   }
-  showEndGame(team1, team2);
-  endBattle(team1, team2);
+  if(!((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE))) {
+    showEndGame(team1, team2);
+    end = 1;
+  }
+  endRound(team1, team2, maximumCE, end);
 }
 
 void help() {
@@ -257,82 +259,89 @@ void exitGame(Champion **champions, Weapon **weapons, Protection **protections, 
   exit(0);
 }
 
-void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
+void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
   printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
   char *command = (char*)malloc(256*sizeof(char));
-  int erreur = 0;
-  
-  while(1) {
-    printf("> ");
-    fgets(command, 256, stdin);
-    if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
+  int erreur = 0, play = 1;
 
-    // ~~~ Cases ~~~ //
-    if(strcmp(command, "exit") == 0) {
-      free(command);
-      exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+  while(play) {
+    if(play == 2) {
+      resetGame(team1, team2, screenSize);
     }
-    else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
-    else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));
+    while((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE)) {
+      printf("> ");
+      fgets(command, 256, stdin);
+      if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
-    else if(strcmp(command, "show fruits") == 0) showFruits(champions, nbChampions);
-    else if(strncmp(command, "show fruit ", 11) == 0) showFruit(champions, nbChampions, getID(command, 11));
-
-    else if(strcmp(command, "show weapons") == 0) showWeapons(weapons, nbWeapons, -1);
-    else if(strncmp(command, "show weapon ", 12) == 0) showWeapon(weapons, nbWeapons, getID(command, 12));
-
-    else if(strcmp(command, "show protections") == 0) showProtections(protections, nbProtections, -1);
-    else if(strncmp(command, "show protection ", 16) == 0) showProtection(protections, nbProtections, getID(command, 16));
-
-    else if(strcmp(command, "show cares") == 0) showCares(healings, nbHealings, -1);
-    else if(strncmp(command, "show care ", 10) == 0) showCare(healings, nbHealings, getID(command, 10));
-
-    else if(strncmp(command, "fight ", 6) == 0) {
-      /* Work in progress */
-      char *tmp = substring(command, 6, strlen(command));
-      char *indexVersus = strstr(tmp, "versus");
-      char *fruit;
-      char *legume;
-      int vegIndex;
-      int fruitIndex;
-      int ready;
-      int i = 0;
-
-      if(indexVersus == NULL) {
-        printf("! Utilisation ! : fight <legume> versus <fruit>\n");
-        continue;
+      // ~~~ Cases ~~~ //
+      if(strcmp(command, "exit") == 0) {
+        /* /!\ IL MANQUE UN FREE QUAND ON A FAIT AU MOIN UNE FOIS FIGHT MAIS JE SAIS PAS OU C'EST /!\ */
+        free(command);
+        endBattle(team1, team2);
+        exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
       }
+      else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
+      else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));
 
-      while((tmp+i) != indexVersus) i++; // get index 'v' de "versus"
+      else if(strcmp(command, "show fruits") == 0) showFruits(champions, nbChampions);
+      else if(strncmp(command, "show fruit ", 11) == 0) showFruit(champions, nbChampions, getID(command, 11));
 
-      legume = substring(tmp, 0, i-1); // nom du legume
-      fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
-      free(tmp);
-      vegIndex = getChampIndex(legume, champions, *nbChampions);
-      fruitIndex = getChampIndex(fruit, champions, *nbChampions);
+      else if(strcmp(command, "show weapons") == 0) showWeapons(weapons, nbWeapons, -1);
+      else if(strncmp(command, "show weapon ", 12) == 0) showWeapon(weapons, nbWeapons, getID(command, 12));
 
-      ready = checkingChamps(legume, fruit, vegIndex, fruitIndex, champions, *nbChampions);
-      
-      if(ready) {
-        initFight(champions[vegIndex], champions[fruitIndex], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+      else if(strcmp(command, "show protections") == 0) showProtections(protections, nbProtections, -1);
+      else if(strncmp(command, "show protection ", 16) == 0) showProtection(protections, nbProtections, getID(command, 16));
+
+      else if(strcmp(command, "show cares") == 0) showCares(healings, nbHealings, -1);
+      else if(strncmp(command, "show care ", 10) == 0) showCare(healings, nbHealings, getID(command, 10));
+
+      else if(strncmp(command, "fight ", 6) == 0) {
+        /* Work in progress */
+        char *tmp = substring(command, 6, strlen(command));
+        char *indexVersus = strstr(tmp, "versus");
+        char *fruit;
+        char *legume;
+        int vegIndex;
+        int fruitIndex;
+        int ready;
+        int i = 0;
+
+        if(indexVersus == NULL) {
+          printf("! Utilisation ! : fight <legume> versus <fruit>\n");
+          continue;
+        }
+
+        while((tmp+i) != indexVersus) i++; // get index 'v' de "versus"
+
+        legume = substring(tmp, 0, i-1); // nom du legume
+        fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
+        free(tmp);
+        vegIndex = getChampIndex(legume, champions, *nbChampions);
+        fruitIndex = getChampIndex(fruit, champions, *nbChampions);
+
+        ready = checkingChamps(legume, fruit, vegIndex, fruitIndex, champions, *nbChampions);
+        
+        if(ready) {
+          fight(champions[vegIndex], champions[fruitIndex], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+        }
+      } else if(strcmp(command,"clear") == 0) system("clear");
+      else if(strcmp(command, "help") == 0) help();
+      else {
+        white();
+        if(erreur == 3) {
+          printf("Commande '%s' invalide.\n", command);
+          help();
+          erreur = 0;
+        } else {
+          printf("Commande '%s' invalide.\n(La commande 'help' permet d'afficher les commandes disponibles)\n", command);
+          erreur++;
+        }
+        resetColor();
       }
-
-    } else if(strcmp(command,"clear") == 0) system("clear");
-    else if(strcmp(command, "help") == 0) help();
-    else {
-      white();
-      if(erreur == 3) {
-        printf("Commande '%s' invalide.\n", command);
-        help();
-        erreur = 0;
-      } else {
-        printf("Commande '%s' invalide.\n(La commande 'help' permet d'afficher les commandes disponibles)\n", command);
-        erreur++;
-      }
-      resetColor();
-	  }
-
+    }
+    play = replay(command);
   }
-
+  endBattle(team1, team2);
+  exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
   free(command);
 }

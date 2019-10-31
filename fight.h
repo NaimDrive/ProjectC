@@ -1,27 +1,6 @@
 #ifndef __FIGHT_H__
 #define __FIGHT_H__
 
-typedef struct {
-  int id;
-  int position;
-  int CA;
-  int CE;
-  int maxCE;
-  Champion *champion;
-  Weapon *weapon;
-  Protection *protection;
-  Healing *healing;
-  int protectionActivated;
-} Team;
-
-typedef struct winsize Winsize;
-
-/*
-  Create a new team
-  @return the new team
-*/
-Team * initTeam(int id, Winsize sz);
-
 /*
   Calculate the maximum of CE which can be used during the round
   @Param1 the first team

@@ -1,6 +1,8 @@
 #ifndef __INITGAME_H__
 #define __INITGAME_H__
 
+typedef struct winsize Winsize;
+
 typedef struct champion {
   int num;
   char *variete;
@@ -40,17 +42,24 @@ typedef struct healing{
   int effetMax;
 } Healing;
 
-/*
-  A SUPPRIMER
-*/
-void afficherChampions(Champion **champions, int *nbChampions);
-void afficherWeapons(Weapon **weapons, int *nbWeapons);
-void afficherProtections(Protection **protections, int *nbProtections);
-void afficherSoins(Healing **healings, int *nbHealings);
-/*
-  A SUPPRIMER
-*/
+typedef struct {
+  int id;
+  int position;
+  int CA;
+  int CE;
+  int maxCE;
+  Champion *champion;
+  Weapon *weapon;
+  Protection *protection;
+  Healing *healing;
+  int protectionActivated;
+} Team;
 
+/*
+  Create a new team
+  @return the new team
+*/
+Team * initTeam(Team *team, int id, Winsize sz);
 
 /*
   Create and return a new champion.
@@ -126,8 +135,10 @@ void initHealings(Healing **healings, int *nbHealings);
     @Param6 the current weapon number.
     @Param7 the current protection number.
     @Param8 the current healing number.
-    @Return void
+    @Param9 the first team.
+    @Param10 the second team.
+    @Return Winsize
 */
-void initGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings);
+Winsize initGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2);
 
 #endif

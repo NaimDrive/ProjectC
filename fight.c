@@ -1,31 +1,11 @@
 #include "initGame.h"
 #include "fight.h"
 
-#include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
 
-Team * initTeam(int id, Winsize sz) {
-  Team *team;
-  team = malloc(sizeof(Team));
-  team->id = id;
-  if(id == 0)
-    team->position = 1;
-  else
-    team->position = sz.ws_col-2;
-  team->CE = 1000;
-  team->CA = 500;
-  team->maxCE = 50;
-  team->champion = NULL;
-  team->weapon = NULL;
-  team->protection = NULL;
-  team->healing = NULL;
-  team->protectionActivated = 0;
-
-  return team;
-}
 
 void maxCE(Team *team1, Team *team2) {
   if(team1->CE >= 50 && team2->CE >= 50) {

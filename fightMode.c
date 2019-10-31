@@ -2,6 +2,7 @@
 #include "commands.h"
 #include "fight.h"
 #include "colors.h"
+#include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -136,22 +137,22 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
 }
 
 void actionCreditChoice(Team *team, char *command) {
-    long num = 0;
+    long num = -1;
     char *endptr;
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
     printf("Et enfin ! Il nous faut des crédits d'action pour enclencher !\n");
 
-    while((num > team->maxCE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
+    while((num > team->maxCE || num < 0) || !(*command != '\0' && *endptr == '\0')) {
         printf("Je souhaite acheter...");
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
         num = strtoul(command, &endptr, 10);
 
-        if((num > team->CE || num <= 0) || !(*command != '\0' && *endptr == '\0')) {
+        if((num > team->CE || num < 0) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Pour rappel, vous avez %d crédits d'équipement.\n", team->CE);
-        }   
+        }
     }
 
     buyCA(team, num);
@@ -196,23 +197,28 @@ void roundWinner(Team *team1, Team *team2, int maximumCE) {
 void showEndGame(Team *team1, Team *team2) {
     system("clear");
     printf(" -- Partie terminé ! -- \n");
-    if(team1->CE == 0 && team2->CE == 0)
+    if(team1->CE == 0 && team2->CE == 0) {
         printf("C'est incroyable, le résultat est un ex-aequo !\n");
-    else {
-        if(team1->CE == 0)
-        printf("L'équipe %s gagne la partie !\n", team2->champion->variete);
-        else
-        printf("L'équipe %s gagne la partie !\n", team1->champion->variete);
+    } else {
+        if(team1->CE == 0) {
+            printf("L'équipe %s gagne la partie !\n", team2->champion->variete);
+        } else {
+            printf("L'équipe %s gagne la partie !\n", team1->champion->variete);
+        }
     }
 }
 
-void endRound(Team *team1, Team *team2, int maximumCE) {
-    roundWinner(team1, team2, maximumCE);
-    maxCE(team1, team2);
+void endRound(Team *team1, Team *team2, int maximumCE, int end) {
+    if(end == 0) {
+        roundWinner(team1, team2, maximumCE);
+        maxCE(team1, team2);
+    }
 
-    team1->champion->PV = team1->champion->PVMax;
-    team2->champion->PV = team2->champion->PVMax;
+    team1->protectionActivated = 0;
+    team2->protectionActivated = 0;
 
+    free(team1->champion);
+    team1->champion = NULL;
     free(team1->weapon);
     team1->weapon = NULL;
     free(team1->protection);
@@ -220,6 +226,8 @@ void endRound(Team *team1, Team *team2, int maximumCE) {
     free(team1->healing);
     team1->healing = NULL;
 
+    free(team2->champion);
+    team2->champion = NULL;
     free(team2->weapon);
     team2->weapon = NULL;
     free(team2->protection);
@@ -233,6 +241,18 @@ void takeOffProtection(Team *team) {
         team->protectionActivated = 0;
         printf("La protection %s est déactivée pour %s.\n", team->protection->nom, team->champion->variete);
     }
+}
+
+void resetGame(Team *team1, Team *team2, Winsize screenSize) {
+    team1->CE = 20;
+    team1->CA = 500;
+    team1->maxCE = 50;
+    team1->position = 1;
+
+    team2->CE = 20;
+    team2->CA = 500;
+    team2->maxCE = 50;
+    team2->position = screenSize.ws_col-2;
 }
 
 void fightingMode(Team *team1, Team *team2, int screenSize) {

@@ -106,15 +106,16 @@ void showFruits(Champion **champions, int *nbChampions) {
   for(i = 6; i < *nbChampions; i++)
   {
     c = champions[i];
-    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n", c->num, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
+    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n", (c->num)-6, c->variete, c->type, c->force, c->resistance, c->PVMax, c->CE);
   }
   printf("\n");
 }
 
 void showFruit(Champion **champions, int *nbChampions, int id) {
-  id = id <= 6 ? id+5 : id;
-  if(id < *nbChampions && id > 0) {
-    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", champions[id]->num-5, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
+  int tmp = id;
+  id += 6;
+  if(tmp < (*nbChampions)-6 && tmp >= 0) {
+    printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", (champions[id]->num)-6, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
   } else {
     printf("Veuillez re-vérifier l'ID entré.\n");
   }

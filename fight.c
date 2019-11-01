@@ -262,7 +262,7 @@ void useWeapon(Team *team1, Team *team2, int n) {
         for(i = 0 ; i < n && team2->champion->PV > 0 ; i++) {
           team1->CA -= team1->weapon->CA;
           team1->maxCA -= team1->weapon->CA;
-          printf("L'attaquant perd %d crédits d'attaques.\n", team1->weapon->CA);
+          printf("%s perd %d crédits d'attaques.\n", team1->champion->variete, team1->weapon->CA);
 
           if(distanceBetweenChampions(team1, team2) <= team1->weapon->portee) {
             if(team2->protectionActivated && team2->protection != NULL) {
@@ -280,13 +280,15 @@ void useWeapon(Team *team1, Team *team2, int n) {
             damage = dmg + 0.5;
 
             if(damage > team2->champion->PV) {
-              printf("Le défenseur perd %d points de vie.\n", damage - team2->champion->PV);
               team2->champion->PV = 0;
             } else {
-              printf("Le défenseur perd %d points de vie.\n", damage);
               team2->champion->PV -= damage;
             }
-            printf("Il reste %d points de vie.\n", team2->champion->PV);
+            if(team2->champion->PV == 0) {
+              printf("Vous avez tué %s.\n", team2->champion->variete);
+            } else {
+              printf("%s perd %d points de vie. Il reste %d points de vie.\n", team2->champion->variete, damage, team2->champion->PV);
+            }
           } else {
             printf("Impossible d'attaquer, le champion est trop loin !\n");
             break;

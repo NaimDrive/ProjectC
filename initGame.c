@@ -385,10 +385,10 @@ Team * initTeam(Team *team, int id, Winsize sz) {
     team->position = 1;
   else
     team->position = sz.ws_col-2;
-  team->CE = 20;
+  team->CE = 1000;
   team->CA = 500;
-  team->maxCE = 20;
-  team->maxCA = 50;
+  team->maxCE = 50;
+  team->maxCA = 500;
   team->champion = NULL;
   team->weapon = NULL;
   team->protection = NULL;

@@ -238,17 +238,23 @@ int replay() {
 */
 
 void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
-  int maximumCE = 0, end = 0;
+  int maximumCE = team1->maxCE, end = 0, stillHaveCA, team1stillHaveCA, team2stillHaveCA, team1stillAlive, team2stillAlive;
 
   buyChampion(vegetable, team1);
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
   
-  maximumCE = team1->maxCE;
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
 
-  while((team1->champion->PV != 0 && team2->champion->PV != 0)) {
+  team1stillAlive = team1->champion->PV != 0;
+  team2stillAlive = team2->champion->PV != 0;
+
+  team1stillHaveCA = (team1->CA > 0);
+  team2stillHaveCA = (team2->CA > 0);
+
+  while((team1stillAlive && team2stillAlive) && (team1stillHaveCA && team2stillHaveCA)) {
+    maxCA(team1, team2);
     fightingMode(team1, team2, screenSize.ws_col);
     takeOffProtection(team2);
 
@@ -257,12 +263,24 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
 
     fightingMode(team2, team1, screenSize.ws_col);
     takeOffProtection(team1);
+
+    team1stillAlive = team1->champion->PV != 0;
+    team2stillAlive = team2->champion->PV != 0;
+    team1stillHaveCA = (team1->CA > 0);
+    team2stillHaveCA = (team2->CA > 0);
   }
+
   if(!((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE))) {
     showEndGame(team1, team2);
     end = 1;
   }
-  endRound(team1, team2, maximumCE, end);
+
+  if((!team1stillHaveCA && !team2stillHaveCA) && (team1stillAlive && team2stillAlive))
+    stillHaveCA = 0;
+  else
+    stillHaveCA = 1;
+    
+  endRound(team1, team2, maximumCE, end, stillHaveCA);
 }
 
 void help() {

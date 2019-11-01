@@ -230,11 +230,14 @@ void showEndGame(Team *team1, Team *team2) {
     }
 }
 
-void endRound(Team *team1, Team *team2, int maximumCE, int end) {
+void endRound(Team *team1, Team *team2, int maximumCE, int end, int stillHaveCA) {
     if(end == 0) {
-        roundWinner(team1, team2, maximumCE);
+        if(stillHaveCA == 1) {
+            roundWinner(team1, team2, maximumCE);
+        } else {
+            printf("Plus personne n'a de CA pour attaquer, le duel est un ex-aequo.\n");
+        }
         maxCE(team1, team2);
-        maxCA(team1, team2);
     }
 
     team1->protectionActivated = 0;
@@ -267,14 +270,14 @@ void takeOffProtection(Team *team) {
 }
 
 void resetGame(Team *team1, Team *team2, Winsize screenSize) {
-    team1->CE = 20;
-    team1->CA = 500;
+    team1->CE = 1000;
+    team1->CA = 0;
     team1->maxCE = 50;
     team1->maxCA = 50;
     team1->position = 1;
 
-    team2->CE = 20;
-    team2->CA = 500;
+    team2->CE = 1000;
+    team2->CA = 0;
     team2->maxCE = 50;
     team1->maxCA = 50;
     team2->position = screenSize.ws_col-2;
@@ -284,7 +287,7 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
     int end = 0;
 
-    while(team1->CA > 0 && team1->maxCA > 0 && !end) {
+    while(team1->CA > 0 && team1->maxCA > 0 && team2->champion->PV > 0 && !end) {
         printf("%s %d> ", team1->champion->variete, team1->maxCA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
@@ -298,21 +301,24 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         else if(strcmp(command, "move backward") == 0) moveBackward(team1, 1, screenSize);
 
         else if(strncmp(command, "use weapon ", 11) == 0) useWeapon(team1, team2, getID(command, 11));
-	      else if(strcmp(command, "use weapon") == 0) useWeapon(team1, team2, 1);
+	    else if(strcmp(command, "use weapon") == 0) useWeapon(team1, team2, 1);
 
         else if(strcmp(command, "use protection") == 0) useProtection(team1);
 
         else if(strncmp(command, "use care ", 9) == 0) useCare(team1, getID(command, 9));
-	      else if(strcmp(command, "use care") == 0) useCare(team1, 1);
+	    else if(strcmp(command, "use care") == 0) useCare(team1, 1);
 
         else if(strcmp(command, "end") == 0) end = 1;
+        else if(strcmp(command,"clear") == 0) system("clear");
     }
     if(team1->CA == 0)
         printf("Tour terminé. Vous n'avez plus de CA.\n");
     else if(team1->maxCA == 0)
         printf("Tour terminé. Vous avez atteint la limite de CA pour ce tour.\n");
+    else if(team2->champion->PV == 0)
+        printf("Duel terminé.\n");
     else
-        printf("Tour terminé\n");
+        printf("Tour terminé.\n");
 
     free(command);
 }

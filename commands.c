@@ -23,6 +23,22 @@ char* substring(char *src, int beg, int end) {
   return cpy - (end-beg);
 }
 
+void showTeamsCE(Team *team1, Team *team2) {
+  printf(" -- > ");
+  green();
+  printf("Team 1");
+  white();
+  printf(" : %d", team1->CE);
+  resetColor();
+  printf("  |  ");
+  yellow();
+  printf("Team 2");
+  white();
+  printf(" : %d", team2->CE);
+  resetColor();
+  printf(" < -- \n");
+}
+
 int getID(char *command, int n) {
   char *c = substring(command, n, strlen(command));
   char *endptr;
@@ -274,7 +290,9 @@ void exitGame(Champion **champions, Weapon **weapons, Protection **protections, 
 }
 
 void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+  magenta();
   printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
+  resetColor();
   char *command = (char*)malloc(256*sizeof(char));
   int erreur = 0, play = 1;
 
@@ -283,6 +301,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       resetGame(team1, team2, screenSize);
     }
     while((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE)) {
+      showTeamsCE(team1, team2);
       printf("> ");
       fgets(command, 256, stdin);
       if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
@@ -352,6 +371,8 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         }
         resetColor();
       }
+      enterToContinue();
+      system("clear");
     }
     play = replay(command);
   }

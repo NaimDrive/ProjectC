@@ -1,6 +1,8 @@
 #ifndef __FIGHTMODE_H__
 #define __FIGHTMODE_H__
 
+void enterToContinue();
+
 void fightingMode(Team *team1, Team *team2, int screenSize);
 
 void equipTeam(Team *team, Weapon **weapons, Protection **protections, Healing **healings, int *nbWeapons, int*nbProtections, int *nbHealings);

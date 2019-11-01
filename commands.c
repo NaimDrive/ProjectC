@@ -130,7 +130,7 @@ void showWeapons(Weapon **weapons, int *nbWeapons, int ce) {
       if(ce >= w->CE) green();
       else { resetColor() , red(); }
     }
-    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | CE : %d\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | Portée : %d\n", w->num, w->nom, w->CE, w->CA, w->degatsMin, w->degatsMax, w->portee);
   }
   printf("\n");
   resetColor();
@@ -138,7 +138,7 @@ void showWeapons(Weapon **weapons, int *nbWeapons, int ce) {
 
 void showWeapon(Weapon **weapons, int *nbWeapons, int id) {
   if(id < *nbWeapons && id >= 0) {
-    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | CE : %d\n\n", weapons[id]->num, weapons[id]->nom, weapons[id]->CE, weapons[id]->CA, weapons[id]->degatsMin, weapons[id]->degatsMax, weapons[id]->portee);
+    printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | Portée : %d\n\n", weapons[id]->num, weapons[id]->nom, weapons[id]->CE, weapons[id]->CA, weapons[id]->degatsMin, weapons[id]->degatsMax, weapons[id]->portee);
   } else {
     printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbWeapons);
   }

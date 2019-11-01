@@ -249,11 +249,15 @@ int effectiveProtection(int protection) {
 }
 
 void useWeapon(Team *team1, Team *team2, int n) {
+  printf("team %s\n", team1->champion->variete);
+  printf("team %s\n", team2->champion->variete);
+  printf("team %s\n", team2->weapon->nom);
   int i, damage;
   float dmg, strength, resistance, weapon;
   if(n > 0) {
     if(team1->champion == NULL || team2->champion == NULL || team1->weapon == NULL) {
-
+      printf("Attaque impossible. Vérifiez que les deux équipes ont un champion et une arme.\n");
+    } else {
       if(team1->weapon->CA * n > team1->CA) {
         printf("Pas assez de crédit d'action pour utiliser %d fois l'arme.\n", n);
       } else if(team1->weapon->CA * n > team1->maxCA) {
@@ -293,10 +297,9 @@ void useWeapon(Team *team1, Team *team2, int n) {
           }
         }
       }
-    } else {
-      printf("Attaque impossible. Vérifiez que les deux équipes ont un champion et une arme.\n");
     }
-  } else {
+  }
+  else {
     printf("Vous ne pouvez attaquer avec un nombre négatif.\n");
   }
 }

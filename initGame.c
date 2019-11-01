@@ -388,6 +388,7 @@ Team * initTeam(Team *team, int id, Winsize sz) {
   team->CE = 20;
   team->CA = 500;
   team->maxCE = 20;
+  team->maxCA = 50;
   team->champion = NULL;
   team->weapon = NULL;
   team->protection = NULL;

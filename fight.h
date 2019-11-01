@@ -10,6 +10,14 @@
 void maxCE(Team *team1, Team *team2);
 
 /*
+  Calculate the maximum of CA which can be used during the round
+  @Param1 the first team
+  @Param2 the second team
+  @Return void
+*/
+void maxCA(Team *team1, Team *team2);
+
+/*
   Use CE to buy CA
   @Param1 the team
   @Param2 CA number

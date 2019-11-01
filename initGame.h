@@ -48,6 +48,7 @@ typedef struct {
   int CA;
   int CE;
   int maxCE;
+  int maxCA;
   Champion *champion;
   Weapon *weapon;
   Protection *protection;

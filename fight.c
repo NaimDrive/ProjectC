@@ -22,6 +22,21 @@ void maxCE(Team *team1, Team *team2) {
   }
 }
 
+void maxCA(Team *team1, Team *team2) {
+  if(team1->CA >= 50 && team2->CA >= 50) {
+    team1->maxCA = 50;
+    team2->maxCA = 50;
+  } else {
+    if(team1->CA >= team2->CA) {
+      team1->maxCA = team2->CA;
+      team2->maxCA = team2->CA;
+    } else {
+      team1->maxCA = team1->CA;
+      team2->maxCA = team1->CA;
+    }
+  }
+}
+
 void buyCA(Team *team, int number) {
   if(team->maxCE - number >= 0 && team->CE >= number) {
     team->CE -= number;
@@ -145,9 +160,12 @@ void moveForward(Team *team1, Team *team2, int n) {
         } else {
           if(team1->CA < n) {
             printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);
+          } else if(team1->maxCA < n) {
+            printf("Vous ne pouvez pas avancer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team1->position+=n;
             team1->CA-=n;
+            team1->maxCA-=n;
             printf("Vous avancez de %d cases.\n", n);
           }
         }
@@ -161,9 +179,12 @@ void moveForward(Team *team1, Team *team2, int n) {
         } else {
           if(team1->CA < n) {
             printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);
+          } else if(team2->maxCA < n) {
+            printf("Vous ne pouvez pas avancer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team1->position-=n;
             team1->CA-=n;
+            team1->maxCA-=n;
             printf("Vous avancez de %d cases.\n", n);
           }
         }
@@ -183,9 +204,12 @@ void moveBackward(Team *team, int n, int maxX) {
         } else {
           if(team->CA < (n*2)) {
             printf("Vous n'avez pas assez de CA pour reculer de %d cases.\n", n);
+          } else if(team->maxCA < (n*2)) {
+            printf("Vous ne pouvez pas reculer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team->position-=n;
             team->CA-=(n*2);
+            team->maxCA-=(n*2);
             printf("Vous reculez de %d cases.\n", n);
           }
         }
@@ -199,9 +223,12 @@ void moveBackward(Team *team, int n, int maxX) {
         } else {
           if(team->CA < (n*2)) {
             printf("Vous n'avez pas assez de CA pour reculer de %d cases.\n", n);
+          } else if(team->maxCA < (n*2)) {
+            printf("Vous ne pouvez pas reculer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team->position+=n;
             team->CA-=(n*2);
+            team->maxCA-=(n*2);
             printf("Vous reculez de %d cases.\n", n);
           }
         }
@@ -228,9 +255,12 @@ void useWeapon(Team *team1, Team *team2, int n) {
 
     if(team1->weapon->CA * n > team1->CA) {
       printf("Pas assez de crédit d'action pour utiliser %d fois l'arme.\n", n);
+    } else if(team1->weapon->CA * n > team1->maxCA) {
+      printf("Vous ne pouvez pas utiliser l'arme %d fois, car vous allez dépasser la limite de CA.\n", n);
     } else {
       for(i = 0 ; i < n && team2->champion->PV > 0 ; i++) {
         team1->CA -= team1->weapon->CA;
+        team1->maxCA -= team1->weapon->CA;
         printf("L'attaquant perd %d crédits d'attaques.\n", team1->weapon->CA);
 
         if(distanceBetweenChampions(team1, team2) <= team1->weapon->portee) {
@@ -271,8 +301,11 @@ void useProtection(Team *team) {
   if(team->weapon != NULL) {
     if(team->CA < team->protection->CA) {
       printf("Vous n'avez pas assez de CA pour activer la protection.\n");
+    } else if(team->maxCA < team->protection->CA) {
+      printf("Vous ne pouvez pas activer la protection, car vous allez dépasser la limite de CA.\n");
     } else {
       team->CA -= team->protection->CA;
+      team->maxCA -= team->protection->CA;
       team->protectionActivated = 1;
       printf("La protection %s est désormais active pendant 1 tour.\n", team->protection->nom);
     }
@@ -293,11 +326,14 @@ void useCare(Team *team, int n) {
       } else {
         if(team->CA < team->healing->CA * n) {
           printf("Vous n'avez pas assez de CA pour vous soignez %d fois.\n", n);
+        } else if(team->maxCA < team->healing->CA * n) {
+          printf("Vous ne pouvez pas utiliser le soin %d fois car vous allez dépasser la limite de CA.\n", n);
         } else {
           int soin;
           for (int i = 0; i < n; i++) {
             soin = randHeal(team->healing);
             team->CA -= team->healing->CA;
+            team->maxCA -= team->healing->CA;
             team->healing->volume--;
             if(team->champion->PV + soin > team->champion->PVMax)
               team->champion->PV = team->champion->PVMax;

@@ -39,10 +39,16 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
 
         num = strtoul(command, &endptr, 10);
 
+        white();
         if((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d\n", *nbWeapons-1);
+        } else if(weapons[num]->CE > team->maxCE) {
+            system("clear");
+            printf("Vous n'avez pas assez de CE pour acheter '%s'.\n", weapons[num]->nom);
+            num = -1;
         }
+        resetColor();
     }
 
     buyWeapon(weapons[num], team);
@@ -67,14 +73,22 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
         num = strtoul(command, &endptr, 10);
 
+        white();
         if((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d ou '-1' si vous ne voulez pas de protection.\n", *nbProtections-1);
+        } else if(num != -1 && protections[num]->CE > team->maxCE) {
+            system("clear");
+            printf("Vous n'avez pas assez de CE pour acheter '%s'.\n", protections[num]->nom);
+            num = -2;
         }
+        resetColor();
     }
 
     if(num == -1) {
+        white();
         printf("Vous avez décidez de ne prendre aucune protections !\n");
+        resetColor();
         enterToContinue();
         system("clear");
         return;
@@ -109,14 +123,22 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
         num = strtoul(command, &endptr, 10);
 
+        white();
         if((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
             printf("Attention ! Vous devez choisir un chiffre compris entre 0 et %d ou '-1' si vous ne voulez pas de soin.\n", *nbHealings-1);
+        } else if(num != -1 && healings[num]->CE > team->maxCE) {
+            system("clear");
+            printf("Vous n'avez pas assez de CE pour acheter '%s'.\n", healings[num]->nom);
+            num = -2;
         }
+        resetColor();
     }
 
     if(num == -1) {
+        white();
         printf("Vous avez décidez de ne prendre aucun soin !\n");
+        resetColor();
         enterToContinue();
         system("clear");
         return;

@@ -194,6 +194,7 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
+
 int replay(char *command) {
   while(1) {
     printf("Voulez-vous rejouer ?\n");
@@ -206,6 +207,18 @@ int replay(char *command) {
     system("clear");
   }
 }
+
+
+/*
+int replay() {
+  printf("Voulez-vous rejouer ? (o/n)");
+  char answer = ' ';
+  while(answer != 'o' && answer != 'y' && answer != 'n') {
+    answer = getchar();
+  }
+  return (answer == 'n' ? 0 : 2);
+}
+*/
 
 void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
   int maximumCE = 0, end = 0;

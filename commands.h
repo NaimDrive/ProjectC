@@ -29,6 +29,8 @@ void showCare(Healing **healings, int *nbHealings, int id);
 
 int replay(char *command);
 
+// int replay();
+
 void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
 
 void help();

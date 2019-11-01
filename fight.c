@@ -251,49 +251,53 @@ int effectiveProtection(int protection) {
 void useWeapon(Team *team1, Team *team2, int n) {
   int i, damage;
   float dmg, strength, resistance, weapon;
-  if(team1->champion == NULL || team2->champion == NULL || team1->weapon == NULL || n > 0) {
+  if(n > 0) {
+    if(team1->champion == NULL || team2->champion == NULL || team1->weapon == NULL) {
 
-    if(team1->weapon->CA * n > team1->CA) {
-      printf("Pas assez de crédit d'action pour utiliser %d fois l'arme.\n", n);
-    } else if(team1->weapon->CA * n > team1->maxCA) {
-      printf("Vous ne pouvez pas utiliser l'arme %d fois, car vous allez dépasser la limite de CA.\n", n);
-    } else {
-      for(i = 0 ; i < n && team2->champion->PV > 0 ; i++) {
-        team1->CA -= team1->weapon->CA;
-        team1->maxCA -= team1->weapon->CA;
-        printf("L'attaquant perd %d crédits d'attaques.\n", team1->weapon->CA);
+      if(team1->weapon->CA * n > team1->CA) {
+        printf("Pas assez de crédit d'action pour utiliser %d fois l'arme.\n", n);
+      } else if(team1->weapon->CA * n > team1->maxCA) {
+        printf("Vous ne pouvez pas utiliser l'arme %d fois, car vous allez dépasser la limite de CA.\n", n);
+      } else {
+        for(i = 0 ; i < n && team2->champion->PV > 0 ; i++) {
+          team1->CA -= team1->weapon->CA;
+          team1->maxCA -= team1->weapon->CA;
+          printf("L'attaquant perd %d crédits d'attaques.\n", team1->weapon->CA);
 
-        if(distanceBetweenChampions(team1, team2) <= team1->weapon->portee) {
-          if(team2->protectionActivated && team2->protection != NULL) {
-            if(effectiveProtection(team2->protection->probabilite) == 1) {
-              printf("La protection a contré l'attaque !\n");
-              continue;
+          if(distanceBetweenChampions(team1, team2) <= team1->weapon->portee) {
+            if(team2->protectionActivated && team2->protection != NULL) {
+              if(effectiveProtection(team2->protection->probabilite) == 1) {
+                printf("La protection a contré l'attaque !\n");
+                continue;
+              }
             }
-          }
 
-          strength = 100 + team1->champion->force;
-          weapon = weaponDamage(team1->weapon);
-          dmg = weapon * (strength / 100);
-          resistance = 100 - team2->champion->resistance;
-          dmg = dmg * (resistance / 100);
-          damage = dmg + 0.5;
+            strength = 100 + team1->champion->force;
+            weapon = weaponDamage(team1->weapon);
+            dmg = weapon * (strength / 100);
+            resistance = 100 - team2->champion->resistance;
+            dmg = dmg * (resistance / 100);
+            damage = dmg + 0.5;
 
-          if(damage > team2->champion->PV) {
-            printf("Le défenseur perd %d points de vie.\n", damage - team2->champion->PV);
-            team2->champion->PV = 0;
+            if(damage > team2->champion->PV) {
+              printf("Le défenseur perd %d points de vie.\n", damage - team2->champion->PV);
+              team2->champion->PV = 0;
+            } else {
+              printf("Le défenseur perd %d points de vie.\n", damage);
+              team2->champion->PV -= damage;
+            }
+            printf("Il reste %d points de vie.\n", team2->champion->PV);
           } else {
-            printf("Le défenseur perd %d points de vie.\n", damage);
-            team2->champion->PV -= damage;
+            printf("Impossible d'attaquer, le champion est trop loin !\n");
+            break;
           }
-          printf("Il reste %d points de vie.\n", team2->champion->PV);
-        } else {
-          printf("Impossible d'attaquer, le champion est trop loin !\n");
-          break;
         }
       }
+    } else {
+      printf("Attaque impossible. Vérifiez que les deux équipes ont un champion et une arme.\n");
     }
   } else {
-    printf("Attaque impossible. Vérifiez que les deux équipes ont un champion et une arme.\n");
+    printf("Vous ne pouvez attaquer avec un nombre négatif.\n");
   }
 }
 
@@ -353,7 +357,10 @@ void useCare(Team *team, int n) {
 }
 
 int distanceBetweenChampions(Team *team1, Team *team2) {
-  return team2->position - team1->position;
+  if(team1->id == 0)
+    return team2->position - team1->position;
+  else
+    return -(team2->position - team1->position);
 }
 
 void endBattle(Team *team1, Team *team2) {

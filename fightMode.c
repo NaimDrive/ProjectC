@@ -234,6 +234,7 @@ void endRound(Team *team1, Team *team2, int maximumCE, int end) {
     if(end == 0) {
         roundWinner(team1, team2, maximumCE);
         maxCE(team1, team2);
+        maxCA(team1, team2);
     }
 
     team1->protectionActivated = 0;
@@ -269,11 +270,13 @@ void resetGame(Team *team1, Team *team2, Winsize screenSize) {
     team1->CE = 20;
     team1->CA = 500;
     team1->maxCE = 50;
+    team1->maxCA = 50;
     team1->position = 1;
 
     team2->CE = 20;
     team2->CA = 500;
     team2->maxCE = 50;
+    team1->maxCA = 50;
     team2->position = screenSize.ws_col-2;
 }
 
@@ -281,8 +284,8 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
     int end = 0;
 
-    while(team1->CA > 0 && !end) {
-        printf("%s %d> ", team1->champion->variete, team1->CA);
+    while(team1->CA > 0 && team1->maxCA > 0 && !end) {
+        printf("%s %d %d> ", team1->champion->variete, team1->CA, team1->maxCA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
@@ -306,6 +309,8 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     }
     if(team1->CA == 0)
         printf("Tour terminé. Vous n'avez plus de CA.\n");
+    else if(team1->maxCA == 0)
+        printf("Tour terminé. Vous avez atteint la limite de CA pour ce tour.\n");
     else
         printf("Tour terminé\n");
 

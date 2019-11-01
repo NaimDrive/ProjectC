@@ -355,6 +355,6 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     play = replay(command);
   }
   endBattle(team1, team2);
-  exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
   free(command);
+  exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
 }

@@ -23,17 +23,16 @@ void maxCE(Team *team1, Team *team2) {
 }
 
 void maxCA(Team *team1, Team *team2) {
-  if(team1->CA >= 50 && team2->CA >= 50) {
+  if(team1->CA >= 50) {
     team1->maxCA = 50;
+  } else {
+    team1->maxCA = team1->CA;
+  }
+
+  if(team2->CA >= 50) {
     team2->maxCA = 50;
   } else {
-    if(team1->CA >= team2->CA) {
-      team1->maxCA = team2->CA;
-      team2->maxCA = team2->CA;
-    } else {
-      team1->maxCA = team1->CA;
-      team2->maxCA = team1->CA;
-    }
+    team2->maxCA = team2->CA;
   }
 }
 

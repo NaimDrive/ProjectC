@@ -285,7 +285,7 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     int end = 0;
 
     while(team1->CA > 0 && team1->maxCA > 0 && !end) {
-        printf("%s %d %d> ", team1->champion->variete, team1->CA, team1->maxCA);
+        printf("%s %d> ", team1->champion->variete, team1->maxCA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 

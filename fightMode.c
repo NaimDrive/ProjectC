@@ -13,16 +13,30 @@ void enterToContinue() {
 }
 
 void showEquipment(Team *team) {
+    Champion *c = team->champion;
     Weapon *w = team->weapon;
     Protection *p = team->protection;
     Healing *h = team->healing;
 
+    if(team->id == 0) green();
+    else yellow();
+    printf("Votre %s possède %d/%d PV, avec une résistance de %d pour une force de %d.\n", c->variete, c->PV, c->PVMax, c->resistance, c->force);
+
+    white();
     if(w != NULL)
-        printf("Arme : '%s' faisant %d-%d de dégats, avec un portée de %d, chaque coup %d CA.\n", w->nom, w->degatsMin, w->degatsMax, w->portee, w->CA);
+        printf("   Arme    |--> '%s' faisant %d-%d de dégats, avec un portée de %d, chaque coup %d CA.\n", w->nom, w->degatsMin, w->degatsMax, w->portee, w->CA);
+    
     if(p != NULL)
-        printf("Protection : '%s' a une probabilité de blocage de %d%c, son activation coûte %d CA.\n", p->nom, p->probabilite, '%', p->CA);
+        printf("Protection |--> '%s' a une probabilité de blocage de %d%c, son activation coûte %d CA.\n", p->nom, p->probabilite, '%', p->CA);
+    else
+        printf("Aucune protection équipé.\n");
+    
     if(h != NULL)
-        printf("Soin : '%s' permet de récupérer %d-%d PV. Stock : %d\n", h->nom, h->effetMin, h->effetMax, h->volume);
+        printf("   Soin    |--> '%s' permet de récupérer %d-%d PV. Stock : %d\n", h->nom, h->effetMin, h->effetMax, h->volume);
+    else
+        printf("Aucun soin équipé.\n");
+    
+    resetColor();
 }
 
 void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
@@ -32,7 +46,7 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
     printf("Commençons par choisir de quoi tuer l'adversaire.\n");
 
     while((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
-        showWeapons(weapons, nbWeapons, team->CE);
+        showWeapons(weapons, nbWeapons, team->maxCE);
         printf("Je choisis l'arme numéro... ");
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
@@ -66,7 +80,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
     printf("Ensuite il faut de quoi se protéger.\n");
 
     while((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
-        showProtections(protections, nbProtections, team->CE);
+        showProtections(protections, nbProtections, team->maxCE);
         printf("(Entrez '-1' si vous ne voulez pas de protection)\n");
         printf("Je choisis la protection numéro... ");
         fgets(command, 256, stdin);
@@ -116,7 +130,7 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
 
     while((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
-        showCares(healings, nbHealings, team->CE);
+        showCares(healings, nbHealings, team->maxCE);
         printf("(Entrez '-1' si vous ne voulez pas de soin)\n");
         printf("Je choisis le soin numéro... ");
         fgets(command, 256, stdin);
@@ -283,9 +297,24 @@ void resetGame(Team *team1, Team *team2, Winsize screenSize) {
     team2->position = screenSize.ws_col-2;
 }
 
+void helpFight() {
+    white();
+    printf("Commandes disponibles : \n\n");
+    printf(" show - Affiche les informations du légume/fruit actuellement incarné.\n");
+    printf(" move forward n - Avance de n pas. (Avance de 1 pas si n est null)\n");
+    printf(" move forward n - Recul de n pas. (Recul de 1 pas si n est null)\n");
+    printf(" use weapon n - Attaque n fois l'adversaire. (Attaque une fois si n est null)\n");
+    printf(" use protection - Active la protection actuellement équipé.\n");
+    printf(" use care n - Utilise n soins. (N'utilise qu'un seul soin si n est null)\n");
+    printf(" end - Met fin au tour en cours.\n");
+    printf(" clear - Nettoie le terminal.\n");
+    printf(" help - Affiche les commandes disponibles.\n\n");
+    resetColor();
+}
+
 void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
-    int end = 0;
+    int end = 0, erreur = 0;
 
     while(team1->CA > 0 && team1->maxCA > 0 && team2->champion->PV > 0 && !end) {
         printf("%s %d> ", team1->champion->variete, team1->maxCA);
@@ -310,6 +339,20 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
 
         else if(strcmp(command, "end") == 0) end = 1;
         else if(strcmp(command,"clear") == 0) system("clear");
+
+        else if(strcmp(command, "help") == 0) helpFight();
+
+        else {
+            erreur++;
+            white();
+            printf("Commande '%s' invalide.\n", command);
+            if(erreur == 3) {
+                helpFight();
+                erreur = 0;
+            }
+            resetColor();
+        }
+
     }
     if(team1->CA == 0)
         printf("Tour terminé. Vous n'avez plus de CA.\n");

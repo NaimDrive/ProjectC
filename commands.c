@@ -378,6 +378,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       } else if(strcmp(command,"clear") == 0) system("clear");
       else if(strcmp(command, "help") == 0) help();
       else {
+        erreur++;
         white();
         if(erreur == 3) {
           printf("Commande '%s' invalide.\n", command);
@@ -385,7 +386,6 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           erreur = 0;
         } else {
           printf("Commande '%s' invalide.\n(La commande 'help' permet d'afficher les commandes disponibles)\n", command);
-          erreur++;
         }
         resetColor();
       }

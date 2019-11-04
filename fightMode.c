@@ -2,6 +2,8 @@
 #include "commands.h"
 #include "fight.h"
 #include "colors.h"
+#include "displayGame.h"
+
 #include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -320,6 +322,8 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     int end = 0, erreur = 0;
 
     while(team1->CA > 0 && team1->maxCA > 0 && team2->champion->PV > 0 && !end) {
+
+        displayGame(team1, team2, screenSize);
 
         if(team1->id == 0) green();
         else yellow();

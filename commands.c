@@ -4,6 +4,7 @@
 #include "endGame.h"
 #include "commands.h"
 #include "colors.h"
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>

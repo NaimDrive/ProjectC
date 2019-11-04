@@ -2,7 +2,7 @@
 #include "fight.h"
 #include "commands.h"
 #include "endGame.h"
-#include "main.h"
+#include "displayGame.h"
 
 #include <sys/ioctl.h>
 #include <stdlib.h>

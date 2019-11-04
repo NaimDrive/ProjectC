@@ -19,10 +19,22 @@ char* substring(char *src, int beg, int end);
 int getID(char *command, int n);
 
 /*
+    Check if the fighters are in the available champions
+    @Param1 Vegetable's name
+    @Param2 Fruit's name
+    @Param3 Vegetable index
+    @Param4 Fruit index
+    @Param5 Array of available champions
+    @Param6 Number of champions
+    @Return The id (int)
+*/
+int checkingChamps(char *veg, char *fruit, int vegIndex, int fruitIndex, Champion **champions, int nbChampions);
+
+/*
     Get champion's index from his name
     @Param1 Champion's name
     @Param2 Array of available champions
-    @Param3 Number of champions in the second parameter
+    @Param3 Number of champions
     @Return The champion's id (int)
 */
 int getChampIndex(char *champName, Champion **champion, int nbChampions);

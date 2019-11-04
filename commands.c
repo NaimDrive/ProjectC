@@ -108,11 +108,12 @@ void showVegetables(Champion **champions, int *nbChampions) {
 }
 
 void showVegetable(Champion **champions, int *nbChampions, int id) {
-  printf("id reçu : %d\n", id);
   if(id <= ((*nbChampions)-7) && (id >= 0)) {
     printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", champions[id]->num, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
   } else {
+    red();
     printf("Veuillez choisir un ID compris entre 0 et %d\n", ((*nbChampions)-7));
+    resetColor();
   }
 }
 
@@ -133,7 +134,9 @@ void showFruit(Champion **champions, int *nbChampions, int id) {
   if(tmp < (*nbChampions)-6 && tmp >= 0) {
     printf("Num : %d | Variété : %s | Type : %s | Force : %d | Resistance : %d | PV Max : %d | CE : %d\n\n", (champions[id]->num)-6, champions[id]->variete, champions[id]->type, champions[id]->force, champions[id]->resistance, champions[id]->PVMax, champions[id]->CE);
   } else {
+    red();
     printf("Veuillez re-vérifier l'ID entré.\n");
+    resetColor();
   }
 }
 
@@ -157,7 +160,9 @@ void showWeapon(Weapon **weapons, int *nbWeapons, int id) {
   if(id < *nbWeapons && id >= 0) {
     printf("Num : %d | Nom : %s | CE : %d | CA : %d | Dégâts : %d-%d | Portée : %d\n\n", weapons[id]->num, weapons[id]->nom, weapons[id]->CE, weapons[id]->CA, weapons[id]->degatsMin, weapons[id]->degatsMax, weapons[id]->portee);
   } else {
+    red();
     printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbWeapons);
+    resetColor();
   }
 }
 
@@ -183,7 +188,9 @@ void showProtection(Protection **protections, int *nbProtections, int id) {
   if(id < *nbProtections && id >= 0) {
     printf("Num : %d | Nom : %s | CE : %d | CA : %d | Probabilité : %d %c \n\n", protections[id]->num, protections[id]->nom, protections[id]->CE, protections[id]->CA, protections[id]->probabilite, '%');
   } else {
+    red();
     printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbProtections);
+    resetColor();
   }
 }
 
@@ -207,7 +214,9 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   if(id < *nbHealings && id >= 0) {
     printf("Num : %d | Nom : %s | CE : %d | CA : %d | Volume : %d | Effet : %d-%d\n", healings[id]->num, healings[id]->nom, healings[id]->CE, healings[id]->CA, healings[id]->volume, healings[id]->effetMin, healings[id]->effetMax);
   } else {
+    red();
     printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbHealings);
+    resetColor();
   }
 }
 

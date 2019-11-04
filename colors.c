@@ -20,6 +20,10 @@ void magenta() {
     printf("\033[1;35m");
 }
 
+void brown() {
+    printf("\033[94m");
+}
+
 void white() {
     printf("\033[1;97m");
 }

@@ -25,7 +25,7 @@ fightMode.o : fightMode.c fightMode.h initGame.h fight.h commands.h colors.h dis
 endGame.o: endGame.c endGame.h initGame.h
 	$(CC) $(CFLAGS) -c $<
 
-displayGame.o: displayGame.c displayGame.h initGame.h
+displayGame.o: displayGame.c displayGame.h initGame.h colors.h
 	$(CC) $(CFLAGS) -c $<
 
 main.o: main.c fight.h fightMode.h commands.h initGame.h endGame.h displayGame.h

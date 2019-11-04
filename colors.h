@@ -11,6 +11,8 @@ void blue();
 
 void magenta();
 
+void brown();
+
 void white();
 
 void black();

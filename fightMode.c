@@ -25,17 +25,17 @@ void showEquipment(Team *team) {
     white();
     if(w != NULL)
         printf("   Arme    |--> '%s' faisant %d-%d de dégats, avec un portée de %d, chaque coup %d CA.\n", w->nom, w->degatsMin, w->degatsMax, w->portee, w->CA);
-    
+
     if(p != NULL)
         printf("Protection |--> '%s' a une probabilité de blocage de %d%c, son activation coûte %d CA.\n", p->nom, p->probabilite, '%', p->CA);
     else
         printf("Aucune protection équipé.\n");
-    
+
     if(h != NULL)
         printf("   Soin    |--> '%s' permet de récupérer %d-%d PV. Stock : %d\n", h->nom, h->effetMin, h->effetMax, h->volume);
     else
         printf("Aucun soin équipé.\n");
-    
+
     resetColor();
 }
 
@@ -244,7 +244,7 @@ void showEndGame(Team *team1, Team *team2) {
     }
 }
 
-void endRound(Team *team1, Team *team2, int maximumCE, int end, int stillHaveCA) {
+void endRound(Team *team1, Team *team2, int maximumCE, int end, int stillHaveCA, Winsize sz) {
     if(end == 0) {
         if(stillHaveCA == 1) {
             roundWinner(team1, team2, maximumCE);
@@ -256,6 +256,9 @@ void endRound(Team *team1, Team *team2, int maximumCE, int end, int stillHaveCA)
 
     team1->protectionActivated = 0;
     team2->protectionActivated = 0;
+
+    team1->position = 1;
+    team2->position = sz.ws_col-2;
 
     free(team1->champion);
     team1->champion = NULL;
@@ -317,14 +320,14 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     int end = 0, erreur = 0;
 
     while(team1->CA > 0 && team1->maxCA > 0 && team2->champion->PV > 0 && !end) {
-        
+
         if(team1->id == 0) green();
         else yellow();
         printf("%s ", team1->champion->variete);
         white();
-        printf("%d> ", team1->CA);
+        printf("%d> ", team1->maxCA);
         resetColor();
-        
+
         // printf("%s %d> ", team1->champion->variete, team1->maxCA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';

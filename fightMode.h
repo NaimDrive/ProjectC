@@ -13,7 +13,7 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
 
 void showEndGame(Team *team1, Team *team2);
 
-void endRound(Team *team1, Team* team2, int maximumCE, int end, int stillHaveCA);
+void endRound(Team *team1, Team* team2, int maximumCE, int end, int stillHaveCA, Winsize sz);
 
 void roundWinner(Team *team1, Team *team2, int maximumCE);
 

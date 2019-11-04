@@ -3,118 +3,114 @@
 
 /*
   Calculate the maximum of CE which can be used during the round
-  @Param1 the first team
-  @Param2 the second team
+  @Param1 Team
+  @Param2 Team
   @Return void
 */
 void maxCE(Team *team1, Team *team2);
 
 /*
   Calculate the maximum of CA which can be used during the round
-  @Param1 the first team
-  @Param2 the second team
+  @Param1 Team
+  @Param2 Team
   @Return void
 */
 void maxCA(Team *team1, Team *team2);
 
 /*
   Use CE to buy CA
-  @Param1 the team
-  @Param2 CA number
+  @Param1 Team
+  @Param2 int
   @Return void
 */
 void buyCA(Team *team, int number);
 
 /*
   Buy a champion
-  @Param1 the champion
-  @Param2 the team which need a champion
+  @Param1 Champion
+  @Param2 Team
   @Return int
 */
 int buyChampion(Champion *champion, Team *team);
 
 /*
   Buy a weapon
-  @Param1 the weapon
-  @Param2 the team which need a weapon
+  @Param1 Weapon
+  @Param2 Team
   @Return int
 */
 int buyWeapon(Weapon *weapon, Team *team);
 
 /*
   Buy a protection
-  @Param1 the protection
-  @Param2 the team which need a protection
+  @Param1 Protection
+  @Param2 Team
   @Return int
 */
 int buyProtection(Protection *protection, Team *team);
 
 /*
   Buy a healing
-  @Param1 the healing
-  @Param2 the team which need a healing
+  @Param1 Healing
+  @Param2 Team
   @Return int
 */
 int buyHealing(Healing *healing, Team *team);
 
 /*
   The champion move foward.
-  @Param1 the first team
-  @Param2 the second team
-  @Param3 number of case
+  @Param1 Team
+  @Param2 Team
+  @Param3 int
   @Return void
 */
 void moveForward(Team *team1, Team *team2, int n);
 
 /*
   The champion move backward.
-  @Param1 the team
-  @Param2 number of case
-  @Param3 the maximum position of the area
+  @Param1 Team
+  @Param2 int
+  @Param3 int
   @Return void
 */
 void moveBackward(Team *team, int n, int maxX);
 
 /*
   The first team attack the second team n times
-  @Param1 the first team
-  @Param2 the second team
-  @Param3 number of times
+  @Param1 Team
+  @Param2 Team
+  @Param3 int
   @Return void
 */
 void useWeapon(Team *team1, Team *team2, int n);
 
 /*
   Activate the weapon.
-  @Param1 the team
+  @Param1 Team
   @Retun void
 */
 void useProtection(Team *team);
 
 /*
-  Use care to heal the champion.
+  Use care to heal the champion n times.
+  @Param1 Team
+  @Param2 int
+  @Retun void
 */
 void useCare(Team *team, int n);
 
 /*
   Calculate the distance between the champions.
-  @Param1 the first team.
-  @Param2 the second team.
-  @Return integer
+  @Param1 Team
+  @Param2 Team
+  @Return int
 */
 int distanceBetweenChampions(Team *team1, Team *team2);
 
 /*
-  Free all the allocated memory for the fight.
-  @Param1 the first team
-  @Param2 the second team
-*/
-void endBattle(Team *team1, Team *team2);
-
-/*
     Calculate the random damage of the weapon between degatsMin and degatsMax
-    @Param the weapon
-    @Return integer
+    @Param Weapon
+    @Return int
 */
 int weaponDamage(Weapon *weapon);
 

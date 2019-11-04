@@ -68,9 +68,9 @@ int checkingChamps(char *veg, char *fruit, int vegIndex, int fruitIndex, Champio
   int output = 0;
   veg[0] = toupper(veg[0]); // make first char an uppercase
   fruit[0] = toupper(fruit[0]); // make first char an uppercase
-  
+
   white();
-  
+
   if(vegIndex == -1) {
     red();
     printf("'%s' ne fait pas partie des champions jouables.\n", veg);
@@ -85,14 +85,14 @@ int checkingChamps(char *veg, char *fruit, int vegIndex, int fruitIndex, Champio
   } else if(fruitIndex < 6) {
     red();
     printf("'%s' n'est pas un fruit !\n", fruit);
-  }  
+  }
 
   if((vegIndex != -1 && fruitIndex != -1) && fruitIndex > 5 && vegIndex < 6) output = 1;
   resetColor();
 
   free(veg); // will never be used again
   free(fruit); // will never be used again
-  
+
   return output;
 }
 
@@ -164,7 +164,7 @@ void showWeapon(Weapon **weapons, int *nbWeapons, int id) {
 void showProtections(Protection **protections, int *nbProtections, int ce) {
   Protection *p;
   int i;
-  
+
   for(i = 0; i < *nbProtections; i++)
   {
     p = protections[i];
@@ -176,7 +176,7 @@ void showProtections(Protection **protections, int *nbProtections, int ce) {
   }
   printf("\n");
   resetColor();
-  
+
 }
 
 void showProtection(Protection **protections, int *nbProtections, int id) {
@@ -211,7 +211,6 @@ void showCare(Healing **healings, int *nbHealings, int id) {
   }
 }
 
-
 int replay(char *command) {
   while(1) {
     printf("Voulez-vous rejouer ?\n");
@@ -225,25 +224,13 @@ int replay(char *command) {
   }
 }
 
-
-/*
-int replay() {
-  printf("Voulez-vous rejouer ? (o/n)");
-  char answer = ' ';
-  while(answer != 'o' && answer != 'y' && answer != 'n') {
-    answer = getchar();
-  }
-  return (answer == 'n' ? 0 : 2);
-}
-*/
-
 void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
   int maximumCE = team1->maxCE, end = 0, stillHaveCA, team1stillHaveCA, team2stillHaveCA, team1stillAlive, team2stillAlive;
 
   buyChampion(vegetable, team1);
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
-  
+
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
 
@@ -258,7 +245,7 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
     fightingMode(team1, team2, screenSize.ws_col);
     takeOffProtection(team2);
 
-    if(team2->champion->PV == 0) 
+    if(team2->champion->PV == 0)
       break; // Avoid j2 playing if he's dead
 
     fightingMode(team2, team1, screenSize.ws_col);
@@ -279,8 +266,8 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
     stillHaveCA = 0;
   else
     stillHaveCA = 1;
-    
-  endRound(team1, team2, maximumCE, end, stillHaveCA);
+
+  endRound(team1, team2, maximumCE, end, stillHaveCA, screenSize);
 }
 
 void help() {
@@ -302,8 +289,8 @@ void help() {
   resetColor();
 }
 
-void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings) {
-  deallocateMemory(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2) {
+  deallocateMemory(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
   exit(0);
 }
 
@@ -326,10 +313,8 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
       // ~~~ Cases ~~~ //
       if(strcmp(command, "exit") == 0) {
-        /* /!\ IL MANQUE UN FREE QUAND ON A FAIT AU MOIN UNE FOIS FIGHT MAIS JE SAIS PAS OU C'EST /!\ */
         free(command);
-        endBattle(team1, team2);
-        exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+        exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
       }
       else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
       else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));
@@ -347,7 +332,6 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       else if(strncmp(command, "show care ", 10) == 0) showCare(healings, nbHealings, getID(command, 10));
 
       else if(strncmp(command, "fight ", 6) == 0) {
-        /* Work in progress */
         char *tmp = substring(command, 6, strlen(command));
         char *indexVersus = strstr(tmp, "versus");
         char *fruit;
@@ -371,7 +355,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         fruitIndex = getChampIndex(fruit, champions, *nbChampions);
 
         ready = checkingChamps(legume, fruit, vegIndex, fruitIndex, champions, *nbChampions);
-        
+
         if(ready) {
           fight(champions[vegIndex], champions[fruitIndex], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
         }
@@ -394,7 +378,6 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     }
     play = replay(command);
   }
-  endBattle(team1, team2);
   free(command);
-  exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings);
+  exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
 }

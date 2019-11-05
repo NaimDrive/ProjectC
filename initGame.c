@@ -260,6 +260,7 @@ Healing * createHealing(char *name, int nbHealings){
         healing->CE = 1;
         healing->CA = 5;
         healing->volume = 4;
+        healing->maxVolume = 4;
         healing->effetMin = 2;
         healing->effetMax = 4;
     } else if(strcmp("Compost-Protonique", name) == 0) {
@@ -270,6 +271,7 @@ Healing * createHealing(char *name, int nbHealings){
         healing->CE = 5;
         healing->CA = 10;
         healing->volume = 3;
+        healing->maxVolume = 3;
         healing->effetMin = 5;
         healing->effetMax = 8;
     } else if(strcmp("Engrais-Ionique", name) == 0) {
@@ -280,6 +282,7 @@ Healing * createHealing(char *name, int nbHealings){
         healing->CE = 7;
         healing->CA = 15;
         healing->volume = 2;
+        healing->maxVolume = 2;
         healing->effetMin = 8;
         healing->effetMax = 12;
     } else {
@@ -386,9 +389,9 @@ Team * initTeam(Team *team, int id, Winsize sz) {
   else
     team->position = sz.ws_col-2;
   team->CE = 1000;
-  team->CA = 500;
+  team->CA = 50;
   team->maxCE = 50;
-  team->maxCA = 500;
+  team->maxCA = 50;
   team->champion = NULL;
   team->weapon = NULL;
   team->protection = NULL;

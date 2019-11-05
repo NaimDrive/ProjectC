@@ -22,25 +22,15 @@ void maxCE(Team *team1, Team *team2) {
   }
 }
 
-void maxCA(Team *team1, Team *team2) {
-  if(team1->CA >= 50) {
-    team1->maxCA = 50;
-  } else {
-    team1->maxCA = team1->CA;
-  }
-
-  if(team2->CA >= 50) {
-    team2->maxCA = 50;
-  } else {
-    team2->maxCA = team2->CA;
-  }
+void resetCA(Team *team) {
+  team->CA = team->maxCA;
 }
 
 void buyCA(Team *team, int number) {
   if(team->maxCE - number >= 0 && team->CE >= number) {
     team->CE -= number;
     team->maxCE -= number;
-    team->CA += number;
+    team->maxCA += number;
   }
 }
 
@@ -159,12 +149,9 @@ void moveForward(Team *team1, Team *team2, int n) {
         } else {
           if(team1->CA < n) {
             printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);
-          } else if(team1->maxCA < n) {
-            printf("Vous ne pouvez pas avancer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team1->position+=n;
             team1->CA-=n;
-            team1->maxCA-=n;
             printf("Vous avancez de %d cases.\n", n);
           }
         }
@@ -178,12 +165,9 @@ void moveForward(Team *team1, Team *team2, int n) {
         } else {
           if(team1->CA < n) {
             printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);
-          } else if(team1->maxCA < n) {
-            printf("Vous ne pouvez pas avancer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team1->position-=n;
             team1->CA-=n;
-            team1->maxCA-=n;
             printf("Vous avancez de %d cases.\n", n);
           }
         }
@@ -203,12 +187,9 @@ void moveBackward(Team *team, int n, int maxX) {
         } else {
           if(team->CA < (n*2)) {
             printf("Vous n'avez pas assez de CA pour reculer de %d cases.\n", n);
-          } else if(team->maxCA < (n*2)) {
-            printf("Vous ne pouvez pas reculer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team->position-=n;
             team->CA-=(n*2);
-            team->maxCA-=(n*2);
             printf("Vous reculez de %d cases.\n", n);
           }
         }
@@ -222,12 +203,9 @@ void moveBackward(Team *team, int n, int maxX) {
         } else {
           if(team->CA < (n*2)) {
             printf("Vous n'avez pas assez de CA pour reculer de %d cases.\n", n);
-          } else if(team->maxCA < (n*2)) {
-            printf("Vous ne pouvez pas reculer de %d cases, car vous allez dépasser la limite de CA.\n", n);
           } else {
             team->position+=n;
             team->CA-=(n*2);
-            team->maxCA-=(n*2);
             printf("Vous reculez de %d cases.\n", n);
           }
         }
@@ -248,26 +226,30 @@ int effectiveProtection(int protection) {
 }
 
 void useWeapon(Team *team1, Team *team2, int n) {
-  int i, damage;
+  int i, damage, CALost, totalDamage, succesAttack, protectionCounter;
   float dmg, strength, resistance, weapon;
+
+  damage = 0;
+  CALost = 0;
+  totalDamage = 0;
+  succesAttack = 0;
+  protectionCounter = 0;
+
   if(n > 0) {
     if(team1->champion == NULL || team2->champion == NULL || team1->weapon == NULL) {
       printf("Attaque impossible. Vérifiez que les deux équipes ont un champion et une arme.\n");
     } else {
       if(team1->weapon->CA * n > team1->CA) {
         printf("Pas assez de crédit d'action pour utiliser %d fois l'arme.\n", n);
-      } else if(team1->weapon->CA * n > team1->maxCA) {
-        printf("Vous ne pouvez pas utiliser l'arme %d fois, car vous allez dépasser la limite de CA.\n", n);
       } else {
         for(i = 0 ; i < n && team2->champion->PV > 0 ; i++) {
-          team1->CA -= team1->weapon->CA;
-          team1->maxCA -= team1->weapon->CA;
-          printf("%s perd %d crédits d'attaques.\n", team1->champion->variete, team1->weapon->CA);
+          CALost += team1->weapon->CA;
 
           if(distanceBetweenChampions(team1, team2) <= team1->weapon->portee) {
+            succesAttack = 1;
             if(team2->protectionActivated && team2->protection != NULL) {
               if(effectiveProtection(team2->protection->probabilite) == 1) {
-                printf("La protection a contré l'attaque !\n");
+                protectionCounter++;
                 continue;
               }
             }
@@ -278,20 +260,24 @@ void useWeapon(Team *team1, Team *team2, int n) {
             resistance = 100 - team2->champion->resistance;
             dmg = dmg * (resistance / 100);
             damage = dmg + 0.5;
+            totalDamage += damage;
+          }
+        }
+        printf("%s perd %d crédits d'attaques.\n", team1->champion->variete, CALost);
+        team1->CA -= CALost;
 
-            if(damage > team2->champion->PV) {
-              team2->champion->PV = 0;
-            } else {
-              team2->champion->PV -= damage;
-            }
-            if(team2->champion->PV == 0) {
-              printf("Vous avez tué %s.\n", team2->champion->variete);
-            } else {
-              printf("%s perd %d points de vie. Il reste %d points de vie.\n", team2->champion->variete, damage, team2->champion->PV);
-            }
+        if(!succesAttack) {
+          printf("Impossible d'attaquer, le champion est trop loin !\n");
+        } else {
+          if(protectionCounter > 0) {
+            printf("La protection a contré %d attaques !\n", protectionCounter);
+          }
+          if(totalDamage > team2->champion->PV) {
+            team2->champion->PV = 0;
+            printf("Vous avez tué %s.\n", team2->champion->variete);
           } else {
-            printf("Impossible d'attaquer, le champion est trop loin !\n");
-            break;
+            team2->champion->PV -= totalDamage;
+            printf("%s perd %d points de vie. Il reste %d points de vie.\n", team2->champion->variete, totalDamage, team2->champion->PV);
           }
         }
       }
@@ -306,11 +292,8 @@ void useProtection(Team *team) {
   if(team->weapon != NULL) {
     if(team->CA < team->protection->CA) {
       printf("Vous n'avez pas assez de CA pour activer la protection.\n");
-    } else if(team->maxCA < team->protection->CA) {
-      printf("Vous ne pouvez pas activer la protection, car vous allez dépasser la limite de CA.\n");
     } else {
       team->CA -= team->protection->CA;
-      team->maxCA -= team->protection->CA;
       team->protectionActivated = 1;
       printf("La protection %s est désormais active pendant 1 tour.\n", team->protection->nom);
     }
@@ -322,6 +305,11 @@ int randHeal(Healing *healing) {
 }
 
 void useCare(Team *team, int n) {
+  int i, soin, totalSoin, CALost;
+
+  totalSoin = 0;
+  CALost = 0;
+
   if(n > 0) {
     if(team->healing == NULL) {
       printf("Vous n'avez aucune potion à utiliser.\n");
@@ -331,25 +319,27 @@ void useCare(Team *team, int n) {
       } else {
         if(team->CA < team->healing->CA * n) {
           printf("Vous n'avez pas assez de CA pour vous soignez %d fois.\n", n);
-        } else if(team->maxCA < team->healing->CA * n) {
-          printf("Vous ne pouvez pas utiliser le soin %d fois car vous allez dépasser la limite de CA.\n", n);
         } else {
-          int soin;
-          for (int i = 0; i < n; i++) {
+          for (i = 0; i < n; i++) {
             soin = randHeal(team->healing);
-            team->CA -= team->healing->CA;
-            team->maxCA -= team->healing->CA;
+            totalSoin += soin;
+            CALost += team->healing->CA;
             team->healing->volume--;
-            if(team->champion->PV + soin > team->champion->PVMax)
-              team->champion->PV = team->champion->PVMax;
-            else
-              team->champion->PV += soin;
           }
-          printf("Le champion %s a été soigné.\n", team->champion->variete);
+          printf("%s perd %d crédits d'attaques.\n", team->champion->variete, CALost);
+          team->CA -= CALost;
+
+          if(team->champion->PV + totalSoin > team->champion->PVMax) {
+            team->champion->PV = team->champion->PVMax;
+            printf("%s a récupéré tous ses points de vie.\n", team->champion->variete);
+          }
+          else {
+            team->champion->PV += totalSoin;
+            printf("%s a récupéré %d points de vie. Il reste %d points de vie.\n", team->champion->variete, totalSoin, team->champion->PV);
+          }
+
           if(team->healing->volume == 0) {
             printf("Vous avez utilisé tous vos soins.\n");
-            free(team->healing);
-            team->healing = NULL;
           }
         }
       }

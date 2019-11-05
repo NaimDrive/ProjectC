@@ -38,6 +38,7 @@ typedef struct healing{
   int CE;
   int CA;
   int volume;
+  int maxVolume;
   int effetMin;
   int effetMax;
 } Healing;

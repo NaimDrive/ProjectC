@@ -189,11 +189,12 @@ void actionCreditChoice(Team *team, char *command) {
 
         if((num > team->CE || num < 0) || !(*command != '\0' && *endptr == '\0')) {
             system("clear");
-            printf("Pour rappel, vous avez %d crédits d'équipement.\n", team->CE);
+            printf("Pour rappel, vous avez %d crédits d'équipement.\n", team->maxCE);
         }
     }
 
     buyCA(team, num);
+    resetCA(team);
     printf("Désormais %d crédits d'action disponibles !\n", team->CA);
 
     enterToContinue();
@@ -221,13 +222,13 @@ void roundWinner(Team *team1, Team *team2, int maximumCE) {
         max = CE_used_team1 - CE_used_team2;
         if(max < 1)
             max = 1;
-        team2->CE += 5 * max;
+        team2->CE += max*5;
         printf("L'équipe %s gagne %d CE.\n", team2->champion->variete, 5 * max);
     } else {
         max = CE_used_team2 - CE_used_team1;
         if(max < 1)
             max = 1;
-        team1->CE += 5 * max;
+        team1->CE += max*5;
         printf("L'équipe %s gagne %d CE.\n", team1->champion->variete, 5 * max);
     }
 }
@@ -246,13 +247,9 @@ void showEndGame(Team *team1, Team *team2) {
     }
 }
 
-void endRound(Team *team1, Team *team2, int maximumCE, int end, int stillHaveCA, Winsize sz) {
+void endRound(Team *team1, Team *team2, int maximumCE, int end, Winsize sz) {
     if(end == 0) {
-        if(stillHaveCA == 1) {
-            roundWinner(team1, team2, maximumCE);
-        } else {
-            printf("Plus personne n'a de CA pour attaquer, le duel est un ex-aequo.\n");
-        }
+        roundWinner(team1, team2, maximumCE);
         maxCE(team1, team2);
     }
 
@@ -288,18 +285,26 @@ void takeOffProtection(Team *team) {
     }
 }
 
+void fighNotFinished(Team *team) {
+    resetCA(team);
+    takeOffProtection(team);
+    team->healing->volume = team->healing->maxVolume;
+}
+
 void resetGame(Team *team1, Team *team2, Winsize screenSize) {
     team1->CE = 1000;
-    team1->CA = 0;
+    team1->CA = 50;
     team1->maxCE = 50;
     team1->maxCA = 50;
     team1->position = 1;
+    team1->protectionActivated = 0;
 
     team2->CE = 1000;
-    team2->CA = 0;
+    team2->CA = 50;
     team2->maxCE = 50;
     team1->maxCA = 50;
     team2->position = screenSize.ws_col-2;
+    team2->protectionActivated = 0;
 }
 
 void helpFight() {
@@ -321,7 +326,7 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
     int end = 0, erreur = 0;
 
-    while(team1->CA > 0 && team1->maxCA > 0 && team2->champion->PV > 0 && !end) {
+    while(team1->CA > 0 && team2->champion->PV > 0 && !end) {
 
         displayGame(team1, team2, screenSize);
 
@@ -329,7 +334,7 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         else yellow();
         printf("%s ", team1->champion->variete);
         white();
-        printf("%d> ", team1->maxCA);
+        printf("%d> ", team1->CA);
         resetColor();
 
         // printf("%s %d> ", team1->champion->variete, team1->maxCA);
@@ -371,8 +376,6 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     }
     if(team1->CA == 0)
         printf("Tour terminé. Vous n'avez plus de CA.\n");
-    else if(team1->maxCA == 0)
-        printf("Tour terminé. Vous avez atteint la limite de CA pour ce tour.\n");
     else if(team2->champion->PV == 0)
         printf("Duel terminé.\n");
     else

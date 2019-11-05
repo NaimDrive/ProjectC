@@ -225,14 +225,14 @@ int effectiveProtection(int protection) {
     return 0;
 }
 
-void useWeapon(Team *team1, Team *team2, int n) {
-  int i, damage, CALost, totalDamage, succesAttack, protectionCounter;
+int useWeapon(Team *team1, Team *team2, int n) {
+  int i, damage, CALost, totalDamage, successAttack, protectionCounter;
   float dmg, strength, resistance, weapon;
 
   damage = 0;
   CALost = 0;
   totalDamage = 0;
-  succesAttack = 0;
+  successAttack = 0;
   protectionCounter = 0;
 
   if(n > 0) {
@@ -246,7 +246,7 @@ void useWeapon(Team *team1, Team *team2, int n) {
           CALost += team1->weapon->CA;
 
           if(distanceBetweenChampions(team1, team2) <= team1->weapon->portee) {
-            succesAttack = 1;
+            successAttack = 1;
             if(team2->protectionActivated && team2->protection != NULL) {
               if(effectiveProtection(team2->protection->probabilite) == 1) {
                 protectionCounter++;
@@ -266,7 +266,7 @@ void useWeapon(Team *team1, Team *team2, int n) {
         printf("%s perd %d crédits d'attaques.\n", team1->champion->variete, CALost);
         team1->CA -= CALost;
 
-        if(!succesAttack) {
+        if(!successAttack) {
           printf("Impossible d'attaquer, le champion est trop loin !\n");
         } else {
           if(protectionCounter > 0) {
@@ -286,6 +286,7 @@ void useWeapon(Team *team1, Team *team2, int n) {
   else {
     printf("Vous ne pouvez attaquer avec un nombre négatif.\n");
   }
+  return successAttack;
 }
 
 void useProtection(Team *team) {

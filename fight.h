@@ -79,9 +79,9 @@ void moveBackward(Team *team, int n, int maxX);
   @Param1 Team
   @Param2 Team
   @Param3 int
-  @Return void
+  @Return int
 */
-void useWeapon(Team *team1, Team *team2, int n);
+int useWeapon(Team *team1, Team *team2, int n);
 
 /*
   Activate the weapon.

@@ -27,13 +27,13 @@ char* substring(char *src, int beg, int end) {
 void showTeamsCE(Team *team1, Team *team2) {
   printf(" -- > ");
   green();
-  printf("Team 1");
+  printf("Légume");
   white();
   printf(" : %d", team1->CE);
   resetColor();
   printf("  |  ");
   yellow();
-  printf("Team 2");
+  printf("Fruit");
   white();
   printf(" : %d", team2->CE);
   resetColor();

@@ -15,15 +15,12 @@ void displayGame(Team *team1, Team *team2, int sz) {
             printf("*");
         } else if((i == team1->position && team1->id == 0)) {
             green();
-            // printf("é");
             printf("%c", team1->champion->head);
         } else if((i == team2->position && team2->id == 0)) {
             green();
-            // printf("é");
             printf("%c", team2->champion->head);
         } else if((i == team2->position && team2->id == 1)) {
             yellow();
-            // printf("ù");
             printf("%c", team2->champion->head);
         } else if((i == team1->position && team1->id == 1)) {
             yellow();
@@ -78,6 +75,7 @@ void displayGame(Team *team1, Team *team2, int sz) {
 
 void displayAttack(Team *team1, Team *team2, int sz) {
     AttackAnimation attack;
+    unsigned int micro = 500000;
     int i;
 
     if(team1->id == 0 && team1->position+1 < team2->position) {
@@ -164,7 +162,7 @@ void displayAttack(Team *team1, Team *team2, int sz) {
             attack.position--;
         printf("\n");
 
-        sleep(1);
+        usleep(micro);
         system("clear");
     }
     printf("\n\n");

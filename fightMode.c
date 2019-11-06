@@ -338,7 +338,6 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         printf("%d> ", team1->CA);
         resetColor();
 
-        // printf("%s %d> ", team1->champion->variete, team1->maxCA);
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 

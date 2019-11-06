@@ -4,6 +4,8 @@
 
 #include <sys/ioctl.h>
 #include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
 
 void displayGame(Team *team1, Team *team2, int sz) {
     int i;
@@ -87,7 +89,6 @@ void displayAttack(Team *team1, Team *team2, int sz) {
     }
 
     while((team1->id == 0 && attack.position+1 < team2->position) || (team1->id == 1 && attack.position-1 > team2->position)) {
-        system("clear");
         for (i = 0; i < sz; i++) {
             if(i == 0 || i == sz-1) {
                 blue();
@@ -162,6 +163,9 @@ void displayAttack(Team *team1, Team *team2, int sz) {
         else
             attack.position--;
         printf("\n");
+
+        sleep(1);
+        system("clear");
     }
     printf("\n\n");
     resetColor();

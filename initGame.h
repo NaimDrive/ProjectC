@@ -12,6 +12,7 @@ typedef struct champion {
   int PVMax;
   int PV;
   int CE;
+  char head;
 } Champion;
 
 typedef struct weapon{

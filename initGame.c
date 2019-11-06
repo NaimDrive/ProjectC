@@ -10,7 +10,6 @@ Champion * createChampion(char *name, int nbChampions) {
 
   if(strcmp("Haricot", name) == 0) {
     champion = malloc(sizeof(Champion));
-
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Légume";
@@ -19,9 +18,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 40;
     champion->PV = 40;
     champion->CE = 5;
+    champion->head = ';';
   } else if (strcmp(name, "Fenouil") == 0) {
     champion = malloc(sizeof(Champion));
-
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Légume";
@@ -30,9 +29,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 40;
     champion->PV = 40;
     champion->CE = 7;
+    champion->head = 'W';
   } else if (strcmp(name, "Poireau") == 0) {
     champion = malloc(sizeof(Champion));
-
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Légume";
@@ -41,9 +40,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 60;
     champion->PV = 60;
     champion->CE = 10;
+    champion->head = 'Y';
   } else if (strcmp(name, "Aubergine") == 0) {
     champion = malloc(sizeof(Champion));
-
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Légume";
@@ -52,9 +51,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 60;
     champion->PV = 60;
     champion->CE = 15;
+    champion->head = 'u';
   } else if (strcmp(name, "Courgette") == 0) {
     champion = malloc(sizeof(Champion));
-    
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Légume";
@@ -63,9 +62,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 80;
     champion->PV = 80;
     champion->CE = 20;
+    champion->head = 'i';
   } else if (strcmp(name, "Carotte") == 0) {
     champion = malloc(sizeof(Champion));
-    
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Légume";
@@ -74,9 +73,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 80;
     champion->PV = 80;
     champion->CE = 25;
+    champion->head = '\'';
   } else if (strcmp(name, "Banane") == 0) {
     champion = malloc(sizeof(Champion));
-    
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Fruit";
@@ -85,9 +84,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 40;
     champion->PV = 40;
     champion->CE = 5;
+    champion->head = ',';
   } else if (strcmp(name, "Kiwi") == 0) {
     champion = malloc(sizeof(Champion));
-    
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Fruit";
@@ -96,9 +95,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 40;
     champion->PV = 40;
     champion->CE = 7;
+    champion->head = 'o';
   } else if (strcmp(name, "Poire") == 0) {
     champion = malloc(sizeof(Champion));
-    
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Fruit";
@@ -107,9 +106,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 60;
     champion->PV = 60;
     champion->CE = 10;
+    champion->head = ')';
   } else if (strcmp(name, "Pomme") == 0) {
     champion = malloc(sizeof(Champion));
-
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Fruit";
@@ -118,9 +117,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 60;
     champion->PV = 60;
     champion->CE = 15;
+    champion->head = '@';
   } else if (strcmp(name, "Ananas") == 0) {
     champion = malloc(sizeof(Champion));
-    
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Fruit";
@@ -129,9 +128,9 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 80;
     champion->PV = 80;
     champion->CE = 20;
+    champion->head = '#';
   } else if (strcmp(name, "Durian") == 0) {
     champion = malloc(sizeof(Champion));
-    
     champion->num = nbChampions;
     champion->variete = name;
     champion->type = "Fruit";
@@ -140,6 +139,7 @@ Champion * createChampion(char *name, int nbChampions) {
     champion->PVMax = 80;
     champion->PV = 80;
     champion->CE = 25;
+    champion->head = 'x';
   } else {
     fprintf(stderr, "Champion name error\n");
   }

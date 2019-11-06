@@ -257,6 +257,9 @@ void endRound(Team *team1, Team *team2, int maximumCE, int end, Winsize sz) {
     team1->protectionActivated = 0;
     team2->protectionActivated = 0;
 
+    team1->maxCA = 50;
+    team2->maxCA = 50;
+
     team1->position = 1;
     team2->position = sz.ws_col-2;
 

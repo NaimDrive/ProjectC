@@ -35,10 +35,16 @@ void displayGame(Team *team1, Team *team2, int sz) {
             white();
             printf("*");
         } else if((i == team1->position && team1->id == 0) || (i == team2->position && team2->id == 0)) {
-            green();
+            if((team1->protectionActivated && team1->id == 0) || (team2->protectionActivated && team2->id == 0))
+                white();
+            else
+                green();
             printf("|");
         } else if((i == team2->position && team2->id == 1) || (i == team1->position && team1->id == 1)) {
-            yellow();
+            if((team1->protectionActivated && team1->id == 1) || (team2->protectionActivated && team2->id == 1))
+                white();
+            else
+                yellow();
             printf("|");
         } else {
             printf(" ");
@@ -61,13 +67,16 @@ void displayGame(Team *team1, Team *team2, int sz) {
     }
     printf("\n");
     for (i = 0; i < sz; i++) {
-        brown();
-        if(i == 0 || i == sz-1){
-            printf("*");
+        whiteBG();
+        gray();
+        if(i == 0){
+            printf("\\");
+        } else if(i == sz-1) {
+            printf("/");
         } else {
-            brown();
-            printf("_");
+            printf("|");
         }
+        resetColor();
     }
     printf("\n\n");
     resetColor();
@@ -116,10 +125,16 @@ void displayAttack(Team *team1, Team *team2, int sz) {
                 white();
                 printf("*");
             } else if((i == team1->position && team1->id == 0) || (i == team2->position && team2->id == 0)) {
-                green();
+                if(attack.position == (team2->position)+2)
+                    red();
+                else
+                    green();
                 printf("|");
             } else if((i == team2->position && team2->id == 1) || (i == team1->position && team1->id == 1)) {
-                yellow();
+                if(attack.position == (team2->position)-2)
+                    red();
+                else
+                    yellow();
                 printf("|");
             } else if(i == attack.position) {
                 if(attack.direction == 1) {
@@ -150,11 +165,12 @@ void displayAttack(Team *team1, Team *team2, int sz) {
         }
         printf("\n");
         for (i = 0; i < sz; i++) {
-            brown();
-            if(i == 0 || i == sz-1){
-                printf("*");
+            whiteBG();
+            if(i == 0){
+                printf("\\");
+            } else if(i == sz-1) {
+                printf("/");
             } else {
-                brown();
                 printf("_");
             }
         }

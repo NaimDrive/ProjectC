@@ -29,13 +29,19 @@ void blue();
     Strings printed after this function will be magenta.
     @Return void
 */
-void magenta();
+void purple();
 
 /*
-    Strings printed after this function will be brown.
+    Strings printed after this function will be have a magenta background.
     @Return void
 */
-void brown();
+void purpleBG();
+
+/*
+    Strings printed after this function will be have a white background.
+    @Return void
+*/
+void whiteBG();
 
 /*
     Strings printed after this function will be a bright white.
@@ -44,10 +50,16 @@ void brown();
 void white();
 
 /*
-    Strings printed after this function will be black.
+    Strings printed after this function will be gray.
     @Return void
 */
-void black();
+void gray();
+
+/*
+    Strings printed after this function will be have a gray background.
+    @Return void
+*/
+void grayBG();
 
 /*
     Strings printed after this function will be as usual (default).

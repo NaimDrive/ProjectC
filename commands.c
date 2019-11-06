@@ -288,7 +288,7 @@ void exitGame(Champion **champions, Weapon **weapons, Protection **protections, 
 }
 
 void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
-  magenta();
+  purple();
   printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
   resetColor();
   char *command = (char*)malloc(256*sizeof(char));

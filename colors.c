@@ -16,21 +16,30 @@ void blue() {
     printf("\033[1;34m");
 }
 
-void magenta() {
+void purple() {
     printf("\033[1;35m");
 }
 
-void brown() {
-    printf("\033[94m");
+void purpleBG() {
+    printf("\033[1;45m");
+}
+
+void gray() {
+    printf("\033[30m");
+}
+
+void grayBG() {
+    printf("\033[40m");
+}
+
+void whiteBG() {
+    printf("\033[47m");
 }
 
 void white() {
     printf("\033[1;97m");
 }
 
-void black() {
-    printf("\033[1;30m");
-}
 
 void resetColor() {
     printf("\033[0m");

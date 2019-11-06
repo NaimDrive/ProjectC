@@ -75,7 +75,7 @@ void displayGame(Team *team1, Team *team2, int sz) {
 
 void displayAttack(Team *team1, Team *team2, int sz) {
     AttackAnimation attack;
-    unsigned int micro = 500000;
+    unsigned int micro = 350000;
     int i;
 
     if(team1->id == 0 && team1->position+1 < team2->position) {
@@ -87,6 +87,7 @@ void displayAttack(Team *team1, Team *team2, int sz) {
     }
 
     while((team1->id == 0 && attack.position+1 < team2->position) || (team1->id == 1 && attack.position-1 > team2->position)) {
+        system("clear");
         for (i = 0; i < sz; i++) {
             if(i == 0 || i == sz-1) {
                 blue();
@@ -163,7 +164,6 @@ void displayAttack(Team *team1, Team *team2, int sz) {
         printf("\n");
 
         usleep(micro);
-        system("clear");
     }
     printf("\n\n");
     resetColor();

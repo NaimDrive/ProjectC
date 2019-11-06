@@ -8,8 +8,16 @@ void green() {
     printf("\033[1;32m");
 }
 
+void greenBG() {
+    printf("\033[1;42m");
+}
+
 void yellow() {
     printf("\033[1;33m");
+}
+
+void yellowBG() {
+    printf("\033[1;43m");
 }
 
 void blue() {

@@ -14,10 +14,22 @@ void red();
 void green();
 
 /*
+    Strings printed after this function will be have a green background.
+    @Return void
+*/
+void greenBG();
+
+/*
     Strings printed after this function will be yellow.
     @Return void
 */
 void yellow();
+
+/*
+    Strings printed after this function will be have a green background.
+    @Return void
+*/
+void yellowBG();
 
 /*
     Strings printed after this function will be blue.

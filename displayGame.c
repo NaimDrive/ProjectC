@@ -5,19 +5,42 @@
 #include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 #include <unistd.h>
 
 void displayHealth(Team *team1, Team *team2, int sz) {
-    // int lenChampName1 = strlen(team1->champion->variete);
-    // int lenChampName2 = strlen(team2->champion->variete);
+    int lenHealthBar = strlen(team1->champion->variete)+strlen(team2->champion->variete)+((8+2+20)*2)+(sz/10);
+    int margin =  ((sz-2)/2)-(lenHealthBar/2);
+    int pvLeftP1 = (int)(((double)(team1->champion->PV)/(double)(team1->champion->PVMax)) * 20);
+    int pvLeftP2 = (int)(((double)(team2->champion->PV)/(double)(team2->champion->PVMax)) * 20);
     
+    printf("%*c", margin, ' '); // margin left
+
+    green();
     printf("%s ", team1->champion->variete);
+    resetColor();
+    // len (with the previous space) : 8
     printf("(%02d/%02d)[", team1->champion->PV, team1->champion->PVMax);
-    printf("%*c]", 20, ' ');
-    printf("%*c", (sz/10), ' ');
-    printf("[%*c", 20, ' ');
+
+    greenBG();
+    printf("%*c", pvLeftP1, ' ');
+    resetColor();
+    if(pvLeftP1 < 20)
+        printf("%*c", (20 - pvLeftP1), ' ');
+
+    printf("]%*c[", (sz/10), ' ');
+
+    if(pvLeftP2 < 20)
+        printf("%*c", (20 - pvLeftP2), ' ');
+    yellowBG();
+    printf("%*c", pvLeftP2, ' ');
+    resetColor();
+    
+
     printf("](%02d/%02d)", team2->champion->PV, team2->champion->PVMax);
+    yellow();
     printf(" %s\n\n", team2->champion->variete);
+    resetColor();
 }
 
 void displayGame(Team *team1, Team *team2, int sz) {

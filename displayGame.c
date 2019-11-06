@@ -87,21 +87,32 @@ void displayAttack(Team *team1, Team *team2, int sz) {
     }
 
     while((team1->id == 0 && attack.position+1 < team2->position) || (team1->id == 1 && attack.position-1 > team2->position)) {
+        system("clear");
         for (i = 0; i < sz; i++) {
             if(i == 0 || i == sz-1) {
                 blue();
                 printf("*");
-            } else if((i == team1->position && team1->id == 0) || (i == team2->position && team2->id == 0)) {
+            } else if((i == team1->position && team1->id == 0)) {
                 green();
-                printf("é");
-            } else if((i == team2->position && team2->id == 1) || (i == team1->position && team1->id == 1)) {
+                printf("%c", team1->champion->head);
+            } else if((i == team2->position && team2->id == 0)) {
+                green();
+                printf("%c", team2->champion->head);
+            } else if((i == team2->position && team2->id == 1)) {
                 yellow();
-                printf("ù");
+                // printf("ù");
+                printf("%c", team2->champion->head);
+            } else if((i == team1->position && team1->id == 1)) {
+                yellow();
+                printf("%c", team1->champion->head);
             } else if(i == attack.position) {
-                if(attack.direction == 1)
+                if(attack.direction == 1) {
+                    green();
                     printf(")");
-                else
+                } else {
+                    yellow();
                     printf("(");
+                }    
             } else {
                 printf(" ");
             } 
@@ -150,6 +161,7 @@ void displayAttack(Team *team1, Team *team2, int sz) {
             attack.position++;
         else
             attack.position--;
+        printf("\n");
     }
     printf("\n\n");
     resetColor();

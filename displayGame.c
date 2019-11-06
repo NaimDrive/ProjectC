@@ -7,24 +7,31 @@
 #include <stdlib.h>
 #include <unistd.h>
 
+void displayHealth(Team *team1, Team *team2, int sz) {
+    // int lenChampName1 = strlen(team1->champion->variete);
+    // int lenChampName2 = strlen(team2->champion->variete);
+    
+    printf("%s ", team1->champion->variete);
+    printf("(%02d/%02d)[", team1->champion->PV, team1->champion->PVMax);
+    printf("%*c]", 20, ' ');
+    printf("%*c", (sz/10), ' ');
+    printf("[%*c", 20, ' ');
+    printf("](%02d/%02d)", team2->champion->PV, team2->champion->PVMax);
+    printf(" %s\n\n", team2->champion->variete);
+}
+
 void displayGame(Team *team1, Team *team2, int sz) {
     int i;
     for (i = 0; i < sz; i++) {
         if(i == 0 || i == sz-1) {
             blue();
             printf("*");
-        } else if((i == team1->position && team1->id == 0)) {
+        } else if(i == team1->position) {
             green();
             printf("%c", team1->champion->head);
-        } else if((i == team2->position && team2->id == 0)) {
-            green();
-            printf("%c", team2->champion->head);
-        } else if((i == team2->position && team2->id == 1)) {
+        } else if(i == team2->position) {
             yellow();
             printf("%c", team2->champion->head);
-        } else if((i == team1->position && team1->id == 1)) {
-            yellow();
-            printf("%c", team1->champion->head);
         } else {
             printf(" ");
         } 
@@ -34,14 +41,14 @@ void displayGame(Team *team1, Team *team2, int sz) {
         if(i == 0 || i == sz-1) {
             white();
             printf("*");
-        } else if((i == team1->position && team1->id == 0) || (i == team2->position && team2->id == 0)) {
-            if((team1->protectionActivated && team1->id == 0) || (team2->protectionActivated && team2->id == 0))
+        } else if(i == team1->position) {
+            if(team1->protectionActivated)
                 white();
             else
                 green();
             printf("|");
-        } else if((i == team2->position && team2->id == 1) || (i == team1->position && team1->id == 1)) {
-            if((team1->protectionActivated && team1->id == 1) || (team2->protectionActivated && team2->id == 1))
+        } else if(i == team2->position) {
+            if(team2->protectionActivated)
                 white();
             else
                 yellow();
@@ -55,10 +62,10 @@ void displayGame(Team *team1, Team *team2, int sz) {
         if(i == 0 || i == sz-1) {
             red();
             printf("*");
-        } else if((i == team1->position && team1->id == 0) || (i == team2->position && team2->id == 0)) {
+        } else if(i == team1->position) {
             green();
             printf("|");
-        } else if((i == team2->position && team2->id == 1) || (i == team1->position && team1->id == 1)) {
+        } else if(i == team2->position) {
             yellow();
             printf("|");
         } else{
@@ -173,6 +180,7 @@ void displayAttack(Team *team1, Team *team2, int sz) {
             } else {
                 printf("_");
             }
+            resetColor();
         }
         if(team1->id == 0)
             attack.position++;

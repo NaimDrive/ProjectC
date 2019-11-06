@@ -332,7 +332,13 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
 
     while(team1->CA > 0 && team2->champion->PV > 0 && !end) {
 
-        displayGame(team1, team2, screenSize);
+        if(team1->id == 0) {
+            displayGame(team1, team2, screenSize);
+            displayHealth(team1, team2, screenSize);
+        } else {
+            displayGame(team2, team1, screenSize);
+            displayHealth(team2, team1, screenSize);
+        }
 
         if(team1->id == 0) green();
         else yellow();

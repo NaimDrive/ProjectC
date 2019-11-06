@@ -11,6 +11,8 @@ typedef struct {
     int direction;
 } AttackAnimation;
 
+void displayHealth(Team *team1, Team *team2, int sz);
+
 void displayGame(Team *team1, Team *team2, int sz);
 
 void displayAttack(Team *team1, Team *team2, int sz);

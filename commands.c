@@ -276,6 +276,7 @@ void help() {
   printf(" show cares - Affiche tous les soins.\n");
   printf(" show care n - Affiche le soin numéro n.\n");
   printf(" fight v versus f - Lance un combat opposant le légume v au fruit f.\n");
+  printf(" clear - Nettoie le terminal");
   printf(" help - Affiche un rappel de toutes les commandes disponibles.\n");
   printf(" exit - Quitte le jeu.\n\n");
   resetColor();

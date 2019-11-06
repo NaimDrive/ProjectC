@@ -46,7 +46,7 @@ void weaponChoice(Team *team, Weapon **weapons, int *nbWeapons, char *command) {
     long num = -1;
     char *endptr;
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
-    printf("Commençons par choisir de quoi tuer l'adversaire.\n");
+    printf("Commençons par choisir une arme pour tuer l'adversaire.\n");
 
     while((num >= *nbWeapons || num < 0) || !(*command != '\0' && *endptr == '\0')) {
         showWeapons(weapons, nbWeapons, team->maxCE);
@@ -316,7 +316,7 @@ void helpFight() {
     printf("Commandes disponibles : \n\n");
     printf(" show - Affiche les informations du légume/fruit actuellement incarné.\n");
     printf(" move forward n - Avance de n pas. (Avance de 1 pas si n est null)\n");
-    printf(" move forward n - Recul de n pas. (Recul de 1 pas si n est null)\n");
+    printf(" move backward n - Recul de n pas. (Recul de 1 pas si n est null)\n");
     printf(" use weapon n - Attaque n fois l'adversaire. (Attaque une fois si n est null)\n");
     printf(" use protection - Active la protection actuellement équipé.\n");
     printf(" use care n - Utilise n soins. (N'utilise qu'un seul soin si n est null)\n");
@@ -382,7 +382,6 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
             }
             resetColor();
         }
-
     }
     if(team1->CA == 0)
         printf("Tour terminé. Vous n'avez plus de CA.\n");

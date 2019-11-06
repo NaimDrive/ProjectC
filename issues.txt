@@ -1,12 +1,2 @@
 /!\ Liste des problèmes & bugs à corriger :
 /!\ Expliquer le code d'erreur, la liste des commandes pour obtenir le bug et si possible un commentaire pour aider à corriger.
-
-Issue n°1
-1. Aucun code d'erreur
-2. Commandes
-./game
-fight Haricot versus Haricot
----
-fight Pomme versus Poire
-3. Commentaires
-Le joueur peut choisir deux légumes ou deux fruits pour combattre alors que normalement c'est 1 légume et 1 fruit.

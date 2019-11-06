@@ -17,6 +17,13 @@ void maxCE(Team *team1, Team *team2);
 void resetCA(Team *team);
 
 /*
+  Reset the volume to the maximum
+  @Param1 Team
+  @Return void
+*/
+void resetHealing(Team *team);
+
+/*
   Use CE to buy CA
   @Param1 Team
   @Param2 int

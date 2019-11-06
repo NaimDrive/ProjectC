@@ -280,7 +280,7 @@ void endRound(Team *team1, Team *team2, int maximumCE, int end, Winsize sz) {
 }
 
 void takeOffProtection(Team *team) {
-    if(team->protectionActivated == 1) {
+    if(team->protectionActivated == 1 && team->protection != NULL) {
         team->protectionActivated = 0;
         printf("La protection %s est déactivée pour %s.\n", team->protection->nom, team->champion->variete);
     }
@@ -289,7 +289,7 @@ void takeOffProtection(Team *team) {
 void fighNotFinished(Team *team) {
     resetCA(team);
     takeOffProtection(team);
-    team->healing->volume = team->healing->maxVolume;
+    resetHealing(team);
 }
 
 void resetGame(Team *team1, Team *team2, Winsize screenSize) {

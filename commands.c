@@ -243,10 +243,13 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
 
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
-
+  printf("Avant le while\n");
   while(team1->champion->PV > 0 && team2->champion->PV > 0) {
+    printf("Rentre dans le while\n");
     fighNotFinished(team1);
+    printf("Après not finished team1\n");
     fightingMode(team1, team2, screenSize.ws_col);
+    printf("Après fightingMode team1\n");
 
     if(team2->champion->PV == 0)
       break; // Avoid j2 playing if he's dead

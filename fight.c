@@ -26,6 +26,12 @@ void resetCA(Team *team) {
   team->CA = team->maxCA;
 }
 
+void resetHealing(Team *team) {
+  if(team->healing != NULL) {
+    team->healing->volume = team->healing->maxVolume;
+  }
+}
+
 void buyCA(Team *team, int number) {
   if(team->maxCE - number >= 0 && team->CE >= number) {
     team->CE -= number;
@@ -293,11 +299,15 @@ void useProtection(Team *team) {
   if(team->weapon != NULL) {
     if(team->CA < team->protection->CA) {
       printf("Vous n'avez pas assez de CA pour activer la protection.\n");
+    } else if(team->protectionActivated == 1) {
+      printf("La protection est déjà active !\n");
     } else {
       team->CA -= team->protection->CA;
       team->protectionActivated = 1;
       printf("La protection %s est désormais active pendant 1 tour.\n", team->protection->nom);
     }
+  } else {
+    printf("Vous n'avez pas de protection à équiper.\n");
   }
 }
 

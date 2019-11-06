@@ -10,7 +10,7 @@ game: $(OBJS)
 initGame.o: initGame.c initGame.h
 	$(CC) $(CFLAGS) -c $<
 
-fight.o: fight.c fight.h initGame.h
+fight.o: fight.c fight.h initGame.h displayGame.h
 	$(CC) $(CFLAGS) -c $<
 
 commands.o: commands.c commands.h initGame.h fight.h colors.h fightMode.h endGame.h

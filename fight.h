@@ -86,9 +86,10 @@ void moveBackward(Team *team, int n, int maxX);
   @Param1 Team
   @Param2 Team
   @Param3 int
-  @Return int
+  @Param4 Screen size
+  @Return void
 */
-int useWeapon(Team *team1, Team *team2, int n);
+void useWeapon(Team *team1, Team *team2, int n, int sz);
 
 /*
   Activate the weapon.

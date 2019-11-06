@@ -1,5 +1,6 @@
 #include "initGame.h"
 #include "fight.h"
+#include "displayGame.h"
 
 #include <stdio.h>
 #include <stdlib.h>
@@ -231,7 +232,7 @@ int effectiveProtection(int protection) {
     return 0;
 }
 
-int useWeapon(Team *team1, Team *team2, int n) {
+void useWeapon(Team *team1, Team *team2, int n, int sz) {
   int i, damage, CALost, totalDamage, successAttack, protectionCounter;
   float dmg, strength, resistance, weapon;
 
@@ -275,7 +276,7 @@ int useWeapon(Team *team1, Team *team2, int n) {
         if(!successAttack) {
           printf("Impossible d'attaquer, le champion est trop loin !\n");
         } else {
-          /* call display */
+          displayAttack(team1, team2, sz);
           if(protectionCounter > 0) {
             printf("La protection a contré %d attaques !\n", protectionCounter);
           }
@@ -293,7 +294,6 @@ int useWeapon(Team *team1, Team *team2, int n) {
   else {
     printf("Vous ne pouvez attaquer avec un nombre négatif.\n");
   }
-  return successAttack;
 }
 
 void useProtection(Team *team) {

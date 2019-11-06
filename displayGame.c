@@ -105,14 +105,7 @@ void displayAttack(Team *team1, Team *team2, int sz) {
             } else if((i == team1->position && team1->id == 1)) {
                 yellow();
                 printf("%c", team1->champion->head);
-            } else if(i == attack.position) {
-                if(attack.direction == 1) {
-                    green();
-                    printf(")");
-                } else {
-                    yellow();
-                    printf("(");
-                }    
+             
             } else {
                 printf(" ");
             } 
@@ -128,6 +121,14 @@ void displayAttack(Team *team1, Team *team2, int sz) {
             } else if((i == team2->position && team2->id == 1) || (i == team1->position && team1->id == 1)) {
                 yellow();
                 printf("|");
+            } else if(i == attack.position) {
+                if(attack.direction == 1) {
+                    green();
+                    printf(")");
+                } else {
+                    yellow();
+                    printf("(");
+                }   
             } else {
                 printf(" ");
             }

@@ -275,6 +275,7 @@ int useWeapon(Team *team1, Team *team2, int n) {
         if(!successAttack) {
           printf("Impossible d'attaquer, le champion est trop loin !\n");
         } else {
+          /* call display */
           if(protectionCounter > 0) {
             printf("La protection a contré %d attaques !\n", protectionCounter);
           }

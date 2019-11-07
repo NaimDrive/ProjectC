@@ -1,12 +1,11 @@
 #include "initGame.h"
 #include "fight.h"
 #include "displayGame.h"
+#include "tools.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
-
 
 void maxCE(Team *team1, Team *team2) {
   if(team1->CE >= 50 && team2->CE >= 50) {
@@ -221,17 +220,6 @@ void moveBackward(Team *team, int n, int maxX) {
   }
 }
 
-int weaponDamage(Weapon *weapon) {
-    return (rand() % (weapon->degatsMax - weapon->degatsMin + 1)) + weapon->degatsMin;
-}
-
-int effectiveProtection(int protection) {
-    int res = (rand() % 100) + 1;
-    if(res <= protection)
-      return 1;
-    return 0;
-}
-
 void useWeapon(Team *team1, Team *team2, int n, int sz) {
   int i, damage, CALost, totalDamage, successAttack, protectionCounter;
   float dmg, strength, resistance, weapon;
@@ -312,10 +300,6 @@ void useProtection(Team *team) {
   }
 }
 
-int randHeal(Healing *healing) {
-  return (rand() % (healing->effetMin - healing->effetMax + 1)) + healing->effetMin;
-}
-
 void useCare(Team *team, int n) {
   int i, soin, totalSoin, CALost;
 
@@ -357,11 +341,4 @@ void useCare(Team *team, int n) {
       }
     }
   }
-}
-
-int distanceBetweenChampions(Team *team1, Team *team2) {
-  if(team1->id == 0)
-    return team2->position - team1->position;
-  else
-    return -(team2->position - team1->position);
 }

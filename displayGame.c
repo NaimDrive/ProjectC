@@ -1,6 +1,7 @@
 #include "initGame.h"
 #include "colors.h"
 #include "displayGame.h"
+#include "tools.h"
 
 #include <sys/ioctl.h>
 #include <stdio.h>
@@ -13,7 +14,9 @@ void displayHealth(Team *team1, Team *team2, int sz) {
     int margin =  ((sz-2)/2)-(lenHealthBar/2);
     int pvLeftP1 = (int)(((double)(team1->champion->PV)/(double)(team1->champion->PVMax)) * 20);
     int pvLeftP2 = (int)(((double)(team2->champion->PV)/(double)(team2->champion->PVMax)) * 20);
+    int distance = distanceBetweenChampions(team1, team2);
 
+    printf("- %d -", distance);
     printf("%*c", margin, ' '); // margin left
 
     green();
@@ -27,9 +30,9 @@ void displayHealth(Team *team1, Team *team2, int sz) {
     resetColor();
     if(pvLeftP1 < 20)
         printf("%*c", (20 - pvLeftP1), ' ');
-
+    
     printf("]%*c[", (sz/10), ' ');
-
+    
     if(pvLeftP2 < 20)
         printf("%*c", (20 - pvLeftP2), ' ');
     yellowBG();

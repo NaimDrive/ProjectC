@@ -106,19 +106,4 @@ void useProtection(Team *team);
 */
 void useCare(Team *team, int n);
 
-/*
-  Calculate the distance between the champions.
-  @Param1 Team
-  @Param2 Team
-  @Return int
-*/
-int distanceBetweenChampions(Team *team1, Team *team2);
-
-/*
-    Calculate the random damage of the weapon between degatsMin and degatsMax
-    @Param Weapon
-    @Return int
-*/
-int weaponDamage(Weapon *weapon);
-
 #endif

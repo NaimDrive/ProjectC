@@ -14,7 +14,7 @@ void displayHealth(Team *team1, Team *team2, int sz) {
     int margin =  ((sz-2)/2)-(lenHealthBar/2);
     int pvLeftP1 = (int)(((double)(team1->champion->PV)/(double)(team1->champion->PVMax)) * 20);
     int pvLeftP2 = (int)(((double)(team2->champion->PV)/(double)(team2->champion->PVMax)) * 20);
-    int distance = distanceBetweenChampions(team1, team2);
+    int distance = distanceBetweenChampions(team1, team2) - 1;
 
     
     printf("%*c", margin, ' '); // margin left

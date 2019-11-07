@@ -12,7 +12,7 @@
 Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fight.c).
 
 2. /!\ Boucle infinie /!\
-  Haricot versus Banane
+  Haricot versus Banane   ||   Poireau versus Poire   ||   Fenouil versus Kiwi
   Build (Les 2 champ ont le même build):
     Arme 0
     Prot -1
@@ -22,3 +22,5 @@ Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fig
     - Lorsque que les 2 champions sont côte à côte et que j'exécute la commande 'use weapon 93'
       avec la Banane, le jeu lance une boucle infinie. Pas d'autre choix que de faire CTRL+C.
     - Valgrind donne même un message de lorsque je fais un simple 'use weapon' (coller à l'adversaire).
+    -Le problème provient de l'affichage car lorsque je commente l'affichage dans use weapo le bug ne survient pas.
+    - J'ai l'impression que le bien survient uniquement dans le cas ou le prix des champs et leurs stuff sont identiques.

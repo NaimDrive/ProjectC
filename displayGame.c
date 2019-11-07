@@ -10,13 +10,13 @@
 #include <unistd.h>
 
 void displayHealth(Team *team1, Team *team2, int sz) {
-    int lenHealthBar = strlen(team1->champion->variete)+strlen(team2->champion->variete)+((8+2+20)*2)+(sz/10);
+    int lenHealthBar = strlen(team1->champion->variete)+strlen(team2->champion->variete)+((8+2+20)*2)+(sz/10)+(9);
     int margin =  ((sz-2)/2)-(lenHealthBar/2);
     int pvLeftP1 = (int)(((double)(team1->champion->PV)/(double)(team1->champion->PVMax)) * 20);
     int pvLeftP2 = (int)(((double)(team2->champion->PV)/(double)(team2->champion->PVMax)) * 20);
     int distance = distanceBetweenChampions(team1, team2);
 
-    printf("- %d -", distance);
+    
     printf("%*c", margin, ' '); // margin left
 
     green();
@@ -31,7 +31,12 @@ void displayHealth(Team *team1, Team *team2, int sz) {
     if(pvLeftP1 < 20)
         printf("%*c", (20 - pvLeftP1), ' ');
     
-    printf("]%*c[", (sz/10), ' ');
+    printf("]%*c", ((sz/10)/2), ' ');
+    gray();
+    whiteBG();
+    printf("/| %03d |\\", distance);
+    resetColor();
+    printf("%*c[", ((sz/10)/2), ' ');
     
     if(pvLeftP2 < 20)
         printf("%*c", (20 - pvLeftP2), ' ');

@@ -241,9 +241,9 @@ void showEndGame(Team *team1, Team *team2) {
         printf("C'est incroyable, le résultat est un ex-aequo !\n");
     } else {
         if(team1->CE == 0) {
-            printf("L'équipe %s gagne la partie !\n", team2->champion->variete);
+            printf("Bravo à l'équipe %s qui a gagné la partie !\n", team2->champion->variete);
         } else {
-            printf("L'équipe %s gagne la partie !\n", team1->champion->variete);
+            printf("Bravo à l'équipe %s qui a gagné la partie !\n", team1->champion->variete);
         }
     }
 }

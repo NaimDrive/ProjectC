@@ -26,3 +26,10 @@ Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fig
     - J'ai l'impression que le bien survient uniquement dans le cas ou le prix des champs et leurs stuff sont identiques.
 
   Bilan : Réglé en ajoutant un else return; dans la fonction displayAttack().
+
+3. Seg fault fight v versus f
+  fight versus poire
+
+  '' ne fait pas partie des champions jouables.
+  free(): invalid pointer
+  Aborted (core dumped)

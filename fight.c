@@ -149,10 +149,10 @@ void moveForward(Team *team1, Team *team2, int n) {
   if(n > 0) {
     if(team1->id == 0) {
       if(team1->position+1 == team2->position) {
-        printf("Vous êtes déjà au plus près du champion ennemie.\n");
+        printf("Vous êtes déjà au plus près du champion ennemi.\n");
       } else {
         if(team1->position+n >= team2->position) {
-          printf("Vous ne pouvez pas avancer de %d cases car vous allez dépasser le champion ennemie.\n", n);
+          printf("Vous ne pouvez pas avancer de %d cases car vous allez dépasser le champion ennemi.\n", n);
         } else {
           if(team1->CA < n) {
             printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);
@@ -165,10 +165,10 @@ void moveForward(Team *team1, Team *team2, int n) {
       }
     } else {
       if(team1->position-1 == team2->position) {
-        printf("Vous êtes déjà au plus près du champion ennemie.\n");
+        printf("Vous êtes déjà au plus près du champion ennemi.\n");
       } else {
         if(team1->position-n <= team2->position) {
-          printf("Vous ne pouvez pas avancer de %d cases car vous allez dépasser le champion ennemie.\n", n);
+          printf("Vous ne pouvez pas avancer de %d cases car vous allez dépasser le champion ennemi.\n", n);
         } else {
           if(team1->CA < n) {
             printf("Vous n'avez pas assez de CA pour avancer de %d cases.\n", n);

@@ -21,7 +21,7 @@ Pour lancer le jeu, utiliser la commande suivante.
 L'objectif du jeu est de déterminer qui entre l'empire des légumes et l'empire des fruits, domine le **Domaine Cultivé**.
 
 Pour cela, vous allez réaliser une suite de duel opposant un légume et un fruit en combat singulier.<br/>
-Au début de chaque duel, les deux camps ont la possibilité d'acheter une arme, une protection et un soin. Mais attention en temps de guerre les prix d'équipements sont élevés !
+Au début de chaque duel, les deux camps ont la possibilité d'acheter une arme, une protection et un soin. Mais attention en temps de guerre les prix des équipements sont élevés !
 
 A l'issue de chaque combat, le combattant toujours vivant se verra verser une prime de victoire.<br/>
 Le premier camp n'ayant plus d'argent sera déclaré perdant.

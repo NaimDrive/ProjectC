@@ -24,3 +24,5 @@ Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fig
     - Valgrind donne même un message de lorsque je fais un simple 'use weapon' (coller à l'adversaire).
     -Le problème provient de l'affichage car lorsque je commente l'affichage dans use weapo le bug ne survient pas.
     - J'ai l'impression que le bien survient uniquement dans le cas ou le prix des champs et leurs stuff sont identiques.
+
+  Bilan : Réglé en ajoutant un else return; dans la fonction displayAttack().

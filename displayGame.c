@@ -123,6 +123,8 @@ void displayAttack(Team *team1, Team *team2, int sz) {
     } else if(team1->id == 1 && team1->position-1 > team2->position){
         attack.direction = -1;
         attack.position = team1->position-1;
+    } else {
+        return;
     }
 
     while((team1->id == 0 && attack.position+1 < team2->position) || (team1->id == 1 && attack.position-1 > team2->position)) {

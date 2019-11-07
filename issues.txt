@@ -9,7 +9,7 @@
     Heal -1
     CA +25
 
-Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fight.c)
+Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fight.c).
 
 2. /!\ Boucle infinie /!\
   Haricot versus Banane
@@ -21,3 +21,4 @@ Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fig
   Détails :
     - Lorsque que les 2 champions sont côte à côte et que j'exécute la commande 'use weapon 93'
       avec la Banane, le jeu lance une boucle infinie. Pas d'autre choix que de faire CTRL+C.
+    - Valgrind donne même un message de lorsque je fais un simple 'use weapon' (coller à l'adversaire).

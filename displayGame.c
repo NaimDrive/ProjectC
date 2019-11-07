@@ -13,7 +13,7 @@ void displayHealth(Team *team1, Team *team2, int sz) {
     int margin =  ((sz-2)/2)-(lenHealthBar/2);
     int pvLeftP1 = (int)(((double)(team1->champion->PV)/(double)(team1->champion->PVMax)) * 20);
     int pvLeftP2 = (int)(((double)(team2->champion->PV)/(double)(team2->champion->PVMax)) * 20);
-    
+
     printf("%*c", margin, ' '); // margin left
 
     green();
@@ -35,7 +35,7 @@ void displayHealth(Team *team1, Team *team2, int sz) {
     yellowBG();
     printf("%*c", pvLeftP2, ' ');
     resetColor();
-    
+
 
     printf("](%02d/%02d)", team2->champion->PV, team2->champion->PVMax);
     yellow();
@@ -57,7 +57,7 @@ void displayGame(Team *team1, Team *team2, int sz) {
             printf("%c", team2->champion->head);
         } else {
             printf(" ");
-        } 
+        }
     }
     printf("\n");
     for (i = 0; i < sz; i++) {
@@ -144,10 +144,10 @@ void displayAttack(Team *team1, Team *team2, int sz) {
             } else if((i == team1->position && team1->id == 1)) {
                 yellow();
                 printf("%c", team1->champion->head);
-             
+
             } else {
                 printf(" ");
-            } 
+            }
         }
         printf("\n");
         for (i = 0; i < sz; i++) {
@@ -173,7 +173,7 @@ void displayAttack(Team *team1, Team *team2, int sz) {
                 } else {
                     yellow();
                     printf("(");
-                }   
+                }
             } else {
                 printf(" ");
             }

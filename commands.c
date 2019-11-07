@@ -67,8 +67,6 @@ int getChampIndex(char *champName, Champion **champions, int nbChampions) {
 
 int checkingChamps(char *veg, char *fruit, int vegIndex, int fruitIndex, Champion **champions, int nbChampions) {
   int output = 0;
-  veg[0] = toupper(veg[0]); // make first char an uppercase
-  fruit[0] = toupper(fruit[0]); // make first char an uppercase
 
   white();
 
@@ -326,7 +324,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
       else if(strncmp(command, "fight ", 6) == 0) {
         char *tmp = substring(command, 6, strlen(command));
-        char *indexVersus = strstr(tmp, "versus");
+        char *indexVersus = strstr(tmp, " versus ");
         char *fruit;
         char *legume;
         int vegIndex;
@@ -336,10 +334,11 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
         if(indexVersus == NULL) {
           printf("! Utilisation ! : fight <legume> versus <fruit>\n");
+          free(tmp);
           continue;
         }
 
-        while((tmp+i) != indexVersus) i++; // get index 'v' de "versus"
+        while((tmp+i) != indexVersus+1) i++; // get index 'v' de "versus"
 
         legume = substring(tmp, 0, i-1); // nom du legume
         fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit

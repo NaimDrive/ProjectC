@@ -7,4 +7,17 @@
     Arme 3
     Prot -1
     Heal -1
+    CA +25
+
 Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fight.c)
+
+2. /!\ Boucle infinie /!\
+  Haricot versus Banane
+  Build (Les 2 champ ont le même build):
+    Arme 0
+    Prot -1
+    Heal -1
+    CA +43
+  Détails :
+    - Lorsque que les 2 champions sont côte à côte et que j'exécute la commande 'use weapon 93'
+      avec la Banane, le jeu lance une boucle infinie. Pas d'autre choix que de faire CTRL+C.

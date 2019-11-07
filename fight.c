@@ -297,7 +297,7 @@ void useWeapon(Team *team1, Team *team2, int n, int sz) {
 }
 
 void useProtection(Team *team) {
-  if(team->weapon != NULL) {
+  if(team->protection != NULL) {
     if(team->CA < team->protection->CA) {
       printf("Vous n'avez pas assez de CA pour activer la protection.\n");
     } else if(team->protectionActivated == 1) {

@@ -1,2 +1,10 @@
 /!\ Liste des problèmes & bugs à corriger :
 /!\ Expliquer le code d'erreur, la liste des commandes pour obtenir le bug et si possible un commentaire pour aider à corriger.
+
+1. Seg fault lorsque 'use protection'
+  Haricot versus Banane
+  Build (Les 2 champ ont le même build):
+    Arme 3
+    Prot -1
+    Heal -1
+Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fight.c)

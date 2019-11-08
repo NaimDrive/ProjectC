@@ -12,6 +12,15 @@ typedef struct {
 } AttackAnimation;
 
 /*
+    Displays informations about the team.
+    @Param1 Team
+    @Param2 Team
+    @Param3 int
+    @Return void
+*/
+void displayStats(Team *team1, Team *team2, int sz);
+
+/*
     Display champions health points.
     @Param1 Team
     @Param2 Team

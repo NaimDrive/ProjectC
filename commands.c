@@ -242,14 +242,16 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
   equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   while(team1->champion->PV > 0 && team2->champion->PV > 0) {
-    fighNotFinished(team1);
+    takeOffProtection(team1);
     fightingMode(team1, team2, screenSize.ws_col);
 
     if(team2->champion->PV == 0)
       break; // Avoid j2 playing if he's dead
 
-    fighNotFinished(team2);
+    takeOffProtection(team2);
     fightingMode(team2, team1, screenSize.ws_col);
+
+    fighNotFinished(team1, team2);
   }
 
   if(!((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE))) {

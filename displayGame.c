@@ -9,6 +9,18 @@
 #include <string.h>
 #include <unistd.h>
 
+void displayStats(Team *team1, Team *team2, int sz) {
+    int soin1, soin2;
+    if(team1->healing != NULL) soin1 = team1->healing->volume;
+    else soin1 = 0;
+
+    if(team2->healing != NULL) soin2 = team2->healing->volume;
+    else soin2 = 0;
+
+    printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team1->champion->variete, team1->CA, team1->weapon->portee, soin1);
+    printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team2->champion->variete, team2->CA, team2->weapon->portee, soin2);
+}
+
 void displayHealth(Team *team1, Team *team2, int sz) {
     int lenHealthBar = strlen(team1->champion->variete)+strlen(team2->champion->variete)+((8+2+20)*2)+(sz/10)+(9);
     int margin =  ((sz-2)/2)-(lenHealthBar/2);

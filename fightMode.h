@@ -22,14 +22,15 @@ void roundWinner(Team *team1, Team *team2, int maximumCE);
     @Param Team
     @Return void
 */
-void takeOffProtection(Team *team);
+void takeOffProtection(Team *team1);
 
 /*
     While the duel is not finished, reset contents to fight again.
-    @Param Team
+    @Param1 Team
+    @Param2 Team
     @Return void
 */
-void fighNotFinished(Team *team);
+void fighNotFinished(Team *team1, Team *team2);
 
 /*
     The player can buy a care for the duel.

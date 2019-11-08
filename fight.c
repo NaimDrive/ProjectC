@@ -258,7 +258,6 @@ void useWeapon(Team *team1, Team *team2, int n, int sz) {
             totalDamage += damage;
           }
         }
-        printf("%s perd %d crédits d'attaques.\n", team1->champion->variete, CALost);
         team1->CA -= CALost;
 
         if(!successAttack) {
@@ -266,7 +265,7 @@ void useWeapon(Team *team1, Team *team2, int n, int sz) {
         } else {
           displayAttack(team1, team2, sz);
           if(protectionCounter > 0) {
-            printf("La protection a contré %d attaques !\n", protectionCounter);
+            printf("La protection a contré %d attaque(s) !\n", protectionCounter);
           }
           if(totalDamage > team2->champion->PV) {
             team2->champion->PV = 0;
@@ -276,6 +275,7 @@ void useWeapon(Team *team1, Team *team2, int n, int sz) {
             printf("%s perd %d points de vie. Il reste %d points de vie.\n", team2->champion->variete, totalDamage, team2->champion->PV);
           }
         }
+        printf("%s perd %d crédits d'attaques.\n", team1->champion->variete, CALost);
       }
     }
   }

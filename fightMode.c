@@ -289,10 +289,12 @@ void takeOffProtection(Team *team) {
     }
 }
 
-void fighNotFinished(Team *team) {
-    resetCA(team);
-    takeOffProtection(team);
-    resetHealing(team);
+void fighNotFinished(Team *team1, Team *team2) {
+    resetCA(team1);
+    resetHealing(team1);
+
+    resetCA(team2);
+    resetHealing(team2);
 }
 
 void resetGame(Team *team1, Team *team2, Winsize screenSize) {
@@ -333,9 +335,11 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     while(team1->CA > 0 && team2->champion->PV > 0 && !end) {
 
         if(team1->id == 0) {
+            displayStats(team1, team2, screenSize);
             displayGame(team1, team2, screenSize);
             displayHealth(team1, team2, screenSize);
         } else {
+            displayStats(team2, team1, screenSize);
             displayGame(team2, team1, screenSize);
             displayHealth(team2, team1, screenSize);
         }
@@ -358,8 +362,14 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         else if(strncmp(command, "move backward ", 14) == 0) moveBackward(team1, getID(command, 14), screenSize);
         else if(strcmp(command, "move backward") == 0) moveBackward(team1, 1, screenSize);
 
-        else if(strncmp(command, "use weapon ", 11) == 0) useWeapon(team1, team2, getID(command, 11), screenSize);
-	    else if(strcmp(command, "use weapon") == 0) useWeapon(team1, team2, 1, screenSize);
+        else if(strncmp(command, "use weapon ", 11) == 0) {
+            useWeapon(team1, team2, getID(command, 11), screenSize);
+            enterToContinue();
+        }
+	    else if(strcmp(command, "use weapon") == 0)  {
+            useWeapon(team1, team2, 1, screenSize);
+            enterToContinue();
+        }
         else if(strcmp(command, "use protection") == 0) useProtection(team1);
 
         else if(strncmp(command, "use care ", 9) == 0) useCare(team1, getID(command, 9));

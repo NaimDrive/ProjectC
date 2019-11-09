@@ -75,7 +75,18 @@ void protectionChoice(Team *team, Protection **protections, int *nbProtections, 
     long num = -2;
     int ajout;
     char *endptr;
+
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
+
+    if(team->maxCE < protections[0]->CE) {
+        red();
+        printf("Vous n'avez pas assez de CE pour acheter une quelconque protection.\n");
+        resetColor();
+        enterToContinue();
+        system("clear");
+        return;
+    }
+
     printf("Ensuite il faut de quoi se protéger.\n");
 
     while((num >= *nbProtections || num < -1) || !(*command != '\0' && *endptr == '\0')) {
@@ -125,7 +136,18 @@ void healingChoice(Team *team, Healing **healings, int *nbHealings, char *comman
     long num = -2;
     int ajout;
     char *endptr;
+
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
+
+    if(team->maxCE < healings[0]->CE) {
+        red();
+        printf("Vous n'avez pas assez de CE pour acheter un quelconque soin.\n");
+        resetColor();
+        enterToContinue();
+        system("clear");
+        return;
+    }
+
     printf("Les soins peuvent sauver des vies... Croyez-moi !\n");
 
     while((num >= *nbHealings || num < -1) || !(*command != '\0' && *endptr == '\0')) {
@@ -175,6 +197,16 @@ void actionCreditChoice(Team *team, char *command) {
     long num = -1;
     char *endptr;
     printf("Joueur : %s | Crédits d'equipement : %d\n", team->champion->variete, team->maxCE);
+    
+    if(team->maxCE == 0) {
+        red();
+        printf("Vous n'avez pas assez de CE pour acheter des CA.\n");
+        resetColor();
+        enterToContinue();
+        system("clear");
+        return;
+    }
+
     printf("Et enfin ! Il nous faut des crédits d'action pour enclencher !\n");
 
     while((num > team->maxCE || num < 0) || !(*command != '\0' && *endptr == '\0')) {

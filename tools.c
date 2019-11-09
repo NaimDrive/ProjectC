@@ -25,3 +25,21 @@ int distanceBetweenChampions(Team *team1, Team *team2) {
   else
     return -(team2->position - team1->position);
 }
+
+char* substring(char *src, int beg, int end) {
+  char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
+  int i;
+
+  for(i = beg;(*(src+i) != '\0') && i < end; i++) {
+    *cpy = *(src+i);
+    cpy++;
+  }
+  *cpy = '\0';
+
+  return cpy - (end-beg);
+}
+
+void enterToContinue() {
+    printf("(Appuyez sur Entrer pour continuer)");
+    while(getchar() != '\n');
+}

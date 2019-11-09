@@ -30,4 +30,19 @@ int randHeal(Healing *healing);
 */
 int distanceBetweenChampions(Team *team1, Team *team2);
 
+/*
+    Get the substring of a string
+    @Param1 Target
+    @Param2 Start of the substring
+    @Param3 End of the substring
+    @Return A string (char*)
+*/
+char* substring(char *src, int beg, int end);
+
+/*
+    Ask user to push Enter to continue
+    @Return void
+*/
+void enterToContinue();
+
 #endif

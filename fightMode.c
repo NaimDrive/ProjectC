@@ -4,16 +4,12 @@
 #include "colors.h"
 #include "fightMode.h"
 #include "displayGame.h"
+#include "tools.h"
 
 #include <sys/ioctl.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-
-void enterToContinue() {
-    printf("(Appuyez sur Entrer pour continuer)");
-    while(getchar() != '\n');
-}
 
 void showEquipment(Team *team) {
     Champion *c = team->champion;

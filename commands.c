@@ -4,25 +4,13 @@
 #include "endGame.h"
 #include "commands.h"
 #include "colors.h"
+#include "tools.h"
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <ctype.h>
-
-char* substring(char *src, int beg, int end) {
-  char *cpy = (char*)malloc(((end-beg)+1)*sizeof(char));
-  int i;
-
-  for(i = beg;(*(src+i) != '\0') && i < end; i++) {
-    *cpy = *(src+i);
-    cpy++;
-  }
-  *cpy = '\0';
-
-  return cpy - (end-beg);
-}
 
 void showTeamsCE(Team *team1, Team *team2) {
   printf(" -- > ");

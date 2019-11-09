@@ -2,15 +2,6 @@
 #define __COMMANDES_H__
 
 /*
-    Get the substring of a string
-    @Param1 Target
-    @Param2 Start of the substring
-    @Param3 End of the substring
-    @Return A string (char*)
-*/
-char* substring(char *src, int beg, int end);
-
-/*
     Get id entered in a command line
     @Param1 The command line
     @Param2 Where the id starts

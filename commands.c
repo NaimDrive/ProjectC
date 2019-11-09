@@ -231,15 +231,15 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
   equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   while(team1->champion->PV > 0 && team2->champion->PV > 0) {
     takeOffProtection(team1);
-    fightingMode(team1, team2, screenSize.ws_col);
+    fightingMode(team1, team2, screenSize.ws_col); // First player attack
 
     if(team2->champion->PV == 0)
       break; // Avoid j2 playing if he's dead
 
     takeOffProtection(team2);
-    fightingMode(team2, team1, screenSize.ws_col);
+    fightingMode(team2, team1, screenSize.ws_col); // Second player attack
 
-    fighNotFinished(team1, team2);
+    fighNotFinished(team1, team2); // Restore CA and healings used
   }
 
   if(!((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE))) {
@@ -355,8 +355,6 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         }
         resetColor();
       }
-      // enterToContinue();
-      // system("clear");
     }
     play = replay(command);
   }

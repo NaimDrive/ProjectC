@@ -35,9 +35,6 @@ void displayStats(Team *team1, Team *team2, int sz) {
     printf(" Soin  |-> %d", soin1);
     yellow();
     printf("%*d <-|  Soin\n", (sz-(23)), soin2);
-
-    // printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team1->champion->variete, team1->CA, team1->weapon->portee, soin1);
-    // printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team2->champion->variete, team2->CA, team2->weapon->portee, soin2);
 }
 
 void displayHealth(Team *team1, Team *team2, int sz) {
@@ -46,9 +43,6 @@ void displayHealth(Team *team1, Team *team2, int sz) {
     int pvLeftP1 = (int)(((double)(team1->champion->PV)/(double)(team1->champion->PVMax)) * 20);
     int pvLeftP2 = (int)(((double)(team2->champion->PV)/(double)(team2->champion->PVMax)) * 20);
     int distance = distanceBetweenChampions(team1, team2);
-
-    
-    // printf("%*c", margin, ' '); // margin left
 
     green();
     printf("%*s ", margin, team1->champion->variete);
@@ -180,7 +174,6 @@ void displayAttack(Team *team1, Team *team2, int sz) {
                 printf("%c", team2->champion->head);
             } else if((i == team2->position && team2->id == 1)) {
                 yellow();
-                // printf("ù");
                 printf("%c", team2->champion->head);
             } else if((i == team1->position && team1->id == 1)) {
                 yellow();

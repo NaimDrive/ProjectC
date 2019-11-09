@@ -209,7 +209,7 @@ void showCare(Healing **healings, int *nbHealings, int id) {
 
 int replay(char *command) {
   while(1) {
-    printf("Voulez-vous rejouer ?\n");
+    printf("Voulez-vous rejouer ? (oui/non)\n");
     fgets(command, 256, stdin);
     if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
     if(strcmp(command, "oui") == 0)

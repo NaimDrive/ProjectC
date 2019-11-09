@@ -367,8 +367,8 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         }
         resetColor();
       }
-      enterToContinue();
-      system("clear");
+      // enterToContinue();
+      // system("clear");
     }
     play = replay(command);
   }

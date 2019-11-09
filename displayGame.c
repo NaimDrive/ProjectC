@@ -10,29 +10,48 @@
 #include <unistd.h>
 
 void displayStats(Team *team1, Team *team2, int sz) {
-    int soin1, soin2;
+    int soin1, soin2, margin;
     if(team1->healing != NULL) soin1 = team1->healing->volume;
     else soin1 = 0;
 
     if(team2->healing != NULL) soin2 = team2->healing->volume;
     else soin2 = 0;
 
-    printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team1->champion->variete, team1->CA, team1->weapon->portee, soin1);
-    printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team2->champion->variete, team2->CA, team2->weapon->portee, soin2);
+    green();
+    printf("  CA   |-> %d", team1->CA);
+    margin = (team1->CA > 9 ? (sz-24) : (sz-23));
+    yellow();
+    printf("%*d", margin, team2->CA);
+    printf(" <-|   CA\n");
+
+    green();
+    printf("Portée |-> %d", team1->weapon->portee);
+    margin = (team1->weapon->portee > 9 ? (sz-24) : (sz-23));
+    yellow();
+    printf("%*d", margin, team2->weapon->portee);
+    printf(" <-| Portée\n");
+
+    green();
+    printf(" Soin  |-> %d", soin1);
+    yellow();
+    printf("%*d <-|  Soin\n", (sz-(23)), soin2);
+
+    // printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team1->champion->variete, team1->CA, team1->weapon->portee, soin1);
+    // printf("%s\nCA %d\nPortée d'attaque %d\nSoin(s) %d\n", team2->champion->variete, team2->CA, team2->weapon->portee, soin2);
 }
 
 void displayHealth(Team *team1, Team *team2, int sz) {
-    int lenHealthBar = strlen(team1->champion->variete)+strlen(team2->champion->variete)+((8+2+20)*2)+(sz/10)+(9);
-    int margin =  ((sz-2)/2)-(lenHealthBar/2);
+    int lenHealthBar = strlen(team1->champion->variete)-strlen(team2->champion->variete)-((8+2+20)*2)-(sz/10)-(9);
+    int margin =  (double)((sz-2)/2)+(double)(lenHealthBar/2);
     int pvLeftP1 = (int)(((double)(team1->champion->PV)/(double)(team1->champion->PVMax)) * 20);
     int pvLeftP2 = (int)(((double)(team2->champion->PV)/(double)(team2->champion->PVMax)) * 20);
     int distance = distanceBetweenChampions(team1, team2) - 1;
 
     
-    printf("%*c", margin, ' '); // margin left
+    // printf("%*c", margin, ' '); // margin left
 
     green();
-    printf("%s ", team1->champion->variete);
+    printf("%*s ", margin, team1->champion->variete);
     resetColor();
     // len (with the previous space) : 8
     printf("(%02d/%02d)[", team1->champion->PV, team1->champion->PVMax);

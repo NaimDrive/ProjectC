@@ -33,3 +33,5 @@ Bilan : Réglé en remplaçant "weapon" par "protection" dans useProtection (fig
   '' ne fait pas partie des champions jouables.
   free(): invalid pointer
   Aborted (core dumped)
+
+  Bilan : Réglé en modifiant la manière d'analyser la commande 'fight v versus f'

@@ -294,8 +294,19 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
       // ~~~ Cases ~~~ //
       if(strcmp(command, "exit") == 0) {
-        free(command);
-        exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+        char c;
+        int keepPlaying = 0;
+        while(!keepPlaying) {
+          printf("Voulez-vous vraiment quitter le jeu ? [o/n] ");
+          c = getchar();
+          if(c == 'o' || c == 'y') {
+            free(command);
+            exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+          } else if(c == 'n') {
+            keepPlaying = 1;
+          }
+        }
+        c = getchar(); // without this getchar a '\n' is entered in the next prompt (return a 'command invalid' error)
       }
       else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
       else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));

@@ -35,6 +35,7 @@ void displayStats(Team *team1, Team *team2, int sz) {
     printf(" Soin  |-> %d", soin1);
     yellow();
     printf("%*d <-|  Soin\n", (sz-(23)), soin2);
+    printf("\n");
 }
 
 void displayHealth(Team *team1, Team *team2, int sz) {

@@ -267,7 +267,7 @@ void useWeapon(Team *team1, Team *team2, int n, int sz) {
           if(protectionCounter > 0) {
             printf("La protection a contré %d attaque(s) !\n", protectionCounter);
           }
-          if(totalDamage > team2->champion->PV) {
+          if(totalDamage >= team2->champion->PV) {
             team2->champion->PV = 0;
             printf("Vous avez tué %s.\n", team2->champion->variete);
           } else {

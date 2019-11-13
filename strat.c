@@ -20,12 +20,11 @@ int readStrat(Strategy *strategy, char *fileName) {
 Strategy ** initStrat(int argc, char *argv[]) {
     Strategy **strategy;
     int nbStrategy = 0, read = 0;
-    strategy = malloc(sizeof(Strategy *)*nbStrategy);
+    strategy = malloc(sizeof(Strategy *)*(argc-1));
     for (int i = 1; i < argc; i++) {
         read = readStrat(strategy[nbStrategy], argv[i]);
         if(read == 0) {
             nbStrategy++;
-            strategy = realloc(strategy, sizeof(Strategy *)*nbStrategy);
         } else if (read == 1) {
             printf("Erreur, le fichier %s n'est pas un fichier .strat !\n", argv[i]);
         } else if (read == 2) {
@@ -35,5 +34,8 @@ Strategy ** initStrat(int argc, char *argv[]) {
         } else if (read == 4) {
             printf("Erreur inconnue !\n");
         }
+    }
+    if(nbStrategy < argc-1){
+        strategy = realloc(strategy, sizeof(Strategy *)*nbStrategy);
     }
 }

@@ -2,6 +2,16 @@
 #define __FIGHTMODE_H__
 
 /*
+    Handle fighting mode
+    @Param1 String
+    @Param2 Team
+    @Param3 Team
+    @Param4 Int
+    @Return Int (0 OK, 1 end the turn, 2 wrong command)
+*/
+int readAction(char *command, Team *team1, Team *team2, int screenSize);
+
+/*
     Handle the fight
     @Param1 Team
     @Param2 Team

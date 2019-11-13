@@ -356,11 +356,45 @@ void helpFight() {
     resetColor();
 }
 
+int readAction(char *command, Team *team1, Team *team2, int screenSize) {
+    // ~~~ Cases ~~~ //
+        if(strcmp(command, "show") == 0) showEquipment(team1);
+        else if(strncmp(command, "move forward ", 13) == 0) moveForward(team1, team2, getID(command, 13));
+        else if(strcmp(command, "move forward") == 0) moveForward(team1, team2, 1);
+
+        else if(strncmp(command, "move backward ", 14) == 0) moveBackward(team1, getID(command, 14), screenSize);
+        else if(strcmp(command, "move backward") == 0) moveBackward(team1, 1, screenSize);
+
+        else if(strncmp(command, "use weapon ", 11) == 0) {
+            useWeapon(team1, team2, getID(command, 11), screenSize);
+            enterToContinue();
+        }
+	    else if(strcmp(command, "use weapon") == 0)  {
+            useWeapon(team1, team2, 1, screenSize);
+            enterToContinue();
+        }
+        else if(strcmp(command, "use protection") == 0) useProtection(team1);
+
+        else if(strncmp(command, "use care ", 9) == 0) useCare(team1, getID(command, 9));
+	    else if(strcmp(command, "use care") == 0) useCare(team1, 1);
+
+        else if(strcmp(command, "end") == 0) return 1;
+        else if(strcmp(command,"clear") == 0) system("clear");
+
+        else if(strcmp(command, "help") == 0) helpFight();
+
+        else {
+            return 2;
+        }
+        return 0;
+}
+
 void fightingMode(Team *team1, Team *team2, int screenSize) {
     char *command = malloc(256*sizeof(char));
-    int end = 0, erreur = 0;
+    int end = 0;
+    int erreur = 0;
 
-    while(team1->CA > 0 && team2->champion->PV > 0 && !end) {
+    while(team1->CA > 0 && team2->champion->PV > 0 && (!end || end == 2)) {
 
         if(team1->id == 0) {
             displayStats(team1, team2, screenSize);
@@ -382,40 +416,17 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
         fgets(command, 256, stdin);
         if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
 
-        // ~~~ Cases ~~~ //
-        if(strcmp(command, "show") == 0) showEquipment(team1);
-        else if(strncmp(command, "move forward ", 13) == 0) moveForward(team1, team2, getID(command, 13));
-        else if(strcmp(command, "move forward") == 0) moveForward(team1, team2, 1);
+        /* cases */
+        end = readAction(command, team1, team2, screenSize);
+        /* ^^^^ */
 
-        else if(strncmp(command, "move backward ", 14) == 0) moveBackward(team1, getID(command, 14), screenSize);
-        else if(strcmp(command, "move backward") == 0) moveBackward(team1, 1, screenSize);
+        if(end==2) erreur++;
 
-        else if(strncmp(command, "use weapon ", 11) == 0) {
-            useWeapon(team1, team2, getID(command, 11), screenSize);
-            enterToContinue();
-        }
-	    else if(strcmp(command, "use weapon") == 0)  {
-            useWeapon(team1, team2, 1, screenSize);
-            enterToContinue();
-        }
-        else if(strcmp(command, "use protection") == 0) useProtection(team1);
-
-        else if(strncmp(command, "use care ", 9) == 0) useCare(team1, getID(command, 9));
-	    else if(strcmp(command, "use care") == 0) useCare(team1, 1);
-
-        else if(strcmp(command, "end") == 0) end = 1;
-        else if(strcmp(command,"clear") == 0) system("clear");
-
-        else if(strcmp(command, "help") == 0) helpFight();
-
-        else {
-            erreur++;
+        if(erreur == 3) {
             white();
             printf("Commande '%s' invalide.\n", command);
-            if(erreur == 3) {
-                helpFight();
-                erreur = 0;
-            }
+            helpFight();
+            erreur = 0;
             resetColor();
         }
     }

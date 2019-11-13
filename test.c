@@ -36,5 +36,9 @@ int main(void) {
     s2.strat.unionStrat.operateur.operateur = "+";
     afficherTypeStrat(s.suivant);
 
+    // On pourra même faire un type avec op1 et op2 qui sont des pointeurs d'entier.
+    // Car là à chaque fin de fight, les valeurs ne sont pas changée alors que si on met des pointeurs les valeurs seront changées automatiquement !!!
+    // PUTAIN JE SUIS TROP FORT !!!
+
     return 0;
 }

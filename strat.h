@@ -16,7 +16,7 @@ typedef union unionStrat {
     Operateur operateur;
 } UnionStrat;
 
-typedef enum {
+typedef enum enumStrat{
     commande,
     operateur
 } EnumStrat;

@@ -11,17 +11,28 @@ typedef struct operateur {
     char *operateur;
 } Operateur;
 
-typedef union strat
-{
+typedef union unionStrat {
     Commande commande;
     Operateur operateur;
+} UnionStrat;
+
+typedef enum {
+    commande,
+    operateur
+} EnumStrat;
+
+typedef struct strat
+{
+    UnionStrat unionStrat;
+    EnumStrat enumStrat;
 } Strat;
+
 
 typedef struct strategy {
     int num;
     char *nom;
     Strat strat;
-    Strategy *suivant;
+    struct strategy *suivant;
 } Strategy;
 
 int readStrat(Strategy *strategy,char *fileName);

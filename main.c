@@ -1,4 +1,5 @@
 #include "initGame.h"
+#include "strat.h"
 #include "fight.h"
 #include "commands.h"
 #include "endGame.h"
@@ -10,7 +11,7 @@
 #include <string.h>
 #include <time.h>
 
-int main() {
+int main(int argc, char *argv[]) {
   Champion **champions;
   Weapon **weapons;
   Protection **protections;
@@ -40,6 +41,11 @@ int main() {
   *nbHealings = 0;
 
   screenSize = initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+
+  if(argc > 1) {
+    // Si il y a au moins 1 fichier .strat en paramètre
+    initStrat(argc, argv);
+  }
 
   readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 

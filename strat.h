@@ -33,6 +33,7 @@ typedef struct strategy {
     char *nom;
     Strat strat;
     struct strategy *suivant;
+    struct strategy *suivantSinon;
 } Strategy;
 
 int readStrat(Strategy *strategy,char *fileName);

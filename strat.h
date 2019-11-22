@@ -31,13 +31,16 @@ typedef struct strat
 typedef struct strategy {
     int num;
     char *nom;
-    Strat strat;
-    struct strategy *suivant;
-    struct strategy *suivantSinon;
+    Strat strat; // Commands of the strategy
+    Strat initStrategy; // Commands to choose the weapon, the protection, the care and buy CA.
+    struct strategy *suivant; // The next by default
+    struct strategy *suivantSinon; // The next if the strategy is an operator and the condition return false.
 } Strategy;
 
 int readStrat(Strategy *strategy,char *fileName);
 
 Strategy ** initStrat(int argc, char *argv[]);
+
+void compareChain(Strategy *strategy, char *buffer);
 
 #endif

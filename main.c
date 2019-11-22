@@ -12,6 +12,7 @@
 #include <time.h>
 
 int main(int argc, char *argv[]) {
+  /*
   Champion **champions;
   Weapon **weapons;
   Protection **protections;
@@ -39,15 +40,15 @@ int main(int argc, char *argv[]) {
   *nbWeapons = 0;
   *nbProtections = 0;
   *nbHealings = 0;
-
-  screenSize = initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+  */
+  // screenSize = initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
 
   if(argc > 1) {
     // Si il y a au moins 1 fichier .strat en paramètre
     initStrat(argc, argv);
   }
 
-  readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+  // readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 
   return 0;
 }

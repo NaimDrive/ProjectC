@@ -1,17 +1,21 @@
 #include "strat.h"
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 int readStrat(Strategy *strategy, char *fileName) {
     FILE *fichier = fopen(fileName, "r");
-    char *buffer = malloc(sizeof(char)* 256);
+    int SIZE = 256;
+    char *buffer = malloc(sizeof(char)* SIZE);
     
-    while(fgets(buffer, 256, fichier)) {
+    while(fgets(buffer, SIZE, fichier) != NULL) {
         // On lit toutes les lignes du fichier et on stock dans la structure
-        printf("%s\n", buffer);
+        compareChain(strategy, buffer);
     }
     
+    free(buffer);
     fclose(fichier);
+
     return 0; // Return 0 si tout c'est correctement passé
     return 1; // Return 1 si erreur sur l'extention du fichier
     return 2; // Return 2 si strategie trop chère
@@ -41,4 +45,24 @@ Strategy ** initStrat(int argc, char *argv[]) {
         strategy = realloc(strategy, sizeof(Strategy *)*nbStrategy);
     }
     return strategy;
+}
+
+
+void compareChain(Strategy *strategy, char *buffer) {
+    char *mot;
+    mot = strtok(buffer, " ");
+    while(mot != NULL) {
+        
+        if(!strcmp(mot, "strategy")) {
+
+        } else if(!strcmp(mot, "choose")) {
+
+        } else if(!strcmp(mot, "add")) {
+            
+        } else if(!strcmp(mot, "if")) {
+            
+        }
+        
+        mot = strtok(NULL, " ");
+    }
 }

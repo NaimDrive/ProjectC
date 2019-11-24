@@ -31,7 +31,7 @@ displayGame.o: displayGame.c displayGame.h initGame.h colors.h tools.h
 tools.o: tools.c tools.h initGame.h
 	$(CC) $(CFLAGS) -c $<
 
-strat.o: strat.c strat.h
+strat.o: strat.c strat.h initGame.h fight.h tools.h
 	$(CC) $(CFLAGS) -c $<
 
 main.o: main.c fight.h fightMode.h commands.h initGame.h endGame.h displayGame.h strat.h

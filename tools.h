@@ -45,4 +45,10 @@ char* substring(char *src, int beg, int end);
 */
 void enterToContinue();
 
+Weapon * searchWeapon(Weapon **weapon, int *nbWeapons, char *w);
+
+Protection * searchProtection(Protection **protection, int *nbProtections, char *p);
+
+Healing * searchHealing(Healing **healing, int *nbHealings, char *h);
+
 #endif

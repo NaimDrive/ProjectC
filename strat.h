@@ -6,13 +6,19 @@ typedef union unionFonction {
     int (*buyProtection)(Protection *, Team *);
     int (*buyCare)(Healing *, Team *);
     void (*buyCA)(Team *, int);
+    void (*useWeapon)(Team *, Team *, int, int);
+    void (*useProtection)(Team *);
+    void (*useCare)(Team *, int);
 } UnionFonction;
 
 typedef enum enumFonction{
-    weapon,
-    protection,
-    care,
-    CA
+    buy_weapon,
+    buy_protection,
+    buy_care,
+    buy_CA,
+    use_weapon,
+    use_protection,
+    use_care
 } EnumFonction;
 
 typedef union unionParametre {
@@ -57,14 +63,19 @@ typedef struct strat {
 typedef struct strategy {
     int num;
     char *nom;
+    int coutCE;
     Strat *strat; // Commands of the strategy
     Strat *initStrategy; // Commands to choose the weapon, the protection, the care and buy CA.
 } Strategy;
 
-int readStrat(Strategy *strategy,char *fileName, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2);
+int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
 
-Strategy ** initStrat(int argc, char *argv[], int *nbStrat, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2);
+Strategy ** initStrat(int argc, char *argv[], int *nbStrat, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
 
-void compareChain(Strategy *strategy, char *buffer, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2);
+void compareChain(Strategy **strategy, char *buffer, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
+
+void useStrategy(Strategy *strategy);
+
+void useStrat(Strat *strat);
 
 #endif

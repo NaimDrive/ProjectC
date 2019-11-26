@@ -18,7 +18,8 @@ int main(int argc, char *argv[]) {
   Protection **protections;
   Healing **healings;
   Team *team1, *team2;
-  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings;
+  Strategy **strategy;
+  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings, *nbStrat;
   Winsize screenSize;
 
   srand(time(NULL));
@@ -27,6 +28,7 @@ int main(int argc, char *argv[]) {
   weapons = malloc(sizeof(Weapon *) * 5);
   protections = malloc(sizeof(Protection *) * 4);
   healings = malloc(sizeof(Healing *) * 3);
+  strategy = NULL;
 
   team1 = malloc(sizeof(Team));
   team2 = malloc(sizeof(Team));
@@ -45,13 +47,14 @@ int main(int argc, char *argv[]) {
 
   if(argc > 1) {
     // Si il y a au moins 1 fichier .strat en paramètre
-    Strategy **strategy;
-    int *nbStrat = malloc(sizeof(int));
+    nbStrat = malloc(sizeof(int));
     *nbStrat = 0;
-    strategy = initStrat(argc, argv, nbStrat, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+    strategy = initStrat(argc, argv, nbStrat, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+    useStrategy(strategy[0]);
+    useStrategy(strategy[1]);
   }
 
-  readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+  // readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 
   return 0;
 }

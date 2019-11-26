@@ -1,6 +1,10 @@
 strategy Test
-
 choose weapon EPLUCHEUR_LASER
 choose protection WOKLIER
 choose care ENGRAIS_IONIQUE
-add action 10
+
+choose protection TheGodProtection
+choose care WTFHealing
+
+use protection
+use weapon 4

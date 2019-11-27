@@ -6,5 +6,8 @@ choose care ENGRAIS_IONIQUE
 choose protection TheGodProtection
 choose care WTFHealing
 
+add action 12
+
+
 use protection
 use weapon 4

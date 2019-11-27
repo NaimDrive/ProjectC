@@ -80,6 +80,9 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
         strcpy(strategy->nom, mot);
     } else if(!strcmp(mot, "choose")) {
         char *mot1, *mot2;
+        Weapon *weap;
+        Protection *prot;
+        Healing *heal;
 
         strat = calloc(1, sizeof(Strat));        
         strat->enumStrat = commande;
@@ -90,16 +93,35 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
         strat->unionStrat.commande.nbParametres = 2;
         strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
         
+        // A SUPPRIMER
+        strat->unionStrat.commande.parametres[1].team = team1;
+        // A SUPPRIMER
+
         if(!strcmp(mot1, "weapon")) {
-            strat->unionStrat.commande.parametres[0].weapon = searchWeapon(weapons, nbWeapons, mot2);
+            weap = searchWeapon(weapons, nbWeapons, mot2);
+            if(weap == NULL) {
+                free(strat);
+                return;
+            }
+            strat->unionStrat.commande.parametres[0].weapon = weap;
             strat->unionStrat.commande.enumCommande = buy_weapon;
             strat->unionStrat.commande.commande.buyWeapon = buyWeapon;
         } else if(!strcmp(mot1, "protection")) {
-            strat->unionStrat.commande.parametres[0].protection = searchProtection(protections, nbProtections, mot2);
+            prot = searchProtection(protections, nbProtections, mot2);
+            if(prot == NULL) {
+                free(strat);
+                return;
+            }
+            strat->unionStrat.commande.parametres[0].protection = prot;
             strat->unionStrat.commande.enumCommande = buy_protection;
             strat->unionStrat.commande.commande.buyProtection = buyProtection;
         } else if(!strcmp(mot1, "care")) {
-            strat->unionStrat.commande.parametres[0].healing = searchHealing(healings, nbHealings, mot2);
+            heal = searchHealing(healings, nbHealings, mot2);
+            if(heal == NULL) {
+                free(strat);
+                return;
+            }
+            strat->unionStrat.commande.parametres[0].healing = heal;
             strat->unionStrat.commande.enumCommande = buy_care;
             strat->unionStrat.commande.commande.buyCare = buyHealing;
         }
@@ -130,6 +152,10 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             strat->unionStrat.commande.enumCommande = buy_CA;
             strat->unionStrat.commande.commande.buyCA = buyCA;
 
+            // A SUPPRIMER
+            strat->unionStrat.commande.parametres[0].team = team1;
+            // A SUPPRIMER
+
             Strat *next = strategy->initStrategy;
             if(strategy->initStrategy == NULL) {
                 strategy->initStrategy = strat;
@@ -140,6 +166,75 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
                 next->suivant = strat;
             }
         }
+    } else if(!strcmp(mot, "if") || !strcmp(mot, "endif")) {
+        //printf("if\n");
+    } else if(!strcmp(mot, "use")) {
+        mot = strtok(NULL, delimiters);
+        if(!strcmp(mot, "protection")) {
+            strat = calloc(1, sizeof(Strat));        
+            strat->enumStrat = commande;
+            strat->unionStrat.commande.nbParametres = 1;
+            strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+            strat->unionStrat.commande.enumCommande = use_protection;
+            strat->unionStrat.commande.commande.useProtection = useProtection;
+
+            // A SUPPRIMER
+            strat->unionStrat.commande.parametres[0].team = team1;
+            // A SUPPRIMER
+        } else if(!strcmp(mot, "care")) {
+            int quantite = 1;
+            strat = calloc(1, sizeof(Strat));        
+            strat->enumStrat = commande;
+            strat->unionStrat.commande.nbParametres = 2;
+            strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+            strat->unionStrat.commande.enumCommande = use_care;
+            strat->unionStrat.commande.commande.useCare = useCare;
+
+            mot = strtok(NULL, delimiters);
+            if(mot != NULL) {
+                quantite = atoi(mot);
+            }
+
+            // A SUPPRIMER
+            strat->unionStrat.commande.parametres[0].team = team1;
+            // A SUPPRIMER
+            strat->unionStrat.commande.parametres[1].entier = quantite;
+            
+        } else if(!strcmp(mot, "weapon")) {
+            int quantite = 1;
+            strat = calloc(1, sizeof(Strat));        
+            strat->enumStrat = commande;
+            strat->unionStrat.commande.nbParametres = 4;
+            strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+            strat->unionStrat.commande.enumCommande = use_weapon;
+            strat->unionStrat.commande.commande.useWeapon = useWeapon;
+            strat->unionStrat.commande.parametres[3].entier = screenSize.ws_col;
+            // A SUPPRIMER
+            strat->unionStrat.commande.parametres[0].team = team1;
+            strat->unionStrat.commande.parametres[1].team = team2;
+            // A SUPPRIMER
+
+            mot = strtok(NULL, delimiters);
+            if(mot != NULL) {
+                quantite = atoi(mot);
+            }
+            strat->unionStrat.commande.parametres[2].entier = quantite;
+        }
+        Strat *next = strategy->strat;
+            if(strategy->strat == NULL) {
+                strategy->strat = strat;
+            } else {
+                while(next->suivant != NULL) {
+                    next = next->suivant;
+                }
+                next->suivant = strat;
+            }
+    } else if(!strcmp(mot, "end")) {
+        /*
+        Fonction pour finir le tour
+        strat = malloc(sizeof(Strat));        
+        strat->enumStrat = commande;
+        */
     } else {
         //printf("Ligne inconnue, arrêt de la lecture.\n");
     }
@@ -147,12 +242,12 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
 
 void useStrategy(Strategy *strategy) {
     if(strategy == NULL) return;
-    printf("Num %d | Strategy %s\n", strategy->num, strategy->nom);
+    printf("Num %d | Strategy <%s>\n", strategy->num, strategy->nom);
     
-    printf("Initialisation de la stratégie :\n");
+    printf("\nInitialisation de la stratégie :\n\n");
     useStrat(strategy->initStrategy);
 
-    printf("Execution de la stratégie :\n");
+    printf("\nExecution de la stratégie :\n\n");
     useStrat(strategy->strat);
 }
 
@@ -160,17 +255,19 @@ void useStrat(Strat *strat) {
     while(strat) {
         if(strat->enumStrat == commande) {
             if(strat->unionStrat.commande.enumCommande == buy_weapon) {
-                //(strat->unionStrat.commande.commande.buyWeapon)(strat->unionStrat.commande.parametres[0].weapon, strat->unionStrat.commande.parametres[1].team);
-                printf("buy weapon\n");
+                (strat->unionStrat.commande.commande.buyWeapon)(strat->unionStrat.commande.parametres[0].weapon, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_protection) {
-                //(strat->unionStrat.commande.commande.buyProtection)(strat->unionStrat.commande.parametres[0].protection, strat->unionStrat.commande.parametres[1].team);
-                printf("buy protection\n");
+                (strat->unionStrat.commande.commande.buyProtection)(strat->unionStrat.commande.parametres[0].protection, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_care) {
-                //(strat->unionStrat.commande.commande.buyCare)(strat->unionStrat.commande.parametres[0].healing, strat->unionStrat.commande.parametres[1].team);
-                printf("buy care\n");
+                (strat->unionStrat.commande.commande.buyCare)(strat->unionStrat.commande.parametres[0].healing, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_CA) {
-                //(strat->unionStrat.commande.commande.buyCA)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier);
-                printf("buy CA\n");
+                (strat->unionStrat.commande.commande.buyCA)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier);
+            } else if(strat->unionStrat.commande.enumCommande == use_weapon) {
+                (strat->unionStrat.commande.commande.useWeapon)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].team, strat->unionStrat.commande.parametres[2].entier, strat->unionStrat.commande.parametres[3].entier);
+            } else if(strat->unionStrat.commande.enumCommande == use_protection) {
+                (strat->unionStrat.commande.commande.useProtection)(strat->unionStrat.commande.parametres[0].team);
+            } else if(strat->unionStrat.commande.enumCommande == use_care) {
+                (strat->unionStrat.commande.commande.useCare)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier);
             }
             strat = strat->suivant;
         } else if(strat->enumStrat == operateur) {

@@ -44,14 +44,17 @@ int main(int argc, char *argv[]) {
   *nbHealings = 0;
   
   screenSize = initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
-
+  buyChampion(champions[0], team1);
+  buyChampion(champions[5], team2);
+  
   if(argc > 1) {
     // Si il y a au moins 1 fichier .strat en paramètre
     nbStrat = malloc(sizeof(int));
     *nbStrat = 0;
     strategy = initStrat(argc, argv, nbStrat, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-    useStrategy(strategy[0]);
-    useStrategy(strategy[1]);
+    for (int i = 0; i < *nbStrat; i++) {
+      useStrategy(strategy[i]);
+    }
   }
 
   // readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);

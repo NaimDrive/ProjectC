@@ -45,6 +45,8 @@ char* substring(char *src, int beg, int end);
 */
 void enterToContinue();
 
+char * strtolower( char * dest, const char * src );
+
 Weapon * searchWeapon(Weapon **weapon, int *nbWeapons, char *w);
 
 Protection * searchProtection(Protection **protection, int *nbProtections, char *p);

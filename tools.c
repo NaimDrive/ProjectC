@@ -4,6 +4,7 @@
 #include <stdlib.h>
 #include <string.h>
 #include <time.h>
+#include <ctype.h>
 
 int weaponDamage(Weapon *weapon) {
     return (rand() % (weapon->degatsMax - weapon->degatsMin + 1)) + weapon->degatsMin;
@@ -45,29 +46,78 @@ void enterToContinue() {
     while(getchar() != '\n');
 }
 
+char * strtolower( char * dest, const char * src ) {
+    char * result = dest;
+    while(*src) {
+      if(*src == '_') {
+        *dest++ = ' ';
+      } else if(*src == '-') {
+        *dest++ = ' ';
+      } else {
+        *dest++ = tolower(*src);
+      }
+      src++;
+    }
+    *dest = '\0';
+    return result;
+}
+
 Weapon * searchWeapon(Weapon **weapon, int *nbWeapons, char *w) {
+  char *param = malloc(sizeof(char)*(strlen(w)+1));
+  char *name = malloc(sizeof(char)*100);
+  strtolower(param, w);
+  
   for (int i = 0; i < *nbWeapons; i++) {
-    if(strcmp(weapon[i]->nom, w) == 0) {
+    strtolower(name, weapon[i]->nom);
+
+    if(strcmp(name, param) == 0) {
+      free(name);
+      free(param);
       return weapon[i];
     }
   }
+
+  free(name);
+  free(param);
   return NULL;
 }
 
 Protection * searchProtection(Protection **protection, int *nbProtections, char *p) {
+  char *param = malloc(sizeof(char)*(strlen(p)+1));
+  char *name = malloc(sizeof(char)*100);
+  strtolower(param, p);
+  
   for (int i = 0; i < *nbProtections; i++) {
-    if(strcmp(protection[i]->nom, p) == 0) {
+    strtolower(name, protection[i]->nom);
+
+    if(strcmp(name, param) == 0) {
+      free(name);
+      free(param);
       return protection[i];
     }
   }
+
+  free(name);
+  free(param);
   return NULL;
 }
 
 Healing * searchHealing(Healing **healing, int *nbHealings, char *h) {
+  char *param = malloc(sizeof(char)*(strlen(h)+1));
+  char *name = malloc(sizeof(char)*100);
+  strtolower(param, h);
+  
   for (int i = 0; i < *nbHealings; i++) {
-    if(strcmp(healing[i]->nom, h) == 0) {
+    strtolower(name, healing[i]->nom);
+
+    if(strcmp(name, param) == 0) {
+      free(name);
+      free(param);
       return healing[i];
     }
   }
+
+  free(name);
+  free(param);
   return NULL;
 }

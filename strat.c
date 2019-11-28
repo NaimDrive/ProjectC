@@ -26,7 +26,7 @@ int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon 
         // On lit toutes les lignes du fichier et on stock dans la structure
         compareChain(strategy, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
     }
-    
+
     free(buffer);
     fclose(fichier);
 
@@ -92,10 +92,6 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
 
         strat->unionStrat.commande.nbParametres = 2;
         strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
-        
-        // A SUPPRIMER
-        strat->unionStrat.commande.parametres[1].team = team1;
-        // A SUPPRIMER
 
         if(!strcmp(mot1, "weapon")) {
             weap = searchWeapon(weapons, nbWeapons, mot2);
@@ -106,6 +102,7 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             strat->unionStrat.commande.parametres[0].weapon = weap;
             strat->unionStrat.commande.enumCommande = buy_weapon;
             strat->unionStrat.commande.commande.buyWeapon = buyWeapon;
+            (*s)->coutCE += weap->CE;
         } else if(!strcmp(mot1, "protection")) {
             prot = searchProtection(protections, nbProtections, mot2);
             if(prot == NULL) {
@@ -115,6 +112,7 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             strat->unionStrat.commande.parametres[0].protection = prot;
             strat->unionStrat.commande.enumCommande = buy_protection;
             strat->unionStrat.commande.commande.buyProtection = buyProtection;
+            (*s)->coutCE += prot->CE;
         } else if(!strcmp(mot1, "care")) {
             heal = searchHealing(healings, nbHealings, mot2);
             if(heal == NULL) {
@@ -124,6 +122,7 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             strat->unionStrat.commande.parametres[0].healing = heal;
             strat->unionStrat.commande.enumCommande = buy_care;
             strat->unionStrat.commande.commande.buyCare = buyHealing;
+            (*s)->coutCE += heal->CE;
         }
         Strat *next = strategy->initStrategy;
         if(strategy->initStrategy == NULL) {
@@ -151,10 +150,7 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             strat->unionStrat.commande.parametres[1].entier = quant;
             strat->unionStrat.commande.enumCommande = buy_CA;
             strat->unionStrat.commande.commande.buyCA = buyCA;
-
-            // A SUPPRIMER
-            strat->unionStrat.commande.parametres[0].team = team1;
-            // A SUPPRIMER
+            (*s)->coutCE += quant;
 
             Strat *next = strategy->initStrategy;
             if(strategy->initStrategy == NULL) {
@@ -166,21 +162,42 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
                 next->suivant = strat;
             }
         }
-    } else if(!strcmp(mot, "if") || !strcmp(mot, "endif")) {
-        //printf("if\n");
+    } else if(!strcmp(mot, "if")) {
+        char *ptCondition, *condition = malloc(sizeof(char) * 100);
+        char *space = " ";
+        ptCondition = condition;
+
+        strat = calloc(1, sizeof(Strat));
+        strat->enumStrat = operateur;
+        mot = strtok(NULL, delimiters);
+
+        while(mot) {
+            strcpy(ptCondition, mot);
+            while (*ptCondition) ptCondition++;
+            mot = strtok(NULL, delimiters);
+            if(mot) strcpy(ptCondition++, space);
+        }
+        strat->unionStrat.operateur.chaine = condition;
+
+        Strat *next = strategy->strat;
+        if(strategy->strat == NULL) {
+            strategy->strat = strat;
+        } else {
+            while(next->suivant != NULL) {
+                next = next->suivant;
+            }
+            next->suivant = strat;
+        }
     } else if(!strcmp(mot, "use")) {
         mot = strtok(NULL, delimiters);
         if(!strcmp(mot, "protection")) {
-            strat = calloc(1, sizeof(Strat));        
+            strat = calloc(1, sizeof(Strat));
             strat->enumStrat = commande;
             strat->unionStrat.commande.nbParametres = 1;
             strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
             strat->unionStrat.commande.enumCommande = use_protection;
             strat->unionStrat.commande.commande.useProtection = useProtection;
-
-            // A SUPPRIMER
-            strat->unionStrat.commande.parametres[0].team = team1;
-            // A SUPPRIMER
+            
         } else if(!strcmp(mot, "care")) {
             int quantite = 1;
             strat = calloc(1, sizeof(Strat));        
@@ -194,10 +211,6 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             if(mot != NULL) {
                 quantite = atoi(mot);
             }
-
-            // A SUPPRIMER
-            strat->unionStrat.commande.parametres[0].team = team1;
-            // A SUPPRIMER
             strat->unionStrat.commande.parametres[1].entier = quantite;
             
         } else if(!strcmp(mot, "weapon")) {
@@ -209,10 +222,6 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             strat->unionStrat.commande.enumCommande = use_weapon;
             strat->unionStrat.commande.commande.useWeapon = useWeapon;
             strat->unionStrat.commande.parametres[3].entier = screenSize.ws_col;
-            // A SUPPRIMER
-            strat->unionStrat.commande.parametres[0].team = team1;
-            strat->unionStrat.commande.parametres[1].team = team2;
-            // A SUPPRIMER
 
             mot = strtok(NULL, delimiters);
             if(mot != NULL) {
@@ -221,14 +230,14 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             strat->unionStrat.commande.parametres[2].entier = quantite;
         }
         Strat *next = strategy->strat;
-            if(strategy->strat == NULL) {
-                strategy->strat = strat;
-            } else {
-                while(next->suivant != NULL) {
-                    next = next->suivant;
-                }
-                next->suivant = strat;
+        if(strategy->strat == NULL) {
+            strategy->strat = strat;
+        } else {
+            while(next->suivant != NULL) {
+                next = next->suivant;
             }
+            next->suivant = strat;
+        }
     } else if(!strcmp(mot, "end")) {
         /*
         Fonction pour finir le tour
@@ -236,7 +245,7 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
         strat->enumStrat = commande;
         */
     } else {
-        //printf("Ligne inconnue, arrêt de la lecture.\n");
+        return;
     }
 }
 
@@ -271,19 +280,135 @@ void useStrat(Strat *strat) {
             }
             strat = strat->suivant;
         } else if(strat->enumStrat == operateur) {
-            if(strcmp(strat->unionStrat.operateur.operateur,"<") == 0) {
-                if(strat->unionStrat.operateur.op1 < strat->unionStrat.operateur.op2) {
+            if(strat->unionStrat.operateur.nbParametres == 1) {
+                printf("if(%d)\n", strat->unionStrat.operateur.op1);
+                if(strat->unionStrat.operateur.op1) {
                     strat = strat->suivant;
                 } else {
                     strat = strat->suivantSinon;
                 }
-            } else if(strcmp(strat->unionStrat.operateur.operateur,">") == 0) {
-                if(strat->unionStrat.operateur.op1 > strat->unionStrat.operateur.op2) {
-                    strat = strat->suivant;
-                } else {
-                    strat = strat->suivantSinon;
+            } else {
+                printf("if(%d %s %d)\n", strat->unionStrat.operateur.op1, strat->unionStrat.operateur.operateur, strat->unionStrat.operateur.op2);
+                if(strcmp(strat->unionStrat.operateur.operateur,"<") == 0) {
+                    if(strat->unionStrat.operateur.op1 < strat->unionStrat.operateur.op2) {
+                        strat = strat->suivant;
+                    } else {
+                        strat = strat->suivantSinon;
+                    }
+                } else if(strcmp(strat->unionStrat.operateur.operateur,">") == 0) {
+                    if(strat->unionStrat.operateur.op1 > strat->unionStrat.operateur.op2) {
+                        strat = strat->suivant;
+                    } else {
+                        strat = strat->suivantSinon;
+                    }
+                } else if(strcmp(strat->unionStrat.operateur.operateur,">=") == 0) {
+                    if(strat->unionStrat.operateur.op1 >= strat->unionStrat.operateur.op2) {
+                        strat = strat->suivant;
+                    } else {
+                        strat = strat->suivantSinon;
+                    }
+                } else if(strcmp(strat->unionStrat.operateur.operateur,"<=") == 0) {
+                    if(strat->unionStrat.operateur.op1 <= strat->unionStrat.operateur.op2) {
+                        strat = strat->suivant;
+                    } else {
+                        strat = strat->suivantSinon;
+                    }
+                } else if(strcmp(strat->unionStrat.operateur.operateur,"!=") == 0) {
+                    if(strat->unionStrat.operateur.op1 != strat->unionStrat.operateur.op2) {
+                        strat = strat->suivant;
+                    } else {
+                        strat = strat->suivantSinon;
+                    }
+                } else if(strcmp(strat->unionStrat.operateur.operateur,"=") == 0) {
+                    if(strat->unionStrat.operateur.op1 == strat->unionStrat.operateur.op2) {
+                        strat = strat->suivant;
+                    } else {
+                        strat = strat->suivantSinon;
+                    }
                 }
             }
         }
+    }
+}
+
+void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2) {
+    (*strategy)->allyTeam = team1;
+    (*strategy)->enemyTeam = team2;
+    initStrategyInFight(strategy, team1, team2);
+}
+
+void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2) {
+    initStrategyTeams(&(*strategy)->initStrategy, *strategy);
+    initStrategyTeams(&(*strategy)->strat, *strategy);
+}
+
+void initStrategyTeams(Strat **s, Strategy *strategy) {
+    Strat *strat = *s;
+    if(!strat) return;
+
+    if(strat->enumStrat == commande) {
+        if(strat->unionStrat.commande.enumCommande == buy_weapon || strat->unionStrat.commande.enumCommande == buy_protection || strat->unionStrat.commande.enumCommande == buy_care) {
+            strat->unionStrat.commande.parametres[1].team = strategy->allyTeam;
+        } else if(strat->unionStrat.commande.enumCommande == buy_CA) {
+            strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
+        } else if(strat->unionStrat.commande.enumCommande == use_weapon) {
+            strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
+            strat->unionStrat.commande.parametres[1].team = strategy->enemyTeam;
+        } else if(strat->unionStrat.commande.enumCommande == use_protection) {
+            strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
+        } else if(strat->unionStrat.commande.enumCommande == use_care) {
+            strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
+        }
+        initStrategyTeams(&strat->suivant, strategy);
+    } else if(strat->enumStrat == operateur) {
+        char *mot, *copy;
+        copy = malloc(sizeof(char)*(strlen(strat->unionStrat.operateur.chaine)+1));
+        strcpy(copy, strat->unionStrat.operateur.chaine);
+
+        mot = strtok(copy, " ");
+        catchConditions(strategy, &strat->unionStrat.operateur.op1, NULL, mot);
+
+        mot = strtok(NULL, " ");
+        if(mot == NULL) {
+            strat->unionStrat.operateur.nbParametres = 1;
+        } else {
+            if(!strcmp(mot, "<")) {
+                strat->unionStrat.operateur.operateur = "<";
+            } else if(!strcmp(mot, ">")) {
+                strat->unionStrat.operateur.operateur = ">";
+            } else if(!strcmp(mot, "<=")) {
+                strat->unionStrat.operateur.operateur = "<=";
+            } else if(!strcmp(mot, ">=")) {
+                strat->unionStrat.operateur.operateur = ">=";
+            } else if(!strcmp(mot, "!=")) {
+                strat->unionStrat.operateur.operateur = "!=";
+            } else {
+                strat->unionStrat.operateur.operateur = "=";
+            }
+
+            mot = strtok(NULL, " ");
+            catchConditions(strategy, &strat->unionStrat.operateur.op2, &strat->unionStrat.operateur.op1, mot);
+            strat->unionStrat.operateur.nbParametres = 3;
+        }
+        free(copy);
+        initStrategyTeams(&strat->suivant, strategy);
+        initStrategyTeams(&strat->suivantSinon, strategy);
+    }
+}
+
+void catchConditions(Strategy *strategy, int *entier, int *entier2, char *mot) {
+    if(!strcmp(mot, "life")) {
+        *entier = strategy->allyTeam->champion->PV;
+    } else if(!strcmp(mot, "enemyLife")) {
+        *entier = strategy->enemyTeam->champion->PV;
+    } else if(!strcmp(mot, "enemyInScope")) {
+        *entier = distanceBetweenChampions(strategy->allyTeam, strategy->enemyTeam);
+    } else if(mot[strlen(mot)-1] == '%') {
+        if(entier2 != NULL) {
+            mot[strlen(mot)-1] = '\0';
+            *entier = *entier2 * atoi(mot) / 100;
+        }
+    } else {
+        *entier = atoi(mot);
     }
 }

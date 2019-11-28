@@ -40,6 +40,8 @@ typedef struct operateur {
     int op1;
     int op2;
     char *operateur;
+    int nbParametres;
+    char *chaine;
 } Operateur;
 
 typedef union unionStrat {
@@ -64,6 +66,8 @@ typedef struct strategy {
     int num;
     char *nom;
     int coutCE;
+    Team *allyTeam;
+    Team *enemyTeam;
     Strat *strat; // Commands of the strategy
     Strat *initStrategy; // Commands to choose the weapon, the protection, the care and buy CA.
 } Strategy;
@@ -77,5 +81,13 @@ void compareChain(Strategy **strategy, char *buffer, Champion **champions, Weapo
 void useStrategy(Strategy *strategy);
 
 void useStrat(Strat *strat);
+
+void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2);
+
+void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2);
+
+void initStrategyTeams(Strat **strat, Strategy *strategy);
+
+void catchConditions(Strategy *strategy, int *entier, int *entier2, char *mot);
 
 #endif

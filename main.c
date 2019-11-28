@@ -46,6 +46,14 @@ int main(int argc, char *argv[]) {
   screenSize = initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
   buyChampion(champions[0], team1);
   buyChampion(champions[5], team2);
+  /*
+  buyWeapon(weapons[0], team1);
+  buyWeapon(weapons[0], team2);
+  buyHealing(healings[0], team1);
+  buyHealing(healings[0], team2);
+  buyProtection(protections[0], team1);
+  buyProtection(protections[0], team2);
+  */
   
   if(argc > 1) {
     // Si il y a au moins 1 fichier .strat en paramètre
@@ -53,6 +61,7 @@ int main(int argc, char *argv[]) {
     *nbStrat = 0;
     strategy = initStrat(argc, argv, nbStrat, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
     for (int i = 0; i < *nbStrat; i++) {
+      initializeTheCombatStrategy(&strategy[i], team1, team2);
       useStrategy(strategy[i]);
     }
   }

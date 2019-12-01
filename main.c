@@ -1,15 +1,15 @@
+#include <sys/ioctl.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <time.h>
+
 #include "initGame.h"
 #include "strat.h"
 #include "fight.h"
 #include "commands.h"
 #include "endGame.h"
 #include "displayGame.h"
-
-#include <sys/ioctl.h>
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <time.h>
 
 int main(int argc, char *argv[]) {
   
@@ -62,7 +62,7 @@ int main(int argc, char *argv[]) {
     strategy = initStrat(argc, argv, nbStrat, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
     for (int i = 0; i < *nbStrat; i++) {
       initializeTheCombatStrategy(&strategy[i], team1, team2);
-      useStrategy(strategy[i]);
+      //useStrategy(strategy[i]);
     }
   }
 

@@ -20,12 +20,14 @@ int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon 
     }
     *strategy = calloc(1, sizeof(Strategy));
     int SIZE = 256;
+    char delimiters[]=" \t\n\r";
     char *buffer = malloc(sizeof(char)* SIZE);
-
+    /*
     while(fgets(buffer, SIZE, fichier) != NULL) {
         // On lit toutes les lignes du fichier et on stock dans la structure
         compareChain(strategy, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-    }
+    }*/
+    initStructure(0, strategy, buffer, NULL, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 
     free(buffer);
     fclose(fichier);
@@ -64,7 +66,6 @@ Strategy ** initStrat(int argc, char *argv[], int *nbStrat, Champion **champions
     return strategy;
 }
 
-
 void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     Strategy *strategy = *s;
     char delimiters[]=" \t\n\r";
@@ -79,51 +80,7 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
         strategy->nom = malloc(sizeof(char)*(strlen(mot)+1));
         strcpy(strategy->nom, mot);
     } else if(!strcmp(mot, "choose")) {
-        char *mot1, *mot2;
-        Weapon *weap;
-        Protection *prot;
-        Healing *heal;
-
-        strat = calloc(1, sizeof(Strat));        
-        strat->enumStrat = commande;
-
-        mot1 = strtok(NULL, delimiters);
-        mot2 = strtok(NULL, delimiters);
-
-        strat->unionStrat.commande.nbParametres = 2;
-        strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
-
-        if(!strcmp(mot1, "weapon")) {
-            weap = searchWeapon(weapons, nbWeapons, mot2);
-            if(weap == NULL) {
-                free(strat);
-                return;
-            }
-            strat->unionStrat.commande.parametres[0].weapon = weap;
-            strat->unionStrat.commande.enumCommande = buy_weapon;
-            strat->unionStrat.commande.commande.buyWeapon = buyWeapon;
-            (*s)->coutCE += weap->CE;
-        } else if(!strcmp(mot1, "protection")) {
-            prot = searchProtection(protections, nbProtections, mot2);
-            if(prot == NULL) {
-                free(strat);
-                return;
-            }
-            strat->unionStrat.commande.parametres[0].protection = prot;
-            strat->unionStrat.commande.enumCommande = buy_protection;
-            strat->unionStrat.commande.commande.buyProtection = buyProtection;
-            (*s)->coutCE += prot->CE;
-        } else if(!strcmp(mot1, "care")) {
-            heal = searchHealing(healings, nbHealings, mot2);
-            if(heal == NULL) {
-                free(strat);
-                return;
-            }
-            strat->unionStrat.commande.parametres[0].healing = heal;
-            strat->unionStrat.commande.enumCommande = buy_care;
-            strat->unionStrat.commande.commande.buyCare = buyHealing;
-            (*s)->coutCE += heal->CE;
-        }
+        strat = strategyCreateChoose(s, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
         Strat *next = strategy->initStrategy;
         if(strategy->initStrategy == NULL) {
             strategy->initStrategy = strat;
@@ -134,33 +91,15 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             next->suivant = strat;
         }
     } else if(!strcmp(mot, "add")) {
-        mot = strtok(NULL, delimiters);
-        if(!strcmp(mot, "action")) {
-            int quant;
-            char *quantite;
-
-            strat = calloc(1, sizeof(Strat));
-            strat->enumStrat = commande;
-
-            quantite = strtok(NULL, delimiters);
-            quant = atoi(quantite); // Servira lors de l'appel de la fonction
-
-            strat->unionStrat.commande.nbParametres = 2;
-            strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
-            strat->unionStrat.commande.parametres[1].entier = quant;
-            strat->unionStrat.commande.enumCommande = buy_CA;
-            strat->unionStrat.commande.commande.buyCA = buyCA;
-            (*s)->coutCE += quant;
-
-            Strat *next = strategy->initStrategy;
-            if(strategy->initStrategy == NULL) {
-                strategy->initStrategy = strat;
-            } else {
-                while(next->suivant != NULL) {
-                    next = next->suivant;
-                }
-                next->suivant = strat;
+        strat = strategyCreateAddCA(s, mot);
+        Strat *next = strategy->initStrategy;
+        if(strategy->initStrategy == NULL) {
+            strategy->initStrategy = strat;
+        } else {
+            while(next->suivant != NULL) {
+                next = next->suivant;
             }
+            next->suivant = strat;
         }
     } else if(!strcmp(mot, "if")) {
         char *ptCondition, *condition = malloc(sizeof(char) * 100);
@@ -189,46 +128,7 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
             next->suivant = strat;
         }
     } else if(!strcmp(mot, "use")) {
-        mot = strtok(NULL, delimiters);
-        if(!strcmp(mot, "protection")) {
-            strat = calloc(1, sizeof(Strat));
-            strat->enumStrat = commande;
-            strat->unionStrat.commande.nbParametres = 1;
-            strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
-            strat->unionStrat.commande.enumCommande = use_protection;
-            strat->unionStrat.commande.commande.useProtection = useProtection;
-            
-        } else if(!strcmp(mot, "care")) {
-            int quantite = 1;
-            strat = calloc(1, sizeof(Strat));        
-            strat->enumStrat = commande;
-            strat->unionStrat.commande.nbParametres = 2;
-            strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
-            strat->unionStrat.commande.enumCommande = use_care;
-            strat->unionStrat.commande.commande.useCare = useCare;
-
-            mot = strtok(NULL, delimiters);
-            if(mot != NULL) {
-                quantite = atoi(mot);
-            }
-            strat->unionStrat.commande.parametres[1].entier = quantite;
-            
-        } else if(!strcmp(mot, "weapon")) {
-            int quantite = 1;
-            strat = calloc(1, sizeof(Strat));        
-            strat->enumStrat = commande;
-            strat->unionStrat.commande.nbParametres = 4;
-            strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
-            strat->unionStrat.commande.enumCommande = use_weapon;
-            strat->unionStrat.commande.commande.useWeapon = useWeapon;
-            strat->unionStrat.commande.parametres[3].entier = screenSize.ws_col;
-
-            mot = strtok(NULL, delimiters);
-            if(mot != NULL) {
-                quantite = atoi(mot);
-            }
-            strat->unionStrat.commande.parametres[2].entier = quantite;
-        }
+        strat = strategyCreateUse(mot, screenSize);
         Strat *next = strategy->strat;
         if(strategy->strat == NULL) {
             strategy->strat = strat;
@@ -246,6 +146,221 @@ void compareChain(Strategy **s, char *buffer, Champion **champions, Weapon **wea
         */
     } else {
         return;
+    }
+}
+
+Strat * strategyCreateChoose(Strategy **s, char *buffer, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2) {
+    char *mot1, *mot2;
+    Weapon *weap;
+    Protection *prot;
+    Healing *heal;
+    Strat *strat;
+    char delimiters[]=" \t\n\r";
+
+    strat = calloc(1, sizeof(Strat));        
+    strat->enumStrat = commande;
+
+    mot1 = strtok(NULL, delimiters);
+    mot2 = strtok(NULL, delimiters);
+
+    strat->unionStrat.commande.nbParametres = 2;
+    strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+
+    if(!strcmp(mot1, "weapon")) {
+        weap = searchWeapon(weapons, nbWeapons, mot2);
+        if(weap == NULL) {
+            free(strat);
+            return NULL;
+        }
+        strat->unionStrat.commande.parametres[0].weapon = weap;
+        strat->unionStrat.commande.enumCommande = buy_weapon;
+        strat->unionStrat.commande.commande.buyWeapon = buyWeapon;
+        (*s)->coutCE += weap->CE;
+    } else if(!strcmp(mot1, "protection")) {
+        prot = searchProtection(protections, nbProtections, mot2);
+        if(prot == NULL) {
+            free(strat);
+            return NULL;
+        }
+        strat->unionStrat.commande.parametres[0].protection = prot;
+        strat->unionStrat.commande.enumCommande = buy_protection;
+        strat->unionStrat.commande.commande.buyProtection = buyProtection;
+        (*s)->coutCE += prot->CE;
+    } else if(!strcmp(mot1, "care")) {
+        heal = searchHealing(healings, nbHealings, mot2);
+        if(heal == NULL) {
+            free(strat);
+            return NULL;
+        }
+        strat->unionStrat.commande.parametres[0].healing = heal;
+        strat->unionStrat.commande.enumCommande = buy_care;
+        strat->unionStrat.commande.commande.buyCare = buyHealing;
+        (*s)->coutCE += heal->CE;
+    }
+    return strat;
+}
+
+Strat * strategyCreateAddCA(Strategy **s, char *mot) {
+    Strat *strat;
+    char delimiters[]=" \t\n\r";
+    
+    mot = strtok(NULL, delimiters);
+    if(!strcmp(mot, "action")) {
+        int quant;
+        char *quantite;
+
+        strat = calloc(1, sizeof(Strat));
+        strat->enumStrat = commande;
+
+        quantite = strtok(NULL, delimiters);
+        quant = atoi(quantite); // Servira lors de l'appel de la fonction
+
+        strat->unionStrat.commande.nbParametres = 2;
+        strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+        strat->unionStrat.commande.parametres[1].entier = quant;
+        strat->unionStrat.commande.enumCommande = buy_CA;
+        strat->unionStrat.commande.commande.buyCA = buyCA;
+        (*s)->coutCE += quant;
+        return strat;
+    }
+    return NULL;
+}
+
+Strat * strategyCreateUse(char *mot, Winsize screenSize) {
+    Strat *strat;
+    char delimiters[]=" \t\n\r";
+    mot = strtok(NULL, delimiters);
+    if(!strcmp(mot, "protection")) {
+        strat = calloc(1, sizeof(Strat));
+        strat->enumStrat = commande;
+        strat->unionStrat.commande.nbParametres = 1;
+        strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+        strat->unionStrat.commande.enumCommande = use_protection;
+        strat->unionStrat.commande.commande.useProtection = useProtection;
+        
+    } else if(!strcmp(mot, "care")) {
+        int quantite = 1;
+        strat = calloc(1, sizeof(Strat));        
+        strat->enumStrat = commande;
+        strat->unionStrat.commande.nbParametres = 2;
+        strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+        strat->unionStrat.commande.enumCommande = use_care;
+        strat->unionStrat.commande.commande.useCare = useCare;
+
+        mot = strtok(NULL, delimiters);
+        if(mot != NULL) {
+            quantite = atoi(mot);
+        }
+        strat->unionStrat.commande.parametres[1].entier = quantite;
+        
+    } else if(!strcmp(mot, "weapon")) {
+        int quantite = 1;
+        strat = calloc(1, sizeof(Strat));        
+        strat->enumStrat = commande;
+        strat->unionStrat.commande.nbParametres = 4;
+        strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+        strat->unionStrat.commande.enumCommande = use_weapon;
+        strat->unionStrat.commande.commande.useWeapon = useWeapon;
+        strat->unionStrat.commande.parametres[3].entier = screenSize.ws_col;
+
+        mot = strtok(NULL, delimiters);
+        if(mot != NULL) {
+            quantite = atoi(mot);
+        }
+        strat->unionStrat.commande.parametres[2].entier = quantite;
+    }
+    return strat;
+}
+
+void initStructure(int d, Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+    char *mot;
+    Strat *strat;
+    Strategy *strategy = *s;
+    int i;
+    while(fgets(buffer, SIZE, fichier)) {
+        mot = strtok(buffer, delimiters);
+        if(mot == NULL) continue;
+        
+        if(!strcmp(mot, "strategy")) {
+            printf("Strategy\n");
+            mot = strtok(NULL, delimiters);
+            strategy->nom = malloc(sizeof(char)*(strlen(mot)+1));
+            strcpy(strategy->nom, mot);
+        } else if(!strcmp(mot, "choose")) {
+            printf("Choose\n");
+            strat = strategyCreateChoose(s, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+            Strat *next = strategy->initStrategy;
+            if(strategy->initStrategy == NULL) {
+                strategy->initStrategy = strat;
+            } else {
+                while(next->suivant != NULL) {
+                    next = next->suivant;
+                }
+                next->suivant = strat;
+            }
+        } else if(!strcmp(mot, "add")) {
+            printf("Achat CA\n");
+            strat = strategyCreateAddCA(s, mot);
+            Strat *next = strategy->initStrategy;
+            if(strategy->initStrategy == NULL) {
+                strategy->initStrategy = strat;
+            } else {
+                while(next->suivant != NULL) {
+                    next = next->suivant;
+                }
+                next->suivant = strat;
+            }
+        } else if(!strcmp(mot, "if")) {
+            for (i = 0; i < d; i++) printf("  ");
+            char *ptCondition, *condition = malloc(sizeof(char) * 50);
+            char *space = " ";
+            ptCondition = condition;
+
+            strat = calloc(1, sizeof(Strat));
+            strat->enumStrat = operateur;
+            mot = strtok(NULL, delimiters);
+
+            while(mot) {
+                strcpy(ptCondition, mot);
+                while (*ptCondition) ptCondition++;
+                mot = strtok(NULL, delimiters);
+                if(mot) strcpy(ptCondition++, space);
+            }
+            strat->unionStrat.operateur.chaine = condition;
+            stratParam = strat;
+            
+            printf("if\n");
+            initStructure(d+1, s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+        } else if(!strcmp(mot, "else")) {
+            for (i = 0; i < d-1; i++) printf("  ");
+            stratParam = strat;
+            printf("else\n");
+            initStructure(d, s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+            return;
+        } else if(!strcmp(mot, "endif")) {
+            for (i = 0; i < d-1; i++) printf("  ");
+            printf("endif\n");
+            return;
+        } else if(!strcmp(mot, "use")) {
+            for (i = 0; i < d; i++) printf("  ");
+            printf("Use\n");
+            strat = strategyCreateUse(mot, screenSize);
+            Strat *next = strategy->strat;
+            if(strategy->strat == NULL) {
+                strategy->strat = strat;
+            } else {
+                while(next->suivant != NULL) {
+                    next = next->suivant;
+                }
+                next->suivant = strat;
+            }
+        } else if(!strcmp(mot, "move")) {
+            for (int i = 0; i < d; i++) printf("  ");
+            printf("Move\n");
+        } else if(!strcmp(mot, "end")) {
+            for (int i = 0; i < d; i++) printf("  ");
+            printf("End\n");
+        }
     }
 }
 

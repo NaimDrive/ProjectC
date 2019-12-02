@@ -22,11 +22,7 @@ int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon 
     int SIZE = 256;
     char delimiters[]=" \t\n\r";
     char *buffer = malloc(sizeof(char)* SIZE);
-    /*
-    while(fgets(buffer, SIZE, fichier) != NULL) {
-        // On lit toutes les lignes du fichier et on stock dans la structure
-        compareChain(strategy, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-    }*/
+
     initStructure(0, strategy, buffer, NULL, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 
     free(buffer);
@@ -272,7 +268,7 @@ Strat * strategyCreateUse(char *mot, Winsize screenSize) {
     return strat;
 }
 
-void initStructure(int d, Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+int initStructure(int d, Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     char *mot;
     Strat *strat;
     Strategy *strategy = *s;
@@ -289,28 +285,13 @@ void initStructure(int d, Strategy **s, char *buffer, Strat *stratParam, FILE *f
         } else if(!strcmp(mot, "choose")) {
             printf("Choose\n");
             strat = strategyCreateChoose(s, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
-            Strat *next = strategy->initStrategy;
-            if(strategy->initStrategy == NULL) {
-                strategy->initStrategy = strat;
-            } else {
-                while(next->suivant != NULL) {
-                    next = next->suivant;
-                }
-                next->suivant = strat;
-            }
+            addInInitStrategy(s, strat);
         } else if(!strcmp(mot, "add")) {
             printf("Achat CA\n");
             strat = strategyCreateAddCA(s, mot);
-            Strat *next = strategy->initStrategy;
-            if(strategy->initStrategy == NULL) {
-                strategy->initStrategy = strat;
-            } else {
-                while(next->suivant != NULL) {
-                    next = next->suivant;
-                }
-                next->suivant = strat;
-            }
+            addInInitStrategy(s, strat);
         } else if(!strcmp(mot, "if")) {
+            int ret;
             for (i = 0; i < d; i++) printf("  ");
             char *ptCondition, *condition = malloc(sizeof(char) * 50);
             char *space = " ";
@@ -330,30 +311,27 @@ void initStructure(int d, Strategy **s, char *buffer, Strat *stratParam, FILE *f
             stratParam = strat;
             
             printf("if\n");
-            initStructure(d+1, s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+            ret = initStructure(d+1, s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+            if(ret == 1) { // 1 : else
+                for (i = 0; i < d; i++) printf("  ");
+                initStructure(d+1, s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+            } else if(ret == 2) { // 2 : endif
+
+            }
         } else if(!strcmp(mot, "else")) {
-            for (i = 0; i < d-1; i++) printf("  ");
             stratParam = strat;
+            for (i = 0; i < d-1; i++) printf("  ");
             printf("else\n");
-            initStructure(d, s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-            return;
+            return 1;
         } else if(!strcmp(mot, "endif")) {
             for (i = 0; i < d-1; i++) printf("  ");
             printf("endif\n");
-            return;
+            return 2;
         } else if(!strcmp(mot, "use")) {
             for (i = 0; i < d; i++) printf("  ");
             printf("Use\n");
             strat = strategyCreateUse(mot, screenSize);
-            Strat *next = strategy->strat;
-            if(strategy->strat == NULL) {
-                strategy->strat = strat;
-            } else {
-                while(next->suivant != NULL) {
-                    next = next->suivant;
-                }
-                next->suivant = strat;
-            }
+            addInStratStrategy(s, strat);
         } else if(!strcmp(mot, "move")) {
             for (int i = 0; i < d; i++) printf("  ");
             printf("Move\n");
@@ -361,6 +339,33 @@ void initStructure(int d, Strategy **s, char *buffer, Strat *stratParam, FILE *f
             for (int i = 0; i < d; i++) printf("  ");
             printf("End\n");
         }
+    }
+    return 0;
+}
+
+void addInInitStrategy(Strategy **s, Strat *strat) {
+    Strategy *strategy = *s;
+    Strat *next = strategy->initStrategy;
+    if(strategy->initStrategy == NULL) {
+        strategy->initStrategy = strat;
+    } else {
+        while(next->suivant != NULL) {
+            next = next->suivant;
+        }
+        next->suivant = strat;
+    }
+}
+
+void addInStratStrategy(Strategy **s, Strat *strat) {
+    Strategy *strategy = *s;
+    Strat *next = strategy->strat;
+    if(strategy->strat == NULL) {
+        strategy->strat = strat;
+    } else {
+        while(next->suivant != NULL) {
+            next = next->suivant;
+        }
+        next->suivant = strat;
     }
 }
 

@@ -85,7 +85,11 @@ Strat * strategyCreateAddCA(Strategy **s, char *mot);
 
 Strat * strategyCreateUse(char *mot, Winsize screenSize);
 
-void initStructure(int d,Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
+int initStructure(int d, Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
+
+void addInInitStrategy(Strategy **s, Strat *strat);
+
+void addInStratStrategy(Strategy **s, Strat *strat);
 
 void useStrategy(Strategy *strategy);
 

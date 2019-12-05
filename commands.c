@@ -393,7 +393,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
             printf("Utilisation : fight <legume> <strategie> versus <fruit> <strategie>\n");
             resetColor();
             free(command_tmp);
-            continue;
+            break;
           }
 
           if(i == 0) {

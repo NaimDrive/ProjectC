@@ -1,16 +1,18 @@
-#include "initGame.h"
-#include "fight.h"
-#include "fightMode.h"
-#include "endGame.h"
-#include "commands.h"
-#include "colors.h"
-#include "tools.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
 #include <ctype.h>
+
+#include "initGame.h"
+#include "fight.h"
+#include "fightMode.h"
+#include "strat.h"
+#include "endGame.h"
+#include "commands.h"
+#include "colors.h"
+#include "tools.h"
+
 
 void showTeamsCE(Team *team1, Team *team2) {
   printf(" -- > ");
@@ -202,7 +204,47 @@ void showCare(Healing **healings, int *nbHealings, int id) {
     printf("Num : %d | Nom : %s | CE : %d | CA : %d | Volume : %d | Effet : %d-%d\n", healings[id]->num, healings[id]->nom, healings[id]->CE, healings[id]->CA, healings[id]->volume, healings[id]->effetMin, healings[id]->effetMax);
   } else {
     red();
-    printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbHealings);
+    printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbHealings-1);
+    resetColor();
+  }
+}
+
+void showStrategies(Strategy **strategy, int *nbStrategies) {
+  if(strategy != NULL) {
+    for (int i = 0; i < *nbStrategies; i++) {
+      printf("Num : %d | Nom %s | CE %d\n", strategy[i]->num, strategy[i]->nom, strategy[i]->coutCE);
+    }
+  } else {
+    printf("Aucune stratégie définie\n");
+  }
+}
+
+void showStrategy(Strategy **strategy, int *nbStrategies, int id) {
+  if(strategy != NULL && nbStrategies != NULL && id < *nbStrategies && id >= 0) {
+    printf("Description de la strategy %s\n", strategy[id]->nom);
+    Strat *strat = strategy[id]->initStrategy;
+    while (strat != NULL) {
+      if(strat->unionStrat.commande.enumCommande == buy_weapon) {
+        printf("Arme : %s\n", strat->unionStrat.commande.parametres[0].weapon->nom);
+      } else if(strat->unionStrat.commande.enumCommande == buy_protection) {
+        printf("Protection : %s\n", strat->unionStrat.commande.parametres[0].protection->nom);
+      } else if(strat->unionStrat.commande.enumCommande == buy_care) {
+        printf("Soin : %s\n", strat->unionStrat.commande.parametres[0].healing->nom);
+      } else if(strat->unionStrat.commande.enumCommande == buy_CA) {
+        printf("Crédits d'action supplémentaires : %d\n", strat->unionStrat.commande.parametres[1].entier);
+      }
+      strat = strat->suivant;
+    }
+    printf("Crédits d'équipement nécessaires %d\n", strategy[id]->coutCE);
+    
+  } else {
+    red();
+    printf("Je suis là\n");
+    if(nbStrategies != NULL && *nbStrategies > 0) {
+      printf("Veuillez entrer un ID compris entre 0 et %d\n", *nbStrategies-1);
+    } else {
+      printf("Aucune stratégie n'est définie\n");
+    }
     resetColor();
   }
 }
@@ -275,7 +317,7 @@ void exitGame(Champion **champions, Weapon **weapons, Protection **protections, 
   exit(0);
 }
 
-void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2, Winsize screenSize) {
   purple();
   printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
   resetColor();
@@ -322,6 +364,9 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
       else if(strcmp(command, "show cares") == 0) showCares(healings, nbHealings, -1);
       else if(strncmp(command, "show care ", 10) == 0) showCare(healings, nbHealings, getID(command, 10));
+
+      else if(strcmp(command, "show strategies") == 0) showStrategies(strategy, nbStrategies);
+      else if(strncmp(command, "show strategy ", 14) == 0) showStrategy(strategy, nbStrategies, getID(command, 14));
 
       else if(strncmp(command, "fight ", 6) == 0) {
         char *tmp = substring(command, 6, strlen(command));

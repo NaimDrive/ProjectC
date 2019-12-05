@@ -19,7 +19,7 @@ int main(int argc, char *argv[]) {
   Healing **healings;
   Team *team1, *team2;
   Strategy **strategy;
-  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings, *nbStrat;
+  int *nbChampions, *nbWeapons, *nbProtections, *nbHealings, *nbStrategies;
   Winsize screenSize;
 
   srand(time(NULL));
@@ -37,6 +37,7 @@ int main(int argc, char *argv[]) {
   nbWeapons = malloc(sizeof(int));
   nbProtections = malloc(sizeof(int));
   nbHealings = malloc(sizeof(int));
+  nbStrategies = NULL;
 
   *nbChampions = 0;
   *nbWeapons = 0;
@@ -44,20 +45,18 @@ int main(int argc, char *argv[]) {
   *nbHealings = 0;
   
   screenSize = initGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
-  buyChampion(champions[0], team1);
-  buyChampion(champions[5], team2);
+
   if(argc > 1) {
     // Si il y a au moins 1 fichier .strat en paramètre
-    nbStrat = malloc(sizeof(int));
-    *nbStrat = 0;
-    strategy = initStrat(argc, argv, nbStrat, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-    for (int i = 0; i < *nbStrat; i++) {
+    nbStrategies = malloc(sizeof(int));
+    *nbStrategies = 0;
+    strategy = initStrat(argc, argv, nbStrategies, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+    for (int i = 0; i < *nbStrategies; i++) {
       initializeTheCombatStrategy(&strategy[i], team1, team2);
-      useStrategy(strategy[i]);
     }
   }
 
-  // readCommands(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+  readCommands(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2, screenSize);
 
   return 0;
 }

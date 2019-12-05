@@ -1,15 +1,16 @@
+#include <sys/ioctl.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "initGame.h"
+#include "strat.h"
 #include "commands.h"
 #include "fight.h"
 #include "colors.h"
 #include "fightMode.h"
 #include "displayGame.h"
 #include "tools.h"
-
-#include <sys/ioctl.h>
-#include <stdio.h>
-#include <stdlib.h>
-#include <string.h>
 
 void showEquipment(Team *team) {
     Champion *c = team->champion;

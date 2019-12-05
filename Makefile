@@ -3,7 +3,7 @@ CFLAGS = -Wall -ansi -pedantic --std=c99
 OBJS = initGame.o fight.o commands.o colors.o fightMode.o endGame.o displayGame.o tools.o strat.o main.o
 
 game: $(OBJS)
-	gcc -o game main.o initGame.o fight.o commands.o colors.o fightMode.o endGame.o displayGame.o strat.o tools.o
+	gcc -o game main.o initGame.o strat.o fight.o commands.o colors.o fightMode.o endGame.o displayGame.o tools.o
 
 .PHONY: clean
 
@@ -13,13 +13,13 @@ initGame.o: initGame.c initGame.h
 fight.o: fight.c fight.h initGame.h displayGame.h tools.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-commands.o: commands.c commands.h initGame.h fight.h colors.h fightMode.h endGame.h tools.h
+commands.o: commands.c commands.h initGame.h strat.h fight.h colors.h fightMode.h endGame.h tools.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 colors.o: colors.c colors.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
-fightMode.o : fightMode.c fightMode.h initGame.h fight.h commands.h colors.h displayGame.h tools.h
+fightMode.o : fightMode.c fightMode.h initGame.h fight.h commands.h colors.h displayGame.h tools.h strat.h
 	$(CC) $(CFLAGS) -c -o $@ $<
 
 endGame.o: endGame.c endGame.h initGame.h

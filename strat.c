@@ -206,7 +206,90 @@ Strat * strategyCreateIf(char *mot) {
     strat->unionStrat.operateur.chaine = condition;
     return strat;
 }
+/*
+int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+    char *mot;
+    int ret, isIf = 0, nextAddIf = 0;
+    Strat *strat, *ptSuivant, *ptSuivantSinon;
+    Strategy *strategy = *s;
 
+    while(fgets(buffer, SIZE, fichier)) {
+        mot = strtok(buffer, delimiters);
+        if(mot == NULL) continue;
+        
+        if(!strcmp(mot, "strategy")) { // Si le premier mot est strategy
+            mot = strtok(NULL, delimiters);
+            strategy->nom = malloc(sizeof(char)*(strlen(mot)+1));
+            strcpy(strategy->nom, mot);
+
+        } else if(!strcmp(mot, "choose")) { // Si le premier mot est choose
+            strat = strategyCreateChoose(s, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+            addInInitStrategy(s, strat);
+
+        } else if(!strcmp(mot, "add")) { // Si le premier mot est add
+            strat = strategyCreateAddCA(s, mot);
+            addInInitStrategy(s, strat);
+
+        } else {            
+            if(!strcmp(mot, "if")) { // Si le premier mot est if
+                strat = strategyCreateIf(mot);
+                addInStratStrategy(s, strat);
+
+                ret = initStructure(s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+                if(ret == 1) {
+                    initStructure(s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+                } else if(ret == 2) {
+                    printf("Entré endif\n");
+                    isIf = 1;
+                    if(strat->suivant) {
+                        ptSuivant = strat->suivant;
+                        while(ptSuivant->suivant != NULL) {
+                            printf("Boucle 1\n");
+                            ptSuivant = ptSuivant->suivant;
+                        }
+                    }
+                    if(strat->suivantSinon) {
+                        ptSuivantSinon = strat->suivantSinon;
+                        while(ptSuivantSinon->suivant != NULL) {
+                            printf("Boucle 2\n");
+                            ptSuivantSinon = ptSuivantSinon->suivant;
+                        }
+                    }
+                }
+                ret = 0;
+
+            } else if(!strcmp(mot, "else")) { // Si le premier mot est else
+                return 1;
+
+            } else if(!strcmp(mot, "endif")) { // Si le premier mot est endif
+                return 2;
+
+            } else if(!strcmp(mot, "use")) { // Si le premier mot est use
+                strat = strategyCreateUse(mot, screenSize);
+                addInStratStrategy(s, strat);
+                
+            } else if(!strcmp(mot, "move")) { // Si le premier mot est move
+
+            } else if(!strcmp(mot, "end")) { // Si le premier mot est end
+
+            }
+            if(nextAddIf) {
+                nextAddIf = 0;
+                ptSuivant = strat;
+                ptSuivantSinon = strat;
+            } else if(stratParam == NULL && strat != NULL) {
+                stratParam = strat;
+            } if(strat != NULL && isIf) {
+                nextAddIf = 1;
+                isIf = 0;
+            } else {
+                addInStratStrategy(s, strat);
+            }
+        }
+    }
+    return 0;
+}
+*/
 int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     char *mot;
     int ret;
@@ -421,7 +504,7 @@ void useStrat(Strat *strat) {
 void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2) {
     (*strategy)->allyTeam = team1;
     (*strategy)->enemyTeam = team2;
-    initStrategyInFight(strategy, team1, team2);
+    //initStrategyInFight(strategy, team1, team2);
 }
 
 void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2) {

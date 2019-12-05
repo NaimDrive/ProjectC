@@ -178,6 +178,6 @@ void exitGame(Champion **champions, Weapon **weapons, Protection **protections, 
     @Param11 Size of the terminal
     @Return void
 */
-void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
+void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2, Winsize screenSize);
 
 #endif

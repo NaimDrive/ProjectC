@@ -417,6 +417,9 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         if(nbStrategies == NULL) {
           strat1 = -1;
           strat2 = -1;
+        } else {
+          strat1 = (strat1 >= *nbStrategies || strat1 < 0? -1 : strat1);
+          strat2 = (strat2 >= *nbStrategies || strat2 < 0 ? -1 : strat2);
         }
         printf("Le legume /%d/ joue avec la strat /%d/\n", legume, strat1);
         printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);

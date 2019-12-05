@@ -403,9 +403,9 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
             legume = atoi(strToken);
           } else if(i == 1 && !versusReached) {
             strat1 = atoi(strToken);
-          } else if((i == 2 && !versusReached) || (i == 1 && versusReached)) {
+          } else if((i == 2 && strat2 == -1) || (i == 1 && versusReached)) {
             fruit = atoi(strToken);
-          } else if((i == 3 && !versusReached) || (i == 2 && versusReached)) {
+          } else if((i == 3 && versusReached) || (i == 2 && versusReached)) {
             strat2 = atoi(strToken);
           }
           
@@ -413,6 +413,9 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           strToken = strtok(NULL, " ");
           i++;
         }
+
+        printf("Le legume /%d/ joue avec la strat /%d/\n", legume, strat1);
+        printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);
 
         // test si nbStrategie n'est pas nulle
         if(((legume < 0 || fruit < 0) || (fruit > 6 || legume > 6)) || ((nbStrategies != NULL) && (strat1 >= *nbStrategies || strat2 >= *nbStrategies))) {
@@ -423,8 +426,6 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           continue;
         }
 
-        printf("Le legume /%d/ joue avec la strat /%d/\n", legume, strat1);
-        printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);
 
         free(command_tmp);
 

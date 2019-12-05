@@ -214,7 +214,7 @@ void showCare(Healing **healings, int *nbHealings, int id) {
 void showStrategies(Strategy **strategy, int *nbStrategies) {
   if(strategy != NULL) {
     for (int i = 0; i < *nbStrategies; i++) {
-      printf("Num : %d | Nom %s | CE %d\n", strategy[i]->num, strategy[i]->nom, strategy[i]->coutCE);
+      printf("Num : %d | Nom : %s | CE : %d\n", strategy[i]->num, strategy[i]->nom, strategy[i]->coutCE);
     }
   } else {
     printf("Aucune stratégie définie\n");

@@ -372,16 +372,19 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
       else if(strncmp(command, "fight ", 6) == 0) {
         char *command_tmp = substring(command, 6, strlen(command));
-        int legume = 0;
-        int fruit = 0;
-        int strat1 = 0;
-        int strat2 = 0;
+        int legume = -1;
+        int fruit = -1;
+        int strat1 = -1;
+        int strat2 = -1;
         int i = 0;
+        int versusReached = 0;
 
         char* strToken = strtok(command_tmp, " ");
+
         while(strToken != NULL) {
           if((strcmp(strToken, "versus") == 0)) {
             strToken = strtok(NULL, " ");
+            versusReached = 1;
             continue;
           }
 
@@ -392,18 +395,17 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
             red();
             printf("Utilisation : fight <legume> <strategie> versus <fruit> <strategie>\n");
             resetColor();
-            free(command_tmp);
+            // free(command_tmp);
             break;
           }
 
           if(i == 0) {
-            // should get legume id
             legume = atoi(strToken);
-          } else if(i == 1) {
+          } else if(i == 1 && !versusReached) {
             strat1 = atoi(strToken);
-          } else if(i == 2) {
+          } else if((i == 2 && !versusReached) || (i == 1 && versusReached)) {
             fruit = atoi(strToken);
-          } else if(i == 3) {
+          } else if((i == 3 && !versusReached) || (i == 2 && versusReached)) {
             strat2 = atoi(strToken);
           }
           
@@ -412,7 +414,8 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           i++;
         }
 
-        if(((legume < 0 || fruit < 0) || (fruit > 6 || legume > 6)) || (strat1 >= *nbStrategies || strat2 >= *nbStrategies)) {
+        // test si nbStrategie n'est pas nulle
+        if(((legume < 0 || fruit < 0) || (fruit > 6 || legume > 6)) || ((nbStrategies != NULL) && (strat1 >= *nbStrategies || strat2 >= *nbStrategies))) {
           red();
           printf("Veuillez revoir les paramètres de votre commande.\n");
           resetColor();

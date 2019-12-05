@@ -76,7 +76,9 @@ int checkingChamps(char *veg, char *fruit, int vegIndex, int fruitIndex, Champio
     printf("'%s' n'est pas un fruit !\n", fruit);
   }
 
-  if((vegIndex != -1 && fruitIndex != -1) && fruitIndex > 5 && vegIndex < 6) output = 1;
+  if((vegIndex != -1 && fruitIndex != -1) && fruitIndex > 5 && vegIndex < 6) {
+    output = 1;
+  }
   resetColor();
 
   free(veg); // will never be used again
@@ -369,34 +371,62 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
       else if(strncmp(command, "show strategy ", 14) == 0) showStrategy(strategy, nbStrategies, getID(command, 14));
 
       else if(strncmp(command, "fight ", 6) == 0) {
-        char *tmp = substring(command, 6, strlen(command));
-        char *indexVersus = strstr(tmp, " versus ");
-        char *fruit;
-        char *legume;
-        int vegIndex;
-        int fruitIndex;
-        int ready;
+        char *command_tmp = substring(command, 6, strlen(command));
+        int legume = 0;
+        int fruit = 0;
+        int strat1 = 0;
+        int strat2 = 0;
         int i = 0;
 
-        if(indexVersus == NULL) {
-          printf("! Utilisation ! : fight <legume> versus <fruit>\n");
-          free(tmp);
+        char* strToken = strtok(command_tmp, " ");
+        while(strToken != NULL) {
+          if((strcmp(strToken, "versus") == 0)) {
+            strToken = strtok(NULL, " ");
+            continue;
+          }
+
+          /*
+            check si le mot est un legume/fruit (id ou nom) ou une strat (id ou nom)
+          */
+          if(!(isOnlyDigits(strToken))) {
+            red();
+            printf("Utilisation : fight <legume> <strategie> versus <fruit> <strategie>\n");
+            resetColor();
+            free(command_tmp);
+            continue;
+          }
+
+          if(i == 0) {
+            // should get legume id
+            legume = atoi(strToken);
+          } else if(i == 1) {
+            strat1 = atoi(strToken);
+          } else if(i == 2) {
+            fruit = atoi(strToken);
+          } else if(i == 3) {
+            strat2 = atoi(strToken);
+          }
+          
+          // next string
+          strToken = strtok(NULL, " ");
+          i++;
+        }
+
+        if(((legume < 0 || fruit < 0) || (fruit > 6 || legume > 6)) || (strat1 >= *nbStrategies || strat2 >= *nbStrategies)) {
+          red();
+          printf("Veuillez revoir les paramètres de votre commande.\n");
+          resetColor();
+          free(command_tmp);
           continue;
         }
 
-        while((tmp+i) != indexVersus+1) i++; // get index 'v' de "versus"
+        printf("Le legume /%d/ joue avec la strat /%d/\n", legume, strat1);
+        printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);
 
-        legume = substring(tmp, 0, i-1); // nom du legume
-        fruit = substring(tmp, i+7, strlen(tmp)); // nom du fruit
-        free(tmp);
-        vegIndex = getChampIndex(legume, champions, *nbChampions);
-        fruitIndex = getChampIndex(fruit, champions, *nbChampions);
+        free(command_tmp);
 
-        ready = checkingChamps(legume, fruit, vegIndex, fruitIndex, champions, *nbChampions);
-
-        if(ready) {
-          fight(champions[vegIndex], champions[fruitIndex], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-        }
+        // fight(champions[legume], champions[fruit], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+      
       } else if(strcmp(command,"clear") == 0) system("clear");
       else if(strcmp(command, "help") == 0) help();
       else {

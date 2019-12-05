@@ -47,6 +47,13 @@ void enterToContinue();
 
 char * strtolower( char * dest, const char * src );
 
+/*
+    Check if the string is a number.
+    @Param1 A string
+    @Return An int as answer (1 OK, 0 not OK)
+*/
+int isOnlyDigits(char *chaine);
+
 Weapon * searchWeapon(Weapon **weapon, int *nbWeapons, char *w);
 
 Protection * searchProtection(Protection **protection, int *nbProtections, char *p);

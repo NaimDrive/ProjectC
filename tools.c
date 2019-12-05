@@ -62,6 +62,20 @@ char * strtolower( char * dest, const char * src ) {
     return result;
 }
 
+int isOnlyDigits(char *chaine) {
+  int len = strlen(chaine);
+  int i;
+
+  for(i = 0; i < len; i++) {
+    if(!(isdigit(chaine[i]))) {
+      return 0;
+    }
+  }
+
+  return 1;
+  
+}
+
 Weapon * searchWeapon(Weapon **weapon, int *nbWeapons, char *w) {
   char *param = malloc(sizeof(char)*(strlen(w)+1));
   char *name = malloc(sizeof(char)*100);

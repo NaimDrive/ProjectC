@@ -437,7 +437,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);
 
         // test si nbStrategie n'est pas nulle
-        if(legume < 0 || fruit < 0 || fruit > 6 || legume > 6 || (nbStrategies != NULL && (strat1 >= *nbStrategies || strat2 >= *nbStrategies))) {
+        if(legume < 0 || fruit < 0 || fruit >= 6 || legume >= 6 || (nbStrategies != NULL && (strat1 >= *nbStrategies || strat2 >= *nbStrategies))) {
           red();
           printf("Veuillez revoir les paramètres de votre commande.\n");
           resetColor();

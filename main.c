@@ -51,9 +51,6 @@ int main(int argc, char *argv[]) {
     nbStrategies = malloc(sizeof(int));
     *nbStrategies = 0;
     strategy = initStrat(argc, argv, nbStrategies, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-    for (int i = 0; i < *nbStrategies; i++) {
-      initializeTheCombatStrategy(&strategy[i], team1, team2);
-    }
   }
 
   readCommands(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2, screenSize);

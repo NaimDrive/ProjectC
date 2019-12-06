@@ -264,23 +264,35 @@ int replay(char *command) {
   }
 }
 
-void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Strategy *stratTeam1, Strategy *stratTeam2, Winsize screenSize) {
   int maximumCE = team1->maxCE, end = 0;
 
   buyChampion(vegetable, team1);
   buyChampion(fruit, team2);
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
 
-  equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
-  equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+  if(stratTeam1 == NULL) {
+    equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+  } else {
+    printf("%s :\n", team1->champion->variete);
+    initializeTheCombatStrategy(&stratTeam1, team1, team2);
+  }
+
+  if(stratTeam2 == NULL) {
+    equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+  } else {
+    printf("%s :\n", team2->champion->variete);
+    initializeTheCombatStrategy(&stratTeam2, team2, team1);
+  }
+
   while(team1->champion->PV > 0 && team2->champion->PV > 0) {
     fighNotFinished(team1, team2); // Restore CA and healings used
-    
+
     takeOffProtection(team1);
     fightingMode(team1, team2, screenSize.ws_col); // First player attack
-
-    if(team2->champion->PV == 0)
+    if(team2->champion->PV == 0) {
       break; // Avoid j2 playing if he's dead
+    }
 
     takeOffProtection(team2);
     fightingMode(team2, team1, screenSize.ws_col); // Second player attack
@@ -425,7 +437,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);
 
         // test si nbStrategie n'est pas nulle
-        if(((legume < 0 || fruit < 0) || (fruit > 6 || legume > 6)) || (nbStrategies == NULL || (strat1 >= *nbStrategies || strat2 >= *nbStrategies))) {
+        if(legume < 0 || fruit < 0 || fruit > 6 || legume > 6 || (nbStrategies != NULL && (strat1 >= *nbStrategies || strat2 >= *nbStrategies))) {
           red();
           printf("Veuillez revoir les paramètres de votre commande.\n");
           resetColor();
@@ -436,7 +448,10 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
         free(command_tmp);
 
-        // fight(champions[legume], champions[fruit], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+        Strategy *stratTeam1 = (strat1 != -1 ? strategy[strat1-1] : NULL);
+        Strategy *stratTeam2 = (strat2 != -1 ? strategy[strat2-1] : NULL);
+
+        fight(champions[legume-1], champions[fruit+6-1], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, stratTeam1, stratTeam2, screenSize);
       
       } else if(strcmp(command,"clear") == 0) system("clear");
       else if(strcmp(command, "help") == 0) help();

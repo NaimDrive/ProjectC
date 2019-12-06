@@ -396,7 +396,6 @@ void fightingMode(Team *team1, Team *team2, int screenSize) {
     int erreur = 0;
 
     while(team1->CA > 0 && team2->champion->PV > 0 && (!end || end == 2)) {
-
         if(team1->id == 0) {
             displayStats(team1, team2, screenSize);
             displayGame(team1, team2, screenSize);

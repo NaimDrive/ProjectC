@@ -420,25 +420,18 @@ void useStrat(Strat *strat) {
     while(strat) {
         if(strat->enumStrat == commande) {
             if(strat->unionStrat.commande.enumCommande == buy_weapon) {
-                printf("Execution weapon : ");
                 (strat->unionStrat.commande.commande.buyWeapon)(strat->unionStrat.commande.parametres[0].weapon, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_protection) {
-                printf("Execution protection : ");
                 (strat->unionStrat.commande.commande.buyProtection)(strat->unionStrat.commande.parametres[0].protection, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_care) {
-                printf("Execution care : ");
                 (strat->unionStrat.commande.commande.buyCare)(strat->unionStrat.commande.parametres[0].healing, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_CA) {
-                printf("Execution buy_CA\n");
                 (strat->unionStrat.commande.commande.buyCA)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier);
             } else if(strat->unionStrat.commande.enumCommande == use_weapon) {
-                printf("Execution use weapon : ");
                 (strat->unionStrat.commande.commande.useWeapon)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].team, strat->unionStrat.commande.parametres[2].entier, strat->unionStrat.commande.parametres[3].entier);
             } else if(strat->unionStrat.commande.enumCommande == use_protection) {
-                printf("Execution use protection : ");
                 (strat->unionStrat.commande.commande.useProtection)(strat->unionStrat.commande.parametres[0].team);
             } else if(strat->unionStrat.commande.enumCommande == use_care) {
-                printf("Execution use care : ");
                 (strat->unionStrat.commande.commande.useCare)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier);
             }
             strat = strat->suivant;
@@ -504,12 +497,14 @@ void useStrat(Strat *strat) {
 void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2) {
     (*strategy)->allyTeam = team1;
     (*strategy)->enemyTeam = team2;
-    //initStrategyInFight(strategy, team1, team2);
+    initStrategyInFight(strategy, team1, team2);
 }
 
 void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2) {
     initStrategyTeams(&(*strategy)->initStrategy, *strategy);
     initStrategyTeams(&(*strategy)->strat, *strategy);
+
+    useStrat((*strategy)->initStrategy);
 }
 
 void initStrategyTeams(Strat **s, Strategy *strategy) {

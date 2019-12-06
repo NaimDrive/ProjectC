@@ -139,7 +139,7 @@ int replay(char *command);
     @Param13 Size of the terminal
     @Return void
 */
-void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
+void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Strategy *stratTeam1, Strategy *stratTeam2, Winsize screenSize);
 
 /*
     Show every command line available

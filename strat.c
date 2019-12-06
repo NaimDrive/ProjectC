@@ -326,11 +326,11 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
                 }
 
                 ret = initStructure(s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+                
                 if(ret == 1) {
                     initStructure(s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-                } else if(ret == 2) {
-                    
                 }
+
                 ret = 0;
 
             } else if(!strcmp(mot, "else")) { // Si le premier mot est else
@@ -377,6 +377,7 @@ void addInStratStrategy(Strategy **s, Strat *strat) {
         strategy->strat = strat;
     } else {
         while(next->suivant != NULL) {
+            printf("A ");
             next = next->suivant;
         }
         next->suivant = strat;

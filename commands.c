@@ -430,7 +430,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           strat1 = -1;
           strat2 = -1;
         } else {
-          strat1 = (strat1 >= *nbStrategies || strat1 < 0? -1 : strat1);
+          strat1 = (strat1 >= *nbStrategies || strat1 < 0 ? -1 : strat1);
           strat2 = (strat2 >= *nbStrategies || strat2 < 0 ? -1 : strat2);
         }
         printf("Le legume /%d/ joue avec la strat /%d/\n", legume, strat1);
@@ -451,7 +451,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
         Strategy *stratTeam1 = (strat1 != -1 ? strategy[strat1] : NULL);
         Strategy *stratTeam2 = (strat2 != -1 ? strategy[strat2] : NULL);
 
-        fight(champions[legume-1], champions[fruit+6-1], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, stratTeam1, stratTeam2, screenSize);
+        fight(champions[legume], champions[fruit+6], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, stratTeam1, stratTeam2, screenSize);
       
       } else if(strcmp(command,"clear") == 0) system("clear");
       else if(strcmp(command, "help") == 0) help();

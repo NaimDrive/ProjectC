@@ -448,8 +448,8 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
         free(command_tmp);
 
-        Strategy *stratTeam1 = (strat1 != -1 ? strategy[strat1-1] : NULL);
-        Strategy *stratTeam2 = (strat2 != -1 ? strategy[strat2-1] : NULL);
+        Strategy *stratTeam1 = (strat1 != -1 ? strategy[strat1] : NULL);
+        Strategy *stratTeam2 = (strat2 != -1 ? strategy[strat2] : NULL);
 
         fight(champions[legume-1], champions[fruit+6-1], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, stratTeam1, stratTeam2, screenSize);
       

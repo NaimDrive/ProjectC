@@ -51,7 +51,8 @@ typedef union unionStrat {
 
 typedef enum enumStrat{
     commande,
-    operateur
+    operateur,
+    fusion
 } EnumStrat;
 
 typedef struct strat {
@@ -83,9 +84,13 @@ Strat * strategyCreateAddCA(Strategy **s, char *mot);
 
 Strat * strategyCreateUse(char *mot, Winsize screenSize);
 
+Strat * strategyCreateFusion();
+
 int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
 
 void addInInitStrategy(Strategy **s, Strat *strat);
+
+Strat * lastStrat(Strat *strat);
 
 void addInStratStrategy(Strategy **s, Strat *strat);
 

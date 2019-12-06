@@ -206,6 +206,13 @@ Strat * strategyCreateIf(char *mot) {
     strat->unionStrat.operateur.chaine = condition;
     return strat;
 }
+
+Strat * strategyCreateFusion() {
+    Strat * strat = calloc(1, sizeof(Strat));
+    strat->enumStrat = fusion;
+    return strat;
+}
+
 /*
 int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     char *mot;
@@ -293,7 +300,7 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
 int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     char *mot;
     int ret;
-    Strat *strat, *previousStrat;
+    Strat *strat;
     Strategy *strategy = *s;
 
     while(fgets(buffer, SIZE, fichier)) {
@@ -316,22 +323,31 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
         } else {
             if(stratParam == NULL && strat != NULL) {
                 stratParam = strat;
-                previousStrat = strat;
             }
             
             if(!strcmp(mot, "if")) { // Si le premier mot est if
                 strat = strategyCreateIf(mot);
-                if(strat != NULL) {
-                    addInStratStrategy(s, strat);
-                }
-
                 ret = initStructure(s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-                
                 if(ret == 1) {
                     initStructure(s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
                 }
-
                 ret = 0;
+
+                Strat * fusion = strategyCreateFusion();
+                if(strat->suivant == NULL) {
+                    strat->suivant = fusion;
+                } else {
+                    Strat *lastSuivant;
+                    lastSuivant = lastStrat(strat->suivant);
+                    lastSuivant->suivant = fusion;
+                }
+                if(strat->suivantSinon == NULL) {
+                    strat->suivantSinon = fusion;
+                } else {
+                    Strat *lastSuivantSinon;
+                    lastSuivantSinon = lastStrat(strat->suivantSinon);
+                    lastSuivantSinon->suivant = fusion;
+                }
 
             } else if(!strcmp(mot, "else")) { // Si le premier mot est else
                 return 1;
@@ -370,6 +386,13 @@ void addInInitStrategy(Strategy **s, Strat *strat) {
     }
 }
 
+Strat * lastStrat(Strat *strat) {
+    while(strat->suivant) {
+        strat = strat->suivant;
+    }
+    return strat;
+}
+
 void addInStratStrategy(Strategy **s, Strat *strat) {
     Strategy *strategy = *s;
     Strat *next = strategy->strat;
@@ -377,7 +400,6 @@ void addInStratStrategy(Strategy **s, Strat *strat) {
         strategy->strat = strat;
     } else {
         while(next->suivant != NULL) {
-            printf("A ");
             next = next->suivant;
         }
         next->suivant = strat;
@@ -491,6 +513,8 @@ void useStrat(Strat *strat) {
                     }
                 }
             }
+        } else {
+            strat = strat->suivant;
         }
     }
 }

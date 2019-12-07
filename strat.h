@@ -88,6 +88,8 @@ Strat * strategyCreateAddCA(Strategy **s, char *mot);
 
 Strat * strategyCreateUse(char *mot, Winsize screenSize);
 
+Strat * strategyCreateMove(char *mot, Winsize screenSize);
+
 Strat * strategyCreateFusion();
 
 int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);

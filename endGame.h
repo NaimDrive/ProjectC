@@ -41,6 +41,9 @@ void deallocateHealings(Healing **healings, int *nbHealings);
 */
 void deallocateTeams(Team *team1, Team *team2);
 
+void deallocateStrat(Strat *strat);
+
+void deallocateStrategy(Strategy *strategy);
 /*
     Free all malloc before exit the program
     @Param1 Array of champion

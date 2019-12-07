@@ -1,9 +1,10 @@
-#include "initGame.h"
-#include "endGame.h"
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+
+#include "initGame.h"
+#include "strat.h"
+#include "endGame.h"
 
 void deallocateChampions(Champion **champions, int *nbChampions) {
     for (int i = 0; i < *nbChampions; i++) {
@@ -57,6 +58,21 @@ void deallocateTeams(Team *team1, Team *team2) {
   free(team2->healing);
   team2->healing = NULL;
   free(team2);
+}
+
+void deallocateStrat(Strat *strat) {
+    /*
+    if(strat->enumStrat == operateur) {
+        free(strat->unionStrat.operateur.chaine);
+        for (int i = 0; i < strat->unionStrat.operateur.nbParametres; i++) {
+            
+        }  
+    }
+    */
+}
+
+void deallocateStrategy(Strategy *strategy) {
+
 }
 
 void deallocateMemory(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2) {

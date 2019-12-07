@@ -37,10 +37,19 @@ typedef union unionParametre {
     int entier;
 } UnionParametre;
 
+typedef enum enumParametre {
+    team_parametre,
+    weapon_parametre,
+    protection_parametre,
+    healing_parametre,
+    entier_parametre
+} EnumParametre;
+
 typedef struct commande {
     UnionFonction commande;
     EnumFonction enumCommande;
     UnionParametre *parametres; // Tableau des paramètres de la fonction
+    EnumParametre enumParametre;
     int nbParametres;
 } Commande;
 
@@ -117,5 +126,9 @@ void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2, int scre
 void initStrategyTeams(Strat **strat, Strategy *strategy);
 
 void catchConditions(Strategy *strategy, int *entier, int *entier2, char *mot);
+
+Strat * copyStrat(Strat *strat);
+
+Strategy * copyStrategy(Strategy *strategy);
 
 #endif

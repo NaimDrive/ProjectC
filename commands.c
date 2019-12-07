@@ -264,8 +264,10 @@ int replay(char *command) {
   }
 }
 
-void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Strategy *stratTeam1, Strategy *stratTeam2, Winsize screenSize) {
+void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Strategy *stratTeam1Param, Strategy *stratTeam2Param, Winsize screenSize) {
   int maximumCE = team1->maxCE, end = 0;
+  Strategy *stratTeam1 = copyStrategy(stratTeam1Param);
+  Strategy *stratTeam2 = copyStrategy(stratTeam2Param);
 
   if(stratTeam1 != NULL && stratTeam1->coutCE + vegetable->CE > 50) {
     printf("La strategie appliquée à %s dépasse la limite de CE autorisé.\n", vegetable->variete);

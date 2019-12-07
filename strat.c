@@ -655,3 +655,67 @@ void catchConditions(Strategy *strategy, int *entier, int *entier2, char *mot) {
         *entier = atoi(mot);
     }
 }
+
+Strat * copyStrat(Strat *strat) {
+    if(strat == NULL) {
+        return NULL;
+    }
+
+    Strat *copy;
+    copy = calloc(1, sizeof(Strat));
+    
+    if(strat->enumStrat == commande) {
+        copy->enumStrat = commande;
+        if(strat->unionStrat.commande.enumCommande == buy_weapon) {
+            copy->unionStrat.commande.commande.buyWeapon = buyWeapon;
+        } else if(strat->unionStrat.commande.enumCommande == buy_protection) {
+            copy->unionStrat.commande.commande.buyProtection = buyProtection;
+        }
+
+        copy->unionStrat.commande.enumCommande = strat->unionStrat.commande.enumCommande;
+        copy->unionStrat.commande.nbParametres = strat->unionStrat.commande.nbParametres;
+        copy->unionStrat.commande.parametres = malloc(sizeof(UnionParametre) * copy->unionStrat.commande.nbParametres);
+
+        for (int i = 0; i < copy->unionStrat.commande.nbParametres; i++) {
+            if(strat->unionStrat.commande.enumParametre == team_parametre) {
+                copy->unionStrat.commande.parametres[i].team = strat->unionStrat.commande.parametres[i].team;
+            } else if(strat->unionStrat.commande.enumParametre == weapon_parametre) {
+                copy->unionStrat.commande.parametres[i].weapon = strat->unionStrat.commande.parametres[i].weapon;
+            } else if(strat->unionStrat.commande.enumParametre == protection_parametre) {
+                copy->unionStrat.commande.parametres[i].protection = strat->unionStrat.commande.parametres[i].protection;
+            } else if(strat->unionStrat.commande.enumParametre == healing_parametre) {
+                copy->unionStrat.commande.parametres[i].healing = strat->unionStrat.commande.parametres[i].healing;
+            } else if(strat->unionStrat.commande.enumParametre == entier_parametre) {
+                copy->unionStrat.commande.parametres[i].entier = strat->unionStrat.commande.parametres[i].entier;
+            }
+            copy->unionStrat.commande.enumParametre = strat->unionStrat.commande.enumParametre;
+        }
+    } else if(strat->enumStrat == operateur) {
+        copy->enumStrat = operateur;
+        copy->unionStrat.operateur.chaine = malloc(sizeof(char) * (strlen(strat->unionStrat.operateur.chaine)+1));
+    } else if(strat->enumStrat == fusion) {
+        copy->enumStrat = fusion;
+    }
+
+    copy->suivant = copyStrat(strat->suivant);
+    copy->suivantSinon = copyStrat(strat->suivantSinon);
+
+    return strat;
+}
+
+Strategy * copyStrategy(Strategy *strategy) {
+    Strategy *copy;
+    copy = malloc(sizeof(Strategy));
+    copy->num = strategy->num;
+    copy->coutCE = strategy->coutCE;
+    copy->allyTeam = NULL;
+    copy->enemyTeam = NULL;
+
+    copy->nom = malloc(sizeof(char) * (strlen(strategy->nom)+1));
+    strcpy(copy->nom, strategy->nom);
+
+    copy->initStrategy = copyStrat(strategy->initStrategy);
+    copy->strat = copyStrat(strategy->strat);
+
+    return copy;
+}

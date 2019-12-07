@@ -18,7 +18,7 @@ int readAction(char *command, Team *team1, Team *team2, int screenSize);
     @Param3 Int
     @Return void
 */
-void fightingMode(Team *team1, Team *team2, int screenSize);
+void fightingMode(Team *team1, Team *team2, Strategy *strategy, int screenSize);
 
 /*
     Equip a team (Weapon, protection and cares)

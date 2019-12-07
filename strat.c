@@ -185,6 +185,44 @@ Strat * strategyCreateUse(char *mot, Winsize screenSize) {
     return strat;
 }
 
+Strat * strategyCreateMove(char *mot, Winsize screenSize) {
+    Strat *strat;
+    char delimiters[]=" \t\n\r";
+    int quantite = 1;
+    mot = strtok(NULL, delimiters);
+
+    if(!strcmp(mot, "forward")) {
+        strat = calloc(1, sizeof(Strat));
+        strat->enumStrat = commande;
+        strat->unionStrat.commande.nbParametres = 3;
+        strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+        strat->unionStrat.commande.enumCommande = move_forward;
+        strat->unionStrat.commande.commande.moveForward = moveForward;
+
+        mot = strtok(NULL, delimiters);
+        if(mot != NULL) {
+            quantite = atoi(mot);
+        }
+        strat->unionStrat.commande.parametres[2].entier = quantite;
+    } else if(!strcmp(mot, "backward")) {
+        strat = calloc(1, sizeof(Strat));
+        strat->enumStrat = commande;
+        strat->unionStrat.commande.nbParametres = 3;
+        strat->unionStrat.commande.parametres = malloc(sizeof(UnionParametre)*strat->unionStrat.commande.nbParametres);
+        strat->unionStrat.commande.parametres[2].entier = screenSize.ws_col;
+        strat->unionStrat.commande.enumCommande = move_backward;
+        strat->unionStrat.commande.commande.moveBackward = moveBackward;
+
+        mot = strtok(NULL, delimiters);
+        if(mot != NULL) {
+            quantite = atoi(mot);
+        }
+        strat->unionStrat.commande.parametres[1].entier = quantite;
+    }
+        
+    return strat;
+}
+
 Strat * strategyCreateIf(char *mot) {
     char delimiters[]=" \t\n\r";
     char *ptCondition, *condition = malloc(sizeof(char) * 50);
@@ -359,12 +397,13 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
                 strat = strategyCreateUse(mot, screenSize);
                 if(strat != NULL) {
                     addInStratStrategy(s, strat);
-                    //addToCurrent(&previousStrat, strat);
-                    //previousStrat = strat;
                 }
                 
             } else if(!strcmp(mot, "move")) { // Si le premier mot est move
-
+                strat = strategyCreateMove(mot, screenSize);
+                if(strat != NULL) {
+                    addInStratStrategy(s, strat);
+                }
             } else if(!strcmp(mot, "end")) { // Si le premier mot est end
 
             }
@@ -428,19 +467,8 @@ void addToCurrent(Strat **current, Strat *suivant) {
     }
 }
 
-void useStrategy(Strategy *strategy) {
-    if(strategy == NULL) return;
-    printf("Num %d | Strategy <%s>\n", strategy->num, strategy->nom);
-    
-    printf("\nInitialisation de la stratégie :\n\n");
-    useStrat(strategy->initStrategy);
-
-    printf("\nExecution de la stratégie :\n\n");
-    useStrat(strategy->strat);
-}
-
-void useStrat(Strat *strat) {
-    while(strat) {
+void useStrat(Strat *strat, Team *team) {
+    while(strat && team->CA >= 0) {
         if(strat->enumStrat == commande) {
             if(strat->unionStrat.commande.enumCommande == buy_weapon) {
                 (strat->unionStrat.commande.commande.buyWeapon)(strat->unionStrat.commande.parametres[0].weapon, strat->unionStrat.commande.parametres[1].team);
@@ -456,6 +484,10 @@ void useStrat(Strat *strat) {
                 (strat->unionStrat.commande.commande.useProtection)(strat->unionStrat.commande.parametres[0].team);
             } else if(strat->unionStrat.commande.enumCommande == use_care) {
                 (strat->unionStrat.commande.commande.useCare)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier);
+            } else if(strat->unionStrat.commande.enumCommande == move_forward) {
+                (strat->unionStrat.commande.commande.moveForward)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].team, strat->unionStrat.commande.parametres[2].entier);
+            } else if(strat->unionStrat.commande.enumCommande == move_backward) {
+                (strat->unionStrat.commande.commande.moveBackward)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier, strat->unionStrat.commande.parametres[2].entier);
             }
             strat = strat->suivant;
         } else if(strat->enumStrat == operateur) {
@@ -529,7 +561,7 @@ void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2) {
     initStrategyTeams(&(*strategy)->initStrategy, *strategy);
     initStrategyTeams(&(*strategy)->strat, *strategy);
 
-    useStrat((*strategy)->initStrategy);
+    useStrat((*strategy)->initStrategy, team1);
 }
 
 void initStrategyTeams(Strat **s, Strategy *strategy) {
@@ -539,14 +571,10 @@ void initStrategyTeams(Strat **s, Strategy *strategy) {
     if(strat->enumStrat == commande) {
         if(strat->unionStrat.commande.enumCommande == buy_weapon || strat->unionStrat.commande.enumCommande == buy_protection || strat->unionStrat.commande.enumCommande == buy_care) {
             strat->unionStrat.commande.parametres[1].team = strategy->allyTeam;
-        } else if(strat->unionStrat.commande.enumCommande == buy_CA) {
-            strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
-        } else if(strat->unionStrat.commande.enumCommande == use_weapon) {
+        } else if(strat->unionStrat.commande.enumCommande == use_weapon || strat->unionStrat.commande.enumCommande == move_forward) {
             strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
             strat->unionStrat.commande.parametres[1].team = strategy->enemyTeam;
-        } else if(strat->unionStrat.commande.enumCommande == use_protection) {
-            strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
-        } else if(strat->unionStrat.commande.enumCommande == use_care) {
+        } else if(strat->unionStrat.commande.enumCommande == use_protection || strat->unionStrat.commande.enumCommande == use_care || strat->unionStrat.commande.enumCommande == move_backward || strat->unionStrat.commande.enumCommande == buy_CA) {
             strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
         }
         initStrategyTeams(&strat->suivant, strategy);

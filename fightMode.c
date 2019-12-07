@@ -390,52 +390,56 @@ int readAction(char *command, Team *team1, Team *team2, int screenSize) {
         return 0;
 }
 
-void fightingMode(Team *team1, Team *team2, int screenSize) {
-    char *command = malloc(256*sizeof(char));
-    int end = 0;
-    int erreur = 0;
+void fightingMode(Team *team1, Team *team2, Strategy *strategy, int screenSize) {
+    if(strategy != NULL) {
+        useStrat(strategy->strat, team1);
+    } else {
+        char *command = malloc(256*sizeof(char));
+        int end = 0;
+        int erreur = 0;
 
-    while(team1->CA > 0 && team2->champion->PV > 0 && (!end || end == 2)) {
-        if(team1->id == 0) {
-            displayStats(team1, team2, screenSize);
-            displayGame(team1, team2, screenSize);
-            displayHealth(team1, team2, screenSize);
-        } else {
-            displayStats(team2, team1, screenSize);
-            displayGame(team2, team1, screenSize);
-            displayHealth(team2, team1, screenSize);
-        }
+        while(team1->CA > 0 && team2->champion->PV > 0 && (!end || end == 2)) {
+            if(team1->id == 0) {
+                displayStats(team1, team2, screenSize);
+                displayGame(team1, team2, screenSize);
+                displayHealth(team1, team2, screenSize);
+            } else {
+                displayStats(team2, team1, screenSize);
+                displayGame(team2, team1, screenSize);
+                displayHealth(team2, team1, screenSize);
+            }
 
-        if(team1->id == 0) green();
-        else yellow();
-        printf("%s ", team1->champion->variete);
-        white();
-        printf("%d> ", team1->CA);
-        resetColor();
-
-        fgets(command, 256, stdin);
-        if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
-
-        /* cases */
-        end = readAction(command, team1, team2, screenSize);
-        /* ^^^^ */
-
-        if(end==2) erreur++;
-
-        if(erreur == 3) {
+            if(team1->id == 0) green();
+            else yellow();
+            printf("%s ", team1->champion->variete);
             white();
-            printf("Commande '%s' invalide.\n", command);
-            helpFight();
-            erreur = 0;
+            printf("%d> ", team1->CA);
             resetColor();
-        }
-    }
-    if(team1->CA == 0)
-        printf("Tour terminé. Vous n'avez plus de CA.\n");
-    else if(team2->champion->PV == 0)
-        printf("Duel terminé.\n");
-    else
-        printf("Tour terminé.\n");
 
-    free(command);
+            fgets(command, 256, stdin);
+            if((strlen(command) > 0) && (command[strlen(command)-1] == '\n')) command[strlen(command)-1] = '\0';
+
+            /* cases */
+            end = readAction(command, team1, team2, screenSize);
+            /* ^^^^ */
+
+            if(end==2) erreur++;
+
+            if(erreur == 3) {
+                white();
+                printf("Commande '%s' invalide.\n", command);
+                helpFight();
+                erreur = 0;
+                resetColor();
+            }
+        }
+        if(team1->CA == 0)
+            printf("Tour terminé. Vous n'avez plus de CA.\n");
+        else if(team2->champion->PV == 0)
+            printf("Duel terminé.\n");
+        else
+            printf("Tour terminé.\n");
+
+        free(command);
+    }
 }

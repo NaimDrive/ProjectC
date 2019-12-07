@@ -9,6 +9,8 @@ typedef union unionFonction {
     void (*useWeapon)(Team *, Team *, int, int);
     void (*useProtection)(Team *);
     void (*useCare)(Team *, int);
+    void (*moveForward)(Team *, Team *, int);
+    void (*moveBackward)(Team *, int, int);
 } UnionFonction;
 
 typedef enum enumFonction{
@@ -18,7 +20,9 @@ typedef enum enumFonction{
     buy_CA,
     use_weapon,
     use_protection,
-    use_care
+    use_care,
+    move_forward,
+    move_backward
 } EnumFonction;
 
 typedef union unionParametre {
@@ -96,9 +100,7 @@ void addInStratStrategy(Strategy **s, Strat *strat);
 
 void addToCurrent(Strat **current, Strat *suivant);
 
-void useStrategy(Strategy *strategy);
-
-void useStrat(Strat *strat);
+void useStrat(Strat *strat, Team *team);
 
 void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2);
 

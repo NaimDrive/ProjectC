@@ -1,0 +1,5 @@
+strategy Test
+choose weapon MIXEUR_BLASTER
+
+move forward 36
+use weapon

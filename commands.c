@@ -336,8 +336,8 @@ void help() {
   resetColor();
 }
 
-void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2) {
-  deallocateMemory(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2) {
+  deallocateMemory(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2);
   exit(0);
 }
 
@@ -367,7 +367,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           c = getchar();
           if(c == 'o' || c == 'y') {
             free(command);
-            exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+            exitGame(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2);
           } else if(c == 'n') {
             keepPlaying = 1;
           }
@@ -481,5 +481,5 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     play = replay(command);
   }
   free(command);
-  exitGame(champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
+  exitGame(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2);
 }

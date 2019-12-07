@@ -61,21 +61,44 @@ void deallocateTeams(Team *team1, Team *team2) {
 }
 
 void deallocateStrat(Strat *strat) {
-    /*
+    if(strat == NULL) {
+        return;
+    }
+    
     if(strat->enumStrat == operateur) {
         free(strat->unionStrat.operateur.chaine);
-        for (int i = 0; i < strat->unionStrat.operateur.nbParametres; i++) {
-            
-        }  
     }
-    */
+
+    if(strat->enumStrat == commande) {
+        free(strat->unionStrat.commande.parametres);
+    }
+    
+    deallocateStrat(strat->suivant);
+    deallocateStrat(strat->suivantSinon);
+
+    free(strat);
 }
 
 void deallocateStrategy(Strategy *strategy) {
-
+    free(strategy->nom);
+    deallocateStrat(strategy->initStrategy);
+    deallocateStrat(strategy->strat);
+    free(strategy);
 }
 
-void deallocateMemory(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2) {
+void deallocateStrategies(Strategy **strategy, int *nbStrategies) {
+    if(strategy != NULL && nbStrategies != NULL) {
+        for (int i = 0; i < *nbStrategies; i++) {
+            deallocateStrategy(strategy[i]);
+        }
+
+        free(strategy);
+        free(nbStrategies);
+    }
+}
+
+void deallocateMemory(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2) {
+    deallocateStrategies(strategy, nbStrategies);
     deallocateChampions(champions, nbChampions);
     deallocateWeapons(weapons, nbWeapons);
     deallocateProtections(protections, nbProtections);

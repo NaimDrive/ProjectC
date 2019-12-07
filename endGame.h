@@ -44,6 +44,8 @@ void deallocateTeams(Team *team1, Team *team2);
 void deallocateStrat(Strat *strat);
 
 void deallocateStrategy(Strategy *strategy);
+
+void deallocateStrategies(Strategy **strategy, int *nbStrategies);
 /*
     Free all malloc before exit the program
     @Param1 Array of champion
@@ -58,6 +60,6 @@ void deallocateStrategy(Strategy *strategy);
     @Param10 Team
     @Return void
 */
-void deallocateMemory(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2);
+void deallocateMemory(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2);
 
 #endif

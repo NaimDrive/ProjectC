@@ -1,6 +1,10 @@
 #ifndef __STRAT_H__
 #define __STRAT_H__
 
+#ifndef _DEFAULT_SOURCE
+#define _DEFAULT_SOURCE
+#endif
+
 typedef union unionFonction {
     int (*buyWeapon)(Weapon *, Team *);
     int (*buyProtection)(Protection *, Team *);
@@ -102,11 +106,11 @@ void addInStratStrategy(Strategy **s, Strat *strat);
 
 void addToCurrent(Strat **current, Strat *suivant);
 
-void useStrat(Strat *strat, Team *team);
+void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize);
 
-void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2);
+void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2, int screenSize);
 
-void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2);
+void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2, int screenSize);
 
 void initStrategyTeams(Strat **strat, Strategy *strategy);
 

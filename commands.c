@@ -285,14 +285,14 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
     equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   } else {
     printf("%s :\n", team1->champion->variete);
-    initializeTheCombatStrategy(&stratTeam1, team1, team2);
+    initializeTheCombatStrategy(&stratTeam1, team1, team2, screenSize.ws_col);
   }
   
   if(stratTeam2 == NULL) {
     equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   } else {
     printf("%s :\n", team2->champion->variete);
-    initializeTheCombatStrategy(&stratTeam2, team2, team1);
+    initializeTheCombatStrategy(&stratTeam2, team2, team1, screenSize.ws_col);
   }
 
   while(team1->champion->PV > 0 && team2->champion->PV > 0) {

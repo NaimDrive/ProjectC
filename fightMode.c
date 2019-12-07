@@ -392,7 +392,7 @@ int readAction(char *command, Team *team1, Team *team2, int screenSize) {
 
 void fightingMode(Team *team1, Team *team2, Strategy *strategy, int screenSize) {
     if(strategy != NULL) {
-        useStrat(strategy->strat, team1);
+        useStrat(strategy->strat, team1, team2, screenSize);
     } else {
         char *command = malloc(256*sizeof(char));
         int end = 0;

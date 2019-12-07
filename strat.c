@@ -2,11 +2,13 @@
 #include <stdlib.h>
 #include <string.h>
 #include <sys/ioctl.h>
+#include <unistd.h>
 
 #include "initGame.h"
 #include "fight.h"
 #include "tools.h"
 #include "strat.h"
+#include "displayGame.h"
 
 int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     char *adress = strrchr(fileName, '.');
@@ -467,9 +469,11 @@ void addToCurrent(Strat **current, Strat *suivant) {
     }
 }
 
-void useStrat(Strat *strat, Team *team) {
+void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
+    unsigned int micro = 3000000;
     while(strat && team->CA >= 0) {
         if(strat->enumStrat == commande) {
+            
             if(strat->unionStrat.commande.enumCommande == buy_weapon) {
                 (strat->unionStrat.commande.commande.buyWeapon)(strat->unionStrat.commande.parametres[0].weapon, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_protection) {
@@ -489,6 +493,7 @@ void useStrat(Strat *strat, Team *team) {
             } else if(strat->unionStrat.commande.enumCommande == move_backward) {
                 (strat->unionStrat.commande.commande.moveBackward)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier, strat->unionStrat.commande.parametres[2].entier);
             }
+            
             strat = strat->suivant;
         } else if(strat->enumStrat == operateur) {
             printf("Execution IF : ");
@@ -548,20 +553,31 @@ void useStrat(Strat *strat, Team *team) {
         } else {
             strat = strat->suivant;
         }
+        if(team->id == 0) {
+                // displayStats(team, opponent, screenSize);
+                displayGame(team, opponent, screenSize);
+                displayHealth(team, opponent, screenSize);
+            } else {
+                // displayStats(opponent, team, screenSize);
+                displayGame(opponent, team, screenSize);
+                displayHealth(opponent, team, screenSize);
+            }
+        usleep(micro);
+        system("clear");
     }
 }
 
-void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2) {
+void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2, int screenSize) {
     (*strategy)->allyTeam = team1;
     (*strategy)->enemyTeam = team2;
-    initStrategyInFight(strategy, team1, team2);
+    initStrategyInFight(strategy, team1, team2, screenSize);
 }
 
-void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2) {
+void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2, int screenSize) {
     initStrategyTeams(&(*strategy)->initStrategy, *strategy);
     initStrategyTeams(&(*strategy)->strat, *strategy);
 
-    useStrat((*strategy)->initStrategy, team1);
+    useStrat((*strategy)->initStrategy, team1, team2, screenSize);
 }
 
 void initStrategyTeams(Strat **s, Strategy *strategy) {

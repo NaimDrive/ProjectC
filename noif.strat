@@ -1,0 +1,12 @@
+strategy NoIf
+choose weapon EPLUCHEUR_LASER
+choose protection WOKLIER
+choose care ENGRAIS_IONIQUE
+
+add action 7
+
+move forward 15
+move forward 3
+move forward 1
+use weapon 5
+use protection

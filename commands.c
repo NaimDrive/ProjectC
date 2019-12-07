@@ -267,33 +267,30 @@ int replay(char *command) {
 void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Strategy *stratTeam1, Strategy *stratTeam2, Winsize screenSize) {
   int maximumCE = team1->maxCE, end = 0;
 
-  
+  if(stratTeam1 != NULL && stratTeam1->coutCE + vegetable->CE > 50) {
+    printf("La strategie appliquée à %s dépasse la limite de CE autorisé.\n", vegetable->variete);
+    return;
+  }
+  if(stratTeam2 != NULL && stratTeam2->coutCE + fruit->CE > 50) {
+    printf("La strategie appliquée à %s dépasse la limite de CE autorisé.\n", fruit->variete);
+    return;
+  }
 
-  if(stratTeam1 == NULL && stratTeam2 == NULL) {
-    buyChampion(vegetable, team1);
-    buyChampion(fruit, team2);
+  buyChampion(vegetable, team1);
+  buyChampion(fruit, team2);
 
-    printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
+  printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
 
+  if(stratTeam1 == NULL) {
     equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
-    equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   } else {
-    if(stratTeam1 != NULL && stratTeam1->coutCE + vegetable->CE > 50) {
-      printf("La strategie appliquée à %s dépasse la limite de CE autorisé.\n", vegetable->variete);
-      return;
-    }
-    if(stratTeam2 != NULL && stratTeam2->coutCE + fruit->CE > 50) {
-      printf("La strategie appliquée à %s dépasse la limite de CE autorisé.\n", fruit->variete);
-      return;
-    }
-    buyChampion(vegetable, team1);
-    buyChampion(fruit, team2);
-
-    printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
-
     printf("%s :\n", team1->champion->variete);
     initializeTheCombatStrategy(&stratTeam1, team1, team2);
-
+  }
+  
+  if(stratTeam2 == NULL) {
+    equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+  } else {
     printf("%s :\n", team2->champion->variete);
     initializeTheCombatStrategy(&stratTeam2, team2, team1);
   }

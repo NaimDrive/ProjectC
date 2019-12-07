@@ -469,11 +469,9 @@ void addToCurrent(Strat **current, Strat *suivant) {
     }
 }
 
-void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
-    unsigned int micro = 3000000;
-    while(strat && team->CA >= 0) {
+void useInitStrat(Strat *strat) {
+    while(strat) {
         if(strat->enumStrat == commande) {
-            
             if(strat->unionStrat.commande.enumCommande == buy_weapon) {
                 (strat->unionStrat.commande.commande.buyWeapon)(strat->unionStrat.commande.parametres[0].weapon, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_protection) {
@@ -482,7 +480,17 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
                 (strat->unionStrat.commande.commande.buyCare)(strat->unionStrat.commande.parametres[0].healing, strat->unionStrat.commande.parametres[1].team);
             } else if(strat->unionStrat.commande.enumCommande == buy_CA) {
                 (strat->unionStrat.commande.commande.buyCA)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier);
-            } else if(strat->unionStrat.commande.enumCommande == use_weapon) {
+            }
+        }
+        strat = strat->suivant;
+    }
+}
+
+void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
+    unsigned int micro = 1500000;
+    while(strat && team->CA >= 0) {
+        if(strat->enumStrat == commande) {
+            if(strat->unionStrat.commande.enumCommande == use_weapon) {
                 (strat->unionStrat.commande.commande.useWeapon)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].team, strat->unionStrat.commande.parametres[2].entier, strat->unionStrat.commande.parametres[3].entier);
             } else if(strat->unionStrat.commande.enumCommande == use_protection) {
                 (strat->unionStrat.commande.commande.useProtection)(strat->unionStrat.commande.parametres[0].team);
@@ -493,7 +501,6 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
             } else if(strat->unionStrat.commande.enumCommande == move_backward) {
                 (strat->unionStrat.commande.commande.moveBackward)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].entier, strat->unionStrat.commande.parametres[2].entier);
             }
-            
             strat = strat->suivant;
         } else if(strat->enumStrat == operateur) {
             printf("Execution IF : ");
@@ -577,7 +584,7 @@ void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2, int scre
     initStrategyTeams(&(*strategy)->initStrategy, *strategy);
     initStrategyTeams(&(*strategy)->strat, *strategy);
 
-    useStrat((*strategy)->initStrategy, team1, team2, screenSize);
+    useInitStrat((*strategy)->initStrategy);
 }
 
 void initStrategyTeams(Strat **s, Strategy *strategy) {

@@ -106,6 +106,8 @@ void addInStratStrategy(Strategy **s, Strat *strat);
 
 void addToCurrent(Strat **current, Strat *suivant);
 
+void useInitStrat(Strat *strat);
+
 void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize);
 
 void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2, int screenSize);

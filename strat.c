@@ -484,6 +484,8 @@ void useInitStrat(Strat *strat) {
         }
         strat = strat->suivant;
     }
+    enterToContinue();
+    system("clear");
 }
 
 void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
@@ -561,14 +563,14 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
             strat = strat->suivant;
         }
         if(team->id == 0) {
-                // displayStats(team, opponent, screenSize);
-                displayGame(team, opponent, screenSize);
-                displayHealth(team, opponent, screenSize);
-            } else {
-                // displayStats(opponent, team, screenSize);
-                displayGame(opponent, team, screenSize);
-                displayHealth(opponent, team, screenSize);
-            }
+            displayStats(team, opponent, screenSize);
+            displayGame(team, opponent, screenSize);
+            displayHealth(team, opponent, screenSize);
+        } else {
+            displayStats(opponent, team, screenSize);
+            displayGame(opponent, team, screenSize);
+            displayHealth(opponent, team, screenSize);
+        }
         usleep(micro);
         system("clear");
     }

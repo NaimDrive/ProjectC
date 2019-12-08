@@ -340,7 +340,7 @@ void help() {
 }
 
 void exitGame(Package *package, Team *team1, Team *team2) {
-  deallocateMemory(package->champions, package->weapons, package->protections, package->healings, package->strategies, package->nbChampions, package->nbWeapons, package->nbProtections, package->nbHealings, package->nbStrategies, team1, team2);
+  deallocateMemory(package, team1, team2);
   exit(0);
 }
 

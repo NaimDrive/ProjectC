@@ -60,6 +60,6 @@ void deallocateStrategies(Strategy **strategy, int *nbStrategies);
     @Param10 Team
     @Return void
 */
-void deallocateMemory(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2);
+void deallocateMemory(Package *package, Team *team1, Team *team2);
 
 #endif

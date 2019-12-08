@@ -97,11 +97,13 @@ void deallocateStrategies(Strategy **strategy, int *nbStrategies) {
     }
 }
 
-void deallocateMemory(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2) {
-    deallocateStrategies(strategy, nbStrategies);
-    deallocateChampions(champions, nbChampions);
-    deallocateWeapons(weapons, nbWeapons);
-    deallocateProtections(protections, nbProtections);
-    deallocateHealings(healings, nbHealings);
+void deallocateMemory(Package *package, Team *team1, Team *team2) {
+    deallocateStrategies(package->strategies, package->nbStrategies);
+    deallocateChampions(package->champions, package->nbChampions);
+    deallocateWeapons(package->weapons, package->nbWeapons);
+    deallocateProtections(package->protections, package->nbProtections);
+    deallocateHealings(package->healings, package->nbHealings);
     deallocateTeams(team1, team2);
+
+    free(package);
 }

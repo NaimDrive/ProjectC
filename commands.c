@@ -324,7 +324,8 @@ void fight(Champion *vegetable, Champion* fruit, Package *package, Team *team1, 
     showEndGame(team1, team2);
     end = 1;
   }
-
+  deallocateStrategy(stratTeam1);
+  deallocateStrategy(stratTeam2);
   endRound(team1, team2, maximumCE, end, screenSize);
 }
 

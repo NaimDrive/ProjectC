@@ -57,3 +57,12 @@ Pendant un combat, vous avez accès à d'autres commandes.
 - ***use care n*** : permet d’utiliser n fois le soin sur le champion. Si le n n’est pas précisé, alors il n’est utilisée qu’une seule fois. 
 - ***help*** : Affiche la liste des commandes disponibles.
 - ***end*** : termine le tour du concurrent.
+
+## Problèmes
+Malgré de très longues heures de débuggage. Certaines fonctionnalités ne sont pas au point.
+
+Ci-dessous, la liste des fonctionnalités non implémenté :
+
+- La prise en compte des "if" dans les fichiers .strat n'est pas assuré. La prise en compte des "else" n'a pu aboutir, même après plus d'une semaine de débuggage. Toutefois, les commandes sont exécutées en ignorant les "if".
+
+- Lorsque les deux joueurs utilisent la même stratégie durant le même affrontement, il s'avère que le camp des fruits écrase le tour des légumes (il n'y a que les fruits qui jouent). Malgré la séparation des stratégies utilisées (via des copies), le problème persiste.

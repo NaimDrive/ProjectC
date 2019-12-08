@@ -302,13 +302,22 @@ void fight(Champion *vegetable, Champion* fruit, Package *package, Team *team1, 
     fighNotFinished(team1, team2); // Restore CA and healings used
 
     takeOffProtection(team1);
-    fightingMode(team1, team2, stratTeam1, screenSize.ws_col); // First player attack
+    if(stratTeam1Param == NULL) {
+      fightingMode(team1, team2, NULL, screenSize.ws_col); // First player attack
+    } else {
+      fightingMode(team1, team2, stratTeam1, screenSize.ws_col); // First player attack
+    }
     if(team2->champion->PV == 0) {
       break; // Avoid j2 playing if he's dead
     }
-
     takeOffProtection(team2);
-    fightingMode(team2, team1, stratTeam2, screenSize.ws_col); // Second player attack
+    if(stratTeam2Param == NULL) {
+      fightingMode(team2, team1, NULL, screenSize.ws_col); // Second player attack
+    } else {
+       fightingMode(team2, team1, stratTeam2, screenSize.ws_col); // Second player attack
+    }
+    
+    
   }
 
   if(!((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= package->weapons[0]->CE + package->champions[0]->CE) && (team2->CE >= package->weapons[0]->CE + package->champions[0]->CE))) {

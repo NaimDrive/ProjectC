@@ -398,7 +398,7 @@ void useInitStrat(Strat *strat) {
 }
 
 void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
-    unsigned int micro = 1500000;
+    unsigned int micro = 0;
     while(strat && team->CA >= 0) {
         if(strat->enumStrat == retour) {
             printf("Tour terminé\n");

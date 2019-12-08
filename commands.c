@@ -440,8 +440,11 @@ void readCommands(Package *package, Team *team1, Team *team2, Winsize screenSize
         }
 
         if(package->nbStrategies == NULL) {
-          strat1 = -1;
-          strat2 = -1;
+          red();
+          printf("Nous n'avez aucune stratégie.\n");
+          resetColor();
+          free(command_tmp);
+          continue;
         } else {
           if(strat1 >= *package->nbStrategies || strat1 < -1) {
             red();

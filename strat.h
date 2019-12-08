@@ -37,19 +37,11 @@ typedef union unionParametre {
     int entier;
 } UnionParametre;
 
-typedef enum enumParametre {
-    team_parametre,
-    weapon_parametre,
-    protection_parametre,
-    healing_parametre,
-    entier_parametre
-} EnumParametre;
 
 typedef struct commande {
     UnionFonction commande;
     EnumFonction enumCommande;
     UnionParametre *parametres; // Tableau des paramètres de la fonction
-    EnumParametre enumParametre;
     int nbParametres;
 } Commande;
 
@@ -69,7 +61,8 @@ typedef union unionStrat {
 typedef enum enumStrat{
     commande,
     operateur,
-    fusion
+    fusion,
+    retour
 } EnumStrat;
 
 typedef struct strat {
@@ -105,6 +98,8 @@ Strat * strategyCreateMove(char *mot, Winsize screenSize);
 
 Strat * strategyCreateFusion();
 
+Strat * strategyCreateReturn();
+
 int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
 
 void addInInitStrategy(Strategy **s, Strat *strat);
@@ -119,15 +114,15 @@ void useInitStrat(Strat *strat);
 
 void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize);
 
-void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2, int screenSize);
+void initializeTheCombatStrategy(Strategy **strategy, Team *team1, Team *team2);
 
-void initStrategyInFight(Strategy **strategy, Team *team1, Team *team2, int screenSize);
+void initStrategyInFight(Strategy **strategy);
 
 void initStrategyTeams(Strat **strat, Strategy *strategy);
 
 void catchConditions(Strategy *strategy, int *entier, int *entier2, char *mot);
 
-Strat * copyStrat(Strat *strat);
+Strat * copyStrat(Strat *strat, Strategy *strategy);
 
 Strategy * copyStrategy(Strategy *strategy);
 

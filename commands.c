@@ -287,7 +287,7 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
   } else {
     stratTeam1 = copyStrategy(stratTeam1Param);
     printf("%s :\n", team1->champion->variete);
-    initializeTheCombatStrategy(&stratTeam1, team1, team2, screenSize.ws_col);
+    initializeTheCombatStrategy(&stratTeam1, team1, team2);
   }
   
   if(stratTeam2Param == NULL) {
@@ -295,7 +295,7 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
   } else {
     stratTeam2 = copyStrategy(stratTeam2Param);
     printf("%s :\n", team2->champion->variete);
-    initializeTheCombatStrategy(&stratTeam2, team2, team1, screenSize.ws_col);
+    initializeTheCombatStrategy(&stratTeam2, team2, team1);
   }
 
   while(team1->champion->PV > 0 && team2->champion->PV > 0) {

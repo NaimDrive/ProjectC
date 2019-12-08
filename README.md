@@ -66,3 +66,5 @@ Ci-dessous, la liste des fonctionnalités non implémenté :
 - La prise en compte des "if" dans les fichiers .strat n'est pas assuré. La prise en compte des "else" n'a pu aboutir, même après plus d'une semaine de débuggage. Toutefois, les commandes sont exécutées en ignorant les "if".
 
 - Lorsque les deux joueurs utilisent la même stratégie durant le même affrontement, il s'avère que le camp des fruits écrase le tour des légumes (il n'y a que les fruits qui jouent). Malgré la séparation des stratégies utilisées (via des copies), le problème persiste.
+
+- L'utilisation de stratégie peut occasionner des problèmes quant à la libération mémoire utilisée.

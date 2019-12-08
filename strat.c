@@ -349,6 +349,7 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
     Strat *strat, *last;
     Strategy *strategy = *s;
 
+    stratParam = lastStrat(stratParam);
     stratParam = strategyCreateFusion();
     last = lastStrat(stratParam);
 
@@ -377,12 +378,13 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
             if(!strcmp(mot, "if")) { // Si le premier mot est if
                 strat = strategyCreateIf(mot);
                 //last->suivant = strat;
+                addInStratStrategy(s, strat);
                 ret = initStructure(s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
                 if(ret == 1) {
                     initStructure(s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
                 }
                 ret = 0;
-
+                
                 Strat * fusion = strategyCreateFusion();
                 if(strat->suivant == NULL) {
                     strat->suivant = fusion;
@@ -398,7 +400,6 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
                     lastSuivantSinon = lastStrat(strat->suivantSinon);
                     lastSuivantSinon->suivant = fusion;
                 }
-
             } else if(!strcmp(mot, "else")) { // Si le premier mot est else
                 return 1;
 
@@ -447,10 +448,14 @@ void addInInitStrategy(Strategy **s, Strat *strat) {
 }
 
 Strat * lastStrat(Strat *strat) {
-    while(strat->suivant) {
-        strat = strat->suivant;
+    if(strat) {
+        while(strat->suivant) {
+            printf("Je vais au suivant\n");
+            strat = strat->suivant;
+        }
+        return strat;
     }
-    return strat;
+    return NULL;
 }
 
 void addInStratStrategy(Strategy **s, Strat *strat) {
@@ -514,6 +519,7 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
             printf("Tour terminé\n");
             break;
         } else if(strat->enumStrat == commande) {
+            printf("Execution commande : ");
             if(strat->unionStrat.commande.enumCommande == use_weapon) {
                 (strat->unionStrat.commande.commande.useWeapon)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].team, strat->unionStrat.commande.parametres[2].entier, strat->unionStrat.commande.parametres[3].entier);
             } else if(strat->unionStrat.commande.enumCommande == use_protection) {
@@ -528,6 +534,7 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
             strat = strat->suivant;
         } else if(strat->enumStrat == operateur) {
             printf("Execution IF : ");
+            printf("Commande : %s\n", strat->unionStrat.operateur.chaine);
             if(strat->unionStrat.operateur.nbParametres == 1) {
                 printf("1 opérant : ");
                 printf("if(%d)\n", strat->unionStrat.operateur.op1);
@@ -622,6 +629,9 @@ void initStrategyTeams(Strat **s, Strategy *strategy) {
         } else if(strat->unionStrat.commande.enumCommande == use_weapon || strat->unionStrat.commande.enumCommande == move_forward) {
             strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
             strat->unionStrat.commande.parametres[1].team = strategy->enemyTeam;
+            printf("Init :\n");
+            printf("Ally %s :\n", strat->unionStrat.commande.parametres[0].team->champion->variete);
+            printf("Enemy %s :\n", strat->unionStrat.commande.parametres[1].team->champion->variete);
         } else if(strat->unionStrat.commande.enumCommande == use_protection || strat->unionStrat.commande.enumCommande == use_care || strat->unionStrat.commande.enumCommande == move_backward || strat->unionStrat.commande.enumCommande == buy_CA) {
             strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
         }
@@ -636,7 +646,9 @@ void initStrategyTeams(Strat **s, Strategy *strategy) {
 
         mot = strtok(NULL, " ");
         if(mot == NULL) {
-            strat->unionStrat.operateur.nbParametres = 1;
+            strat->unionStrat.operateur.nbParametres = 3;
+            strat->unionStrat.operateur.op2 = strategy->allyTeam->weapon->portee;
+            strat->unionStrat.operateur.operateur = "<=";
         } else {
             if(!strcmp(mot, "<")) {
                 strat->unionStrat.operateur.operateur = "<";

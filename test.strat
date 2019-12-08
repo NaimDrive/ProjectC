@@ -14,11 +14,12 @@ use protection
 use weapon 4
 if 1 < 2
     use protection
+    if life > 30%
+        use protection
+    endif
 endif
 
-if life < 30%
-    use protection
-endif
+
 
 if life < 10
     use care

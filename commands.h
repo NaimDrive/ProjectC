@@ -124,19 +124,14 @@ int replay(char *command);
 
 /*
     Launches the fight.
-    @Param1 A vegetable
-    @Param2 A fruit
-    @Param3 Array with every champion
-    @Param4 Array with every weapon
-    @Param5 Array with every protection
-    @Param6 Array with every heal
-    @Param7 Number of champions
-    @Param8 Number of weapons
-    @Param9 Number of protections
-    @Param10 Number of heals
-    @Param11 Team vegetable
-    @Param12 Team fruit
-    @Param13 Size of the terminal
+    @Param1 Champion
+    @Param2 Champion
+    @Param3 Package
+    @Param4 Team vegetable
+    @Param5 Team fruit
+    @Param6 Strategy
+    @Param7 Strategy
+    @Param8 Size of the terminal
     @Return void
 */
 void fight(Champion *vegetable, Champion* fruit, Package *package, Team *team1, Team *team2, Strategy *stratTeam1, Strategy *stratTeam2, Winsize screenSize);
@@ -149,33 +144,20 @@ void help();
 
 /*
     Deallocate and exit the game.
-    @Param1 Array with every champion
-    @Param2 Array with every weapon
-    @Param3 Array with every protection
-    @Param4 Array with every heal
-    @Param5 Number of champions
-    @Param6 Number of weapons
-    @Param7 Number of protections
-    @Param8 Number of heals
-    @Param9 Team vegetable
-    @Param10 Team fruit
+    @Param1 Package
+    @Param2 Team vegetable
+    @Param3 Team fruit
     @Return void
 */
 void exitGame(Package *package, Team *team1, Team *team2);
 
 /*
     Read commands line entered.
-    @Param1 Array with every champion
-    @Param2 Array with every weapon
-    @Param3 Array with every protection
-    @Param4 Array with every heal
-    @Param5 Number of champions
-    @Param6 Number of weapons
-    @Param7 Number of protections
-    @Param8 Number of heals
-    @Param9 Team vegetable
-    @Param10 Team fruit
-    @Param11 Size of the terminal
+    @Param1 Package
+    @Param1 Number of heals
+    @Param2 Team vegetable
+    @Param3 Team fruit
+    @Param4 Size of the terminal
     @Return void
 */
 void readCommands(Package *package, Team *team1, Team *team2, Winsize screenSize);

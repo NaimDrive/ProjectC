@@ -48,16 +48,9 @@ void deallocateStrategy(Strategy *strategy);
 void deallocateStrategies(Strategy **strategy, int *nbStrategies);
 /*
     Free all malloc before exit the program
-    @Param1 Array of champion
-    @Param2 Array of weapon
-    @Param3 Array of protection
-    @Param4 Array of healing
-    @Param5 int
-    @Param6 int
-    @Param7 int
-    @Param8 int
-    @Param9 Team
-    @Param10 Team
+    @Param1 Package
+    @Param2 Team
+    @Param3 Team
     @Return void
 */
 void deallocateMemory(Package *package, Team *team1, Team *team2);

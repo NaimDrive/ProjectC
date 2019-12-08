@@ -404,7 +404,6 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
             printf("Tour terminé\n");
             break;
         } else if(strat->enumStrat == commande) {
-            printf("Execution commande : ");
             if(strat->unionStrat.commande.enumCommande == use_weapon) {
                 (strat->unionStrat.commande.commande.useWeapon)(strat->unionStrat.commande.parametres[0].team, strat->unionStrat.commande.parametres[1].team, strat->unionStrat.commande.parametres[2].entier, strat->unionStrat.commande.parametres[3].entier);
             } else if(strat->unionStrat.commande.enumCommande == use_protection) {

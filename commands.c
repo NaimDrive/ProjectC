@@ -266,14 +266,13 @@ int replay(char *command) {
 
 void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Strategy *stratTeam1Param, Strategy *stratTeam2Param, Winsize screenSize) {
   int maximumCE = team1->maxCE, end = 0;
-  Strategy *stratTeam1 = copyStrategy(stratTeam1Param);
-  Strategy *stratTeam2 = copyStrategy(stratTeam2Param);
+  Strategy *stratTeam1, *stratTeam2;
 
-  if(stratTeam1 != NULL && stratTeam1->coutCE + vegetable->CE > 50) {
+  if(stratTeam1Param != NULL && stratTeam1Param->coutCE + vegetable->CE > 50) {
     printf("La strategie appliquée à %s dépasse la limite de CE autorisé.\n", vegetable->variete);
     return;
   }
-  if(stratTeam2 != NULL && stratTeam2->coutCE + fruit->CE > 50) {
+  if(stratTeam2Param != NULL && stratTeam2Param->coutCE + fruit->CE > 50) {
     printf("La strategie appliquée à %s dépasse la limite de CE autorisé.\n", fruit->variete);
     return;
   }
@@ -283,16 +282,18 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
 
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
 
-  if(stratTeam1 == NULL) {
+  if(stratTeam1Param == NULL) {
     equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   } else {
+    stratTeam1 = copyStrategy(stratTeam1Param);
     printf("%s :\n", team1->champion->variete);
     initializeTheCombatStrategy(&stratTeam1, team1, team2, screenSize.ws_col);
   }
   
-  if(stratTeam2 == NULL) {
+  if(stratTeam2Param == NULL) {
     equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
   } else {
+    stratTeam2 = copyStrategy(stratTeam2Param);
     printf("%s :\n", team2->champion->variete);
     initializeTheCombatStrategy(&stratTeam2, team2, team1, screenSize.ws_col);
   }
@@ -460,9 +461,9 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
         free(command_tmp);
 
-        Strategy *stratTeam1 = (strat1 != -1 ? strategy[strat1] : NULL);
-        Strategy *stratTeam2 = (strat2 != -1 ? strategy[strat2] : NULL);
-
+        Strategy *stratTeam1 = (strat1 == -1 ? NULL : strategy[strat1]);
+        Strategy *stratTeam2 = (strat2 == -1 ? NULL : strategy[strat2]);
+        printf("strat %d - %d\n", strat1, strat2);
         fight(champions[legume], champions[fruit+6], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, stratTeam1, stratTeam2, screenSize);
       
       } else if(strcmp(command,"clear") == 0) system("clear");

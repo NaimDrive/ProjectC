@@ -11,9 +11,9 @@ Afin de générer l'exécutable, taper la commande suivante dans le terminal.
 make
 ```
 
-Pour lancer le jeu, utiliser la commande suivante.
+Pour lancer le jeu, utiliser la commande suivante. Il est possible de fournir en paramètre un ou plusieurs fichiers de stratégie. Cependant tous les fichiers doivent avoir comme extension **.strat**.
 ```
-./game
+./game [fichier1.strat] [fichier2.strat] [...]
 ```
 
 ## Règles du jeu
@@ -32,7 +32,7 @@ Bonne chance et à bientôt dans le **Domaine Cultivé** !
 
 Lorsque vous lancer le jeux vous pouvez executer les commandes ci-dessous.
 
-- ***fight v versus f*** : démarre un combat opposant le Légume v au Fruit f.
+- ***fight v [s] versus f [t]*** : démarre un combat opposant le Légume v au Fruit f. Il est possible d'utiliser une stratégie préalablement en remplaçant s et/ou t par le numéro de la strategie.
 - ***show vegetables*** : affiche la liste numérotée des Légumes, où chacun des Légumes est représenté par son nom.
 - ***show vegetable*** : i affiche les caractéristiques du Légume ayant l’identifiant i.
 - ***show fruits*** : affiche la liste numérotée des Fruits, où chacun des Fruits est représenté par son nom.

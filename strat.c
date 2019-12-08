@@ -1,3 +1,5 @@
+#define _DEFAULT_SOURCE
+
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -9,6 +11,7 @@
 #include "tools.h"
 #include "strat.h"
 #include "displayGame.h"
+#include "colors.h"
 
 int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     char *adress = strrchr(fileName, '.');
@@ -28,6 +31,7 @@ int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon 
     initStructure(strategy, buffer, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 
     free(buffer);
+    
     fclose(fichier);
 
     if((*strategy)->coutCE + champions[0]->CE > 50) {

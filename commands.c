@@ -443,11 +443,20 @@ void readCommands(Package *package, Team *team1, Team *team2, Winsize screenSize
           strat1 = -1;
           strat2 = -1;
         } else {
-          strat1 = (strat1 >= *package->nbStrategies || strat1 < 0 ? -1 : strat1);
-          strat2 = (strat2 >= *package->nbStrategies || strat2 < 0 ? -1 : strat2);
+          if(strat1 >= *package->nbStrategies || strat1 < -1) {
+            red();
+            printf("La stratégie n°%d n'existe pas.\n", strat1);
+            resetColor();
+            free(command_tmp);
+            continue;
+          } else if(strat2 >= *package->nbStrategies || strat2 < -1) {
+            red();
+            printf("La stratégie n°%d n'existe pas.\n", strat2);
+            resetColor();
+            free(command_tmp);
+            continue;
+          }
         }
-        printf("Le legume /%d/ joue avec la strat /%d/\n", legume, strat1);
-        printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);
 
         // test si nbStrategie n'est pas nulle
         if(legume < 0 || fruit < 0 || fruit >= 6 || legume >= 6 || (package->nbStrategies != NULL && (strat1 >= *package->nbStrategies || strat2 >= *package->nbStrategies)) || !versusReached) {

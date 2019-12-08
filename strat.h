@@ -1,10 +1,6 @@
 #ifndef __STRAT_H__
 #define __STRAT_H__
 
-#ifndef _DEFAULT_SOURCE
-#define _DEFAULT_SOURCE
-#endif
-
 typedef union unionFonction {
     int (*buyWeapon)(Weapon *, Team *);
     int (*buyProtection)(Protection *, Team *);

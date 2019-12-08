@@ -1,5 +1,8 @@
-strategy Test
+strategy autreTest
 choose weapon MIXEUR_BLASTER
 
-move forward 36
-use weapon
+if 1 > 2
+    use weapon
+else
+    move forward 36
+endif

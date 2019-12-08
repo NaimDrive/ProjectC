@@ -67,6 +67,14 @@ typedef struct {
 */
 Team * initTeam(Team *team, int id, Winsize sz);
 
+Champion * generateChampion(char *name, int nbChampions, char *type, int force, int resistance, int PVMax, int PV, int CE, char head);
+
+Weapon * generateWeapon(char *name, int nbWeapons, int CE, int CA, int dmgMin, int dmgMax, int portee);
+
+Protection * generateProtection(char *name, int nbProtection, int CE, int CA, int probabilite);
+
+Healing * generateHealing(char *name, int nbHealings, int CE, int CA, int volume, int effetMin, int effetMax);
+
 /*
   Create and return a new champion.
   @Param1 char * (the champion name)

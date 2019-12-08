@@ -8,7 +8,7 @@ choose care WTFHealing
 
 add action 12
 
-move forward 2
+move forward 20
 move backward 2
 use protection
 use weapon 4

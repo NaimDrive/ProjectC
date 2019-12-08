@@ -100,15 +100,13 @@ Strat * strategyCreateFusion();
 
 Strat * strategyCreateReturn();
 
-int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
+int initStructure(Strategy **s, char *buffer, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
 
 void addInInitStrategy(Strategy **s, Strat *strat);
 
 Strat * lastStrat(Strat *strat);
 
 void addInStratStrategy(Strategy **s, Strat *strat);
-
-void addToCurrent(Strat **current, Strat *suivant);
 
 void useInitStrat(Strat *strat);
 

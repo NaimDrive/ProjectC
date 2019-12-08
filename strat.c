@@ -25,7 +25,7 @@ int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon 
     char delimiters[]=" \t\n\r";
     char *buffer = malloc(sizeof(char)* SIZE);
 
-    initStructure(strategy, buffer, NULL, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
+    initStructure(strategy, buffer, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
 
     free(buffer);
     fclose(fichier);
@@ -259,104 +259,15 @@ Strat * strategyCreateReturn() {
     return strat;
 }
 
-/*
-int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
+int initStructure(Strategy **s, char *buffer, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
     char *mot;
-    int ret, isIf = 0, nextAddIf = 0;
-    Strat *strat, *ptSuivant, *ptSuivantSinon;
+    Strat *strat;
     Strategy *strategy = *s;
 
     while(fgets(buffer, SIZE, fichier)) {
         mot = strtok(buffer, delimiters);
         if(mot == NULL) continue;
-        
-        if(!strcmp(mot, "strategy")) { // Si le premier mot est strategy
-            mot = strtok(NULL, delimiters);
-            strategy->nom = malloc(sizeof(char)*(strlen(mot)+1));
-            strcpy(strategy->nom, mot);
 
-        } else if(!strcmp(mot, "choose")) { // Si le premier mot est choose
-            strat = strategyCreateChoose(s, buffer, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2);
-            addInInitStrategy(s, strat);
-
-        } else if(!strcmp(mot, "add")) { // Si le premier mot est add
-            strat = strategyCreateAddCA(s, mot);
-            addInInitStrategy(s, strat);
-
-        } else {            
-            if(!strcmp(mot, "if")) { // Si le premier mot est if
-                strat = strategyCreateIf(mot);
-                addInStratStrategy(s, strat);
-
-                ret = initStructure(s, buffer, strat->suivant, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-                if(ret == 1) {
-                    initStructure(s, buffer, strat->suivantSinon, fichier, SIZE, delimiters, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-                } else if(ret == 2) {
-                    printf("Entré endif\n");
-                    isIf = 1;
-                    if(strat->suivant) {
-                        ptSuivant = strat->suivant;
-                        while(ptSuivant->suivant != NULL) {
-                            printf("Boucle 1\n");
-                            ptSuivant = ptSuivant->suivant;
-                        }
-                    }
-                    if(strat->suivantSinon) {
-                        ptSuivantSinon = strat->suivantSinon;
-                        while(ptSuivantSinon->suivant != NULL) {
-                            printf("Boucle 2\n");
-                            ptSuivantSinon = ptSuivantSinon->suivant;
-                        }
-                    }
-                }
-                ret = 0;
-
-            } else if(!strcmp(mot, "else")) { // Si le premier mot est else
-                return 1;
-
-            } else if(!strcmp(mot, "endif")) { // Si le premier mot est endif
-                return 2;
-
-            } else if(!strcmp(mot, "use")) { // Si le premier mot est use
-                strat = strategyCreateUse(mot, screenSize);
-                addInStratStrategy(s, strat);
-                
-            } else if(!strcmp(mot, "move")) { // Si le premier mot est move
-
-            } else if(!strcmp(mot, "end")) { // Si le premier mot est end
-
-            }
-            if(nextAddIf) {
-                nextAddIf = 0;
-                ptSuivant = strat;
-                ptSuivantSinon = strat;
-            } else if(stratParam == NULL && strat != NULL) {
-                stratParam = strat;
-            } if(strat != NULL && isIf) {
-                nextAddIf = 1;
-                isIf = 0;
-            } else {
-                addInStratStrategy(s, strat);
-            }
-        }
-    }
-    return 0;
-}
-*/
-int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, int SIZE, char *delimiters, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize) {
-    char *mot;
-    int ret;
-    Strat *strat, *last;
-    Strategy *strategy = *s;
-
-    stratParam = lastStrat(stratParam);
-    stratParam = strategyCreateFusion();
-    last = lastStrat(stratParam);
-
-    while(fgets(buffer, SIZE, fichier)) {
-        mot = strtok(buffer, delimiters);
-        if(mot == NULL) continue;
-        
         if(!strcmp(mot, "strategy")) { // Si le premier mot est strategy
             mot = strtok(NULL, delimiters);
             strategy->nom = malloc(sizeof(char)*(strlen(mot)+1));
@@ -371,11 +282,8 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
             addInInitStrategy(s, strat);
 
         } else {
-            if(stratParam == NULL && strat != NULL) {
-                stratParam = strat;
-            }
-            
             if(!strcmp(mot, "if")) { // Si le premier mot est if
+                /*
                 strat = strategyCreateIf(mot);
                 //last->suivant = strat;
                 addInStratStrategy(s, strat);
@@ -400,32 +308,27 @@ int initStructure(Strategy **s, char *buffer, Strat *stratParam, FILE *fichier, 
                     lastSuivantSinon = lastStrat(strat->suivantSinon);
                     lastSuivantSinon->suivant = fusion;
                 }
+                */
             } else if(!strcmp(mot, "else")) { // Si le premier mot est else
-                return 1;
+                //return 1;
 
             } else if(!strcmp(mot, "endif")) { // Si le premier mot est endif
-                return 2;
+                //return 2;
 
             } else if(!strcmp(mot, "use")) { // Si le premier mot est use
                 strat = strategyCreateUse(mot, screenSize);
                 if(strat != NULL) {
-                    //last = lastStrat(last);
-                    //last->suivant = strat;
                     addInStratStrategy(s, strat);
                 }
                 
             } else if(!strcmp(mot, "move")) { // Si le premier mot est move
                 strat = strategyCreateMove(mot, screenSize);
                 if(strat != NULL) {
-                    //last = lastStrat(last);
-                    //last->suivant = strat;
                     addInStratStrategy(s, strat);
                 }
             } else if(!strcmp(mot, "end")) { // Si le premier mot est end
                 strat = strategyCreateReturn();
                 if(strat != NULL) {
-                    //last = lastStrat(last);
-                    //last->suivant = strat;
                     addInStratStrategy(s, strat);
                 }
             }
@@ -471,28 +374,6 @@ void addInStratStrategy(Strategy **s, Strat *strat) {
     }
 }
 
-void addToCurrent(Strat **current, Strat *suivant) {
-    Strat *cpSuivant = *current;
-    Strat *cptSuivantSinon = *current;
-    if(cpSuivant->suivant) {
-        while(cpSuivant->suivant) {
-            cpSuivant = cpSuivant->suivant;
-        }
-    } else {
-        cpSuivant->suivant = suivant;
-    }
-    if(cpSuivant->enumStrat == operateur) {
-        if(cptSuivantSinon->suivantSinon) {
-            cptSuivantSinon = cpSuivant->suivantSinon;
-            while(cptSuivantSinon->suivant) {
-                cptSuivantSinon = cpSuivant->suivant;
-            }
-        } else {
-            cptSuivantSinon->suivant = suivant;
-        }
-    }
-}
-
 void useInitStrat(Strat *strat) {
     while(strat) {
         if(strat->enumStrat == commande) {
@@ -513,7 +394,7 @@ void useInitStrat(Strat *strat) {
 }
 
 void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
-    unsigned int micro = 11500000;
+    unsigned int micro = 1500000;
     while(strat && team->CA >= 0) {
         if(strat->enumStrat == retour) {
             printf("Tour terminé\n");
@@ -590,7 +471,7 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
             }
         } else {
             strat = strat->suivant;
-        }/*
+        }
         if(team->id == 0) {
             displayStats(team, opponent, screenSize);
             displayGame(team, opponent, screenSize);
@@ -602,7 +483,7 @@ void useStrat(Strat *strat, Team *team, Team *opponent, int screenSize) {
         }
         usleep(micro);
         system("clear");
-        */
+        
     }
 }
 
@@ -629,9 +510,6 @@ void initStrategyTeams(Strat **s, Strategy *strategy) {
         } else if(strat->unionStrat.commande.enumCommande == use_weapon || strat->unionStrat.commande.enumCommande == move_forward) {
             strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
             strat->unionStrat.commande.parametres[1].team = strategy->enemyTeam;
-            printf("Init :\n");
-            printf("Ally %s :\n", strat->unionStrat.commande.parametres[0].team->champion->variete);
-            printf("Enemy %s :\n", strat->unionStrat.commande.parametres[1].team->champion->variete);
         } else if(strat->unionStrat.commande.enumCommande == use_protection || strat->unionStrat.commande.enumCommande == use_care || strat->unionStrat.commande.enumCommande == move_backward || strat->unionStrat.commande.enumCommande == buy_CA) {
             strat->unionStrat.commande.parametres[0].team = strategy->allyTeam;
         }

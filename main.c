@@ -50,24 +50,10 @@ int main(int argc, char *argv[]) {
     // Si il y a au moins 1 fichier .strat en paramètre
     nbStrategies = malloc(sizeof(int));
     *nbStrategies = 0;
-
-    /* MODE TEST */
-    buyChampion(champions[0], team1);
-    buyChampion(champions[1], team2);
-    
-    
-    strategy = initStrat(argc, argv, nbStrategies, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);
-
-    /* MODE TEST */
-    for (int i = 0; i < *nbStrategies; i++) {
-      initializeTheCombatStrategy(&strategy[i], team1, team2);
-      useInitStrat(strategy[i]->initStrategy);
-      useStrat(strategy[i]->strat, team1, team2, screenSize.ws_col);
-    }
-      
+    strategy = initStrat(argc, argv, nbStrategies, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);      
   }
 
-  //readCommands(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2, screenSize);
+  readCommands(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2, screenSize);
 
   return 0;
 }

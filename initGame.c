@@ -5,291 +5,145 @@
 #include <stdlib.h>
 #include <string.h>
 
+Champion * generateChampion(char *name, int nbChampions, char *type, int force, int resistance, int PVMax, int PV, int CE, char head) {
+  Champion *champion;
+  champion = malloc(sizeof(Champion));
+
+  champion->variete = name;
+  champion->num = nbChampions;
+  champion->type = type;
+  champion->force = force;
+  champion->resistance = resistance;
+  champion->PVMax = PVMax;
+  champion->PV = PV;
+  champion->CE = CE;
+  champion->head = head;
+
+  return champion;
+}
+
+Weapon * generateWeapon(char *name, int nbWeapons, int CE, int CA, int dmgMin, int dmgMax, int portee) {
+  Weapon *weapon;
+  weapon = malloc(sizeof(Weapon));
+
+  weapon->nom = name;
+  weapon->num = nbWeapons;
+  weapon->CE = CE;
+  weapon->CA = CA;
+  weapon->degatsMin = dmgMin;
+  weapon->degatsMax = dmgMax;
+  weapon->portee = portee;
+
+  return weapon;
+}
+
+Protection * generateProtection(char *name, int nbProtection, int CE, int CA, int probabilite) {
+  Protection *protection;
+  protection = malloc(sizeof(Protection));
+
+  protection->nom = name;
+  protection->num = nbProtection;
+  protection->CE = CE;
+  protection->CA = CA;
+  protection->probabilite = probabilite;
+
+  return protection;
+}
+
+Healing * generateHealing(char *name, int nbHealings, int CE, int CA, int volume, int effetMin, int effetMax) {
+  Healing *healing;
+  healing = malloc(sizeof(Healing));
+
+  healing->nom = name;
+  healing->num = nbHealings;
+  healing->CE = CE;
+  healing->CA = CA;
+  healing->volume = volume;
+  healing->maxVolume = volume;
+  healing->effetMin = effetMin;
+  healing->effetMax = effetMax;
+
+  return healing;
+}
+
 Champion * createChampion(char *name, int nbChampions) {
   Champion *champion;
 
   if(strcmp("Haricot", name) == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Légume";
-    champion->force = 10;
-    champion->resistance = 10;
-    champion->PVMax = 40;
-    champion->PV = 40;
-    champion->CE = 5;
-    champion->head = ';';
+    champion = generateChampion(name, nbChampions, "Légume", 10, 10, 40, 40, 5, ';');
   } else if (strcmp(name, "Fenouil") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Légume";
-    champion->force = 12;
-    champion->resistance = 15;
-    champion->PVMax = 40;
-    champion->PV = 40;
-    champion->CE = 7;
-    champion->head = 'W';
+    champion = generateChampion(name, nbChampions, "Légume", 12, 15, 40, 40, 7, 'W');
   } else if (strcmp(name, "Poireau") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Légume";
-    champion->force = 15;
-    champion->resistance = 20;
-    champion->PVMax = 60;
-    champion->PV = 60;
-    champion->CE = 10;
-    champion->head = 'Y';
+    champion = generateChampion(name, nbChampions, "Légume", 15, 20, 60, 60, 10, 'Y');
   } else if (strcmp(name, "Aubergine") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Légume";
-    champion->force = 20;
-    champion->resistance = 20;
-    champion->PVMax = 60;
-    champion->PV = 60;
-    champion->CE = 15;
-    champion->head = 'u';
+    champion = generateChampion(name, nbChampions, "Légume", 20, 20, 60, 60, 15, 'u');
   } else if (strcmp(name, "Courgette") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Légume";
-    champion->force = 20;
-    champion->resistance = 25;
-    champion->PVMax = 80;
-    champion->PV = 80;
-    champion->CE = 20;
-    champion->head = 'i';
+    champion = generateChampion(name, nbChampions, "Légume", 20, 25, 80, 80, 20, 'i');
   } else if (strcmp(name, "Carotte") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Légume";
-    champion->force = 25;
-    champion->resistance = 25;
-    champion->PVMax = 80;
-    champion->PV = 80;
-    champion->CE = 25;
-    champion->head = '\'';
+    champion = generateChampion(name, nbChampions, "Légume", 25, 25, 80, 80, 25, '\'');
   } else if (strcmp(name, "Banane") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Fruit";
-    champion->force = 10;
-    champion->resistance = 10;
-    champion->PVMax = 40;
-    champion->PV = 40;
-    champion->CE = 5;
-    champion->head = ',';
+    champion = generateChampion(name, nbChampions, "Fruit", 10, 10, 40, 40, 5, ',');
   } else if (strcmp(name, "Kiwi") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Fruit";
-    champion->force = 12;
-    champion->resistance = 15;
-    champion->PVMax = 40;
-    champion->PV = 40;
-    champion->CE = 7;
-    champion->head = 'o';
+    champion = generateChampion(name, nbChampions, "Fruit", 12, 15, 40, 40, 7, 'o');
   } else if (strcmp(name, "Poire") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Fruit";
-    champion->force = 15;
-    champion->resistance = 20;
-    champion->PVMax = 60;
-    champion->PV = 60;
-    champion->CE = 10;
-    champion->head = ')';
+    champion = generateChampion(name, nbChampions, "Fruit", 15, 20, 60, 60, 10, ')');
   } else if (strcmp(name, "Pomme") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Fruit";
-    champion->force = 20;
-    champion->resistance = 20;
-    champion->PVMax = 60;
-    champion->PV = 60;
-    champion->CE = 15;
-    champion->head = '@';
+    champion = generateChampion(name, nbChampions, "Fruit", 20, 20, 60, 60, 15, '@');
   } else if (strcmp(name, "Ananas") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Fruit";
-    champion->force = 20;
-    champion->resistance = 25;
-    champion->PVMax = 80;
-    champion->PV = 80;
-    champion->CE = 20;
-    champion->head = '#';
+    champion = generateChampion(name, nbChampions, "Fruit", 20, 25, 80, 80, 20, '#');
   } else if (strcmp(name, "Durian") == 0) {
-    champion = malloc(sizeof(Champion));
-    champion->num = nbChampions;
-    champion->variete = name;
-    champion->type = "Fruit";
-    champion->force = 25;
-    champion->resistance = 25;
-    champion->PVMax = 80;
-    champion->PV = 80;
-    champion->CE = 25;
-    champion->head = 'x';
-  } else {
-    fprintf(stderr, "Champion name error\n");
+    champion = generateChampion(name, nbChampions, "Fruit", 25, 25, 80, 80, 25, 'X');
   }
 
   return champion;
 }
 
 Weapon * createWeapon(char *name, int nbWeapons) {
-    Weapon *weapon;
+  Weapon *weapon;
 
-    if(strcmp("Eplucheur Laser", name) == 0) {
-        weapon = malloc(sizeof(Weapon));
-
-        weapon->num = nbWeapons;
-        weapon->nom = name;
-        weapon->CE = 2;
-        weapon->CA = 1;
-        weapon->degatsMin = 1;
-        weapon->degatsMax = 2;
-        weapon->portee = 2;
-    } else if(strcmp("Mandoline Sonique", name) == 0) {
-        weapon = malloc(sizeof(Weapon));
-
-        weapon->num = nbWeapons;
-        weapon->nom = name;
-        weapon->CE = 5;
-        weapon->CA = 3;
-        weapon->degatsMin = 1;
-        weapon->degatsMax = 3;
-        weapon->portee = 3;
-    } else if(strcmp("Couperet Laser", name) == 0) {
-        weapon = malloc(sizeof(Weapon));
-
-        weapon->num = nbWeapons;
-        weapon->nom = name;
-        weapon->CE = 10;
-        weapon->CA = 5;
-        weapon->degatsMin = 2;
-        weapon->degatsMax = 6;
-        weapon->portee = 5;
-    } else if(strcmp("Hachoir Neuronique", name) == 0) {
-        weapon = malloc(sizeof(Weapon));
-
-        weapon->num = nbWeapons;
-        weapon->nom = name;
-        weapon->CE = 20;
-        weapon->CA = 7;
-        weapon->degatsMin = 4;
-        weapon->degatsMax = 9;
-        weapon->portee = 7;
-    } else if(strcmp("Mixeur Blaster", name) == 0) {
-        weapon = malloc(sizeof(Weapon));
-
-        weapon->num = nbWeapons;
-        weapon->nom = name;
-        weapon->CE = 30;
-        weapon->CA = 10;
-        weapon->degatsMin = 7;
-        weapon->degatsMax = 12;
-        weapon->portee = 11;
-    } else {
-        fprintf(stderr, "Weapon name error\n");
-    }
+  if(strcmp("Eplucheur Laser", name) == 0) {
+    weapon = generateWeapon(name, nbWeapons, 2, 1, 1, 2, 2);
+  } else if(strcmp("Mandoline Sonique", name) == 0) {
+    weapon = generateWeapon(name, nbWeapons, 5, 3, 1, 3, 3);
+  } else if(strcmp("Couperet Laser", name) == 0) {
+    weapon = generateWeapon(name, nbWeapons, 10, 5, 2, 6, 5);
+  } else if(strcmp("Hachoir Neuronique", name) == 0) {
+    weapon = generateWeapon(name, nbWeapons, 20, 7, 4, 9, 7);
+  } else if(strcmp("Mixeur Blaster", name) == 0) {
+    weapon = generateWeapon(name, nbWeapons, 30, 10, 7, 12, 11);
+  }
 
   return weapon;
 }
 
 Protection * createProtection(char *name, int nbProtection) {
-    Protection *protection;
+  Protection *protection;
 
-    if(strcmp("Casque-Egouttoir", name) == 0) {
-        protection = malloc(sizeof(Protection));
-
-        protection->num = nbProtection;
-        protection->nom = name;
-        protection->CE = 1;
-        protection->CA = 2;
-        protection->probabilite = 25;
-    } else if(strcmp("Casque-Entonnoir", name) == 0) {
-        protection = malloc(sizeof(Protection));
-
-        protection->num = nbProtection;
-        protection->nom = name;
-        protection->CE = 3;
-        protection->CA = 4;
-        protection->probabilite = 40;
-    } else if(strcmp("Woklier", name) == 0) {
-        protection = malloc(sizeof(Protection));
-
-        protection->num = nbProtection;
-        protection->nom = name;
-        protection->CE = 5;
-        protection->CA = 6;
-        protection->probabilite = 60;
-    } else if(strcmp("Tablier-Armure", name) == 0) {
-        protection = malloc(sizeof(Protection));
-
-        protection->num = nbProtection;
-        protection->nom = name;
-        protection->CE = 10;
-        protection->CA = 8;
-        protection->probabilite = 80;
-    } else {
-        fprintf(stderr, "Protection name error\n");
-    }
-
-    return protection;
+  if(strcmp("Casque-Egouttoir", name) == 0) {
+    protection = generateProtection(name, nbProtection, 1, 2, 25);
+  } else if(strcmp("Casque-Entonnoir", name) == 0) {
+    protection = generateProtection(name, nbProtection, 3, 4, 40);
+  } else if(strcmp("Woklier", name) == 0) {
+    protection = generateProtection(name, nbProtection, 5, 6, 60);
+  } else if(strcmp("Tablier-Armure", name) == 0) {
+    protection = generateProtection(name, nbProtection, 10, 8, 80);
+  }
+  
+  return protection;
 }
 
 Healing * createHealing(char *name, int nbHealings){
-    Healing *healing;
+  Healing *healing;
 
-    if(strcmp("Humus-Neutronique", name) == 0) {
-        healing = malloc(sizeof(Healing));
+  if(strcmp("Humus-Neutronique", name) == 0) {
+    healing = generateHealing(name, nbHealings, 1, 5, 4, 2, 4);
+  } else if(strcmp("Compost-Protonique", name) == 0) {
+    healing = generateHealing(name, nbHealings, 5, 10, 3, 5, 8);
+  } else if(strcmp("Engrais-Ionique", name) == 0) {
+    healing = generateHealing(name, nbHealings, 7, 15, 2, 8, 12);
+  }
 
-        healing->num = nbHealings;
-        healing->nom = name;
-        healing->CE = 1;
-        healing->CA = 5;
-        healing->volume = 4;
-        healing->maxVolume = 4;
-        healing->effetMin = 2;
-        healing->effetMax = 4;
-    } else if(strcmp("Compost-Protonique", name) == 0) {
-        healing = malloc(sizeof(Healing));
-
-        healing->num = nbHealings;
-        healing->nom = name;
-        healing->CE = 5;
-        healing->CA = 10;
-        healing->volume = 3;
-        healing->maxVolume = 3;
-        healing->effetMin = 5;
-        healing->effetMax = 8;
-    } else if(strcmp("Engrais-Ionique", name) == 0) {
-        healing = malloc(sizeof(Healing));
-
-        healing->num = nbHealings;
-        healing->nom = name;
-        healing->CE = 7;
-        healing->CA = 15;
-        healing->volume = 2;
-        healing->maxVolume = 2;
-        healing->effetMin = 8;
-        healing->effetMax = 12;
-    } else {
-        fprintf(stderr, "Healing name error\n");
-    }
-
-    return healing;
+  return healing;
 }
 
 void initChampions(Champion **champions, int *nbChampions) {

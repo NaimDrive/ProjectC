@@ -21,9 +21,11 @@ int main(int argc, char *argv[]) {
   Strategy **strategy;
   int *nbChampions, *nbWeapons, *nbProtections, *nbHealings, *nbStrategies;
   Winsize screenSize;
+  Package *package;
 
   srand(time(NULL));
 
+  package = malloc(sizeof(Package));
   champions = malloc(sizeof(Champion *) * 12);
   weapons = malloc(sizeof(Weapon *) * 5);
   protections = malloc(sizeof(Protection *) * 4);
@@ -53,7 +55,18 @@ int main(int argc, char *argv[]) {
     strategy = initStrat(argc, argv, nbStrategies, champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, screenSize);      
   }
 
-  readCommands(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2, screenSize);
+  package->champions = champions;
+  package->weapons = weapons;
+  package->protections = protections;
+  package->healings = healings;
+  package->strategies = strategy;
+  package->nbChampions = nbChampions;
+  package->nbWeapons = nbWeapons;
+  package->nbProtections = nbProtections;
+  package->nbHealings = nbHealings;
+  package->nbStrategies = nbStrategies;
+
+  readCommands(package, team1, team2, screenSize);
 
   return 0;
 }

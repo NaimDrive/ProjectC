@@ -83,6 +83,19 @@ typedef struct strategy {
     Strat *initStrategy; // Commands to choose the weapon, the protection, the care and buy CA.
 } Strategy;
 
+typedef struct package {
+    Champion **champions;
+    Weapon **weapons;
+    Protection **protections;
+    Healing **healings;
+    Strategy **strategies;
+    int *nbChampions;
+    int *nbWeapons;
+    int *nbProtections;
+    int *nbHealings;
+    int *nbStrategies;
+} Package;
+
 
 int readStrat(Strategy **strategy, char *fileName, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Winsize screenSize);
 

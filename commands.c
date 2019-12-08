@@ -264,7 +264,7 @@ int replay(char *command) {
   }
 }
 
-void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, Team *team1, Team *team2, Strategy *stratTeam1Param, Strategy *stratTeam2Param, Winsize screenSize) {
+void fight(Champion *vegetable, Champion* fruit, Package *package, Team *team1, Team *team2, Strategy *stratTeam1Param, Strategy *stratTeam2Param, Winsize screenSize) {
   int maximumCE = team1->maxCE, end = 0;
   Strategy *stratTeam1, *stratTeam2;
 
@@ -283,7 +283,7 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
   printf("\n%s VERSUS %s !\n", team1->champion->variete, team2->champion->variete);
 
   if(stratTeam1Param == NULL) {
-    equipTeam(team1, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+    equipTeam(team1, package->weapons, package->protections, package->healings, package->nbWeapons, package->nbProtections, package->nbHealings);
   } else {
     stratTeam1 = copyStrategy(stratTeam1Param);
     printf("%s :\n", team1->champion->variete);
@@ -291,7 +291,7 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
   }
   
   if(stratTeam2Param == NULL) {
-    equipTeam(team2, weapons, protections, healings, nbWeapons, nbProtections, nbHealings);
+    equipTeam(team2, package->weapons, package->protections, package->healings, package->nbWeapons, package->nbProtections, package->nbHealings);
   } else {
     stratTeam2 = copyStrategy(stratTeam2Param);
     printf("%s :\n", team2->champion->variete);
@@ -311,7 +311,7 @@ void fight(Champion *vegetable, Champion* fruit, Champion **champions, Weapon **
     fightingMode(team2, team1, stratTeam2, screenSize.ws_col); // Second player attack
   }
 
-  if(!((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE))) {
+  if(!((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= package->weapons[0]->CE + package->champions[0]->CE) && (team2->CE >= package->weapons[0]->CE + package->champions[0]->CE))) {
     showEndGame(team1, team2);
     end = 1;
   }
@@ -339,12 +339,12 @@ void help() {
   resetColor();
 }
 
-void exitGame(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2) {
-  deallocateMemory(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2);
+void exitGame(Package *package, Team *team1, Team *team2) {
+  deallocateMemory(package->champions, package->weapons, package->protections, package->healings, package->strategies, package->nbChampions, package->nbWeapons, package->nbProtections, package->nbHealings, package->nbStrategies, team1, team2);
   exit(0);
 }
 
-void readCommands(Champion **champions, Weapon **weapons, Protection **protections, Healing **healings, Strategy **strategy, int *nbChampions, int *nbWeapons, int *nbProtections, int *nbHealings, int *nbStrategies, Team *team1, Team *team2, Winsize screenSize) {
+void readCommands(Package *package, Team *team1, Team *team2, Winsize screenSize) {
   purple();
   printf("Le nombre de crédits d'équipement initiaux par équipe est de : 1000\n");
   resetColor();
@@ -355,7 +355,7 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     if(play == 2) {
       resetGame(team1, team2, screenSize);
     }
-    while((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= weapons[0]->CE + champions[0]->CE) && (team2->CE >= weapons[0]->CE + champions[0]->CE)) {
+    while((team1->CE > 0) && (team2->CE > 0) && (team1->CE >= package->weapons[0]->CE + package->champions[0]->CE) && (team2->CE >= package->weapons[0]->CE + package->champions[0]->CE)) {
       showTeamsCE(team1, team2);
       printf("> ");
       fgets(command, 256, stdin);
@@ -370,30 +370,30 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           c = getchar();
           if(c == 'o' || c == 'y') {
             free(command);
-            exitGame(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2);
+            exitGame(package, team1, team2);
           } else if(c == 'n') {
             keepPlaying = 1;
           }
         }
         c = getchar(); // without this getchar a '\n' is entered in the next prompt (return a 'command invalid' error)
       }
-      else if(strcmp(command, "show vegetables") == 0) showVegetables(champions, nbChampions);
-      else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(champions, nbChampions, getID(command, 15));
+      else if(strcmp(command, "show vegetables") == 0) showVegetables(package->champions, package->nbChampions);
+      else if(strncmp(command, "show vegetable ", 15) == 0) showVegetable(package->champions, package->nbChampions, getID(command, 15));
 
-      else if(strcmp(command, "show fruits") == 0) showFruits(champions, nbChampions);
-      else if(strncmp(command, "show fruit ", 11) == 0) showFruit(champions, nbChampions, getID(command, 11));
+      else if(strcmp(command, "show fruits") == 0) showFruits(package->champions, package->nbChampions);
+      else if(strncmp(command, "show fruit ", 11) == 0) showFruit(package->champions, package->nbChampions, getID(command, 11));
 
-      else if(strcmp(command, "show weapons") == 0) showWeapons(weapons, nbWeapons, -1);
-      else if(strncmp(command, "show weapon ", 12) == 0) showWeapon(weapons, nbWeapons, getID(command, 12));
+      else if(strcmp(command, "show weapons") == 0) showWeapons(package->weapons, package->nbWeapons, -1);
+      else if(strncmp(command, "show weapon ", 12) == 0) showWeapon(package->weapons, package->nbWeapons, getID(command, 12));
 
-      else if(strcmp(command, "show protections") == 0) showProtections(protections, nbProtections, -1);
-      else if(strncmp(command, "show protection ", 16) == 0) showProtection(protections, nbProtections, getID(command, 16));
+      else if(strcmp(command, "show protections") == 0) showProtections(package->protections, package->nbProtections, -1);
+      else if(strncmp(command, "show protection ", 16) == 0) showProtection(package->protections, package->nbProtections, getID(command, 16));
 
-      else if(strcmp(command, "show cares") == 0) showCares(healings, nbHealings, -1);
-      else if(strncmp(command, "show care ", 10) == 0) showCare(healings, nbHealings, getID(command, 10));
+      else if(strcmp(command, "show cares") == 0) showCares(package->healings, package->nbHealings, -1);
+      else if(strncmp(command, "show care ", 10) == 0) showCare(package->healings, package->nbHealings, getID(command, 10));
 
-      else if(strcmp(command, "show strategies") == 0) showStrategies(strategy, nbStrategies);
-      else if(strncmp(command, "show strategy ", 14) == 0) showStrategy(strategy, nbStrategies, getID(command, 14));
+      else if(strcmp(command, "show strategies") == 0) showStrategies(package->strategies, package->nbStrategies);
+      else if(strncmp(command, "show strategy ", 14) == 0) showStrategy(package->strategies, package->nbStrategies, getID(command, 14));
 
       else if(strncmp(command, "fight ", 6) == 0) {
         char *command_tmp = substring(command, 6, strlen(command));
@@ -439,18 +439,18 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
           i++;
         }
 
-        if(nbStrategies == NULL) {
+        if(package->nbStrategies == NULL) {
           strat1 = -1;
           strat2 = -1;
         } else {
-          strat1 = (strat1 >= *nbStrategies || strat1 < 0 ? -1 : strat1);
-          strat2 = (strat2 >= *nbStrategies || strat2 < 0 ? -1 : strat2);
+          strat1 = (strat1 >= *package->nbStrategies || strat1 < 0 ? -1 : strat1);
+          strat2 = (strat2 >= *package->nbStrategies || strat2 < 0 ? -1 : strat2);
         }
         printf("Le legume /%d/ joue avec la strat /%d/\n", legume, strat1);
         printf("Le fruit /%d/ joue avec la strat /%d/\n", fruit, strat2);
 
         // test si nbStrategie n'est pas nulle
-        if(legume < 0 || fruit < 0 || fruit >= 6 || legume >= 6 || (nbStrategies != NULL && (strat1 >= *nbStrategies || strat2 >= *nbStrategies)) || !versusReached) {
+        if(legume < 0 || fruit < 0 || fruit >= 6 || legume >= 6 || (package->nbStrategies != NULL && (strat1 >= *package->nbStrategies || strat2 >= *package->nbStrategies)) || !versusReached) {
           red();
           printf("Veuillez revoir les paramètres de votre commande.\n");
           resetColor();
@@ -461,10 +461,10 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
 
         free(command_tmp);
 
-        Strategy *stratTeam1 = (strat1 == -1 ? NULL : strategy[strat1]);
-        Strategy *stratTeam2 = (strat2 == -1 ? NULL : strategy[strat2]);
+        Strategy *stratTeam1 = (strat1 == -1 ? NULL : package->strategies[strat1]);
+        Strategy *stratTeam2 = (strat2 == -1 ? NULL : package->strategies[strat2]);
         printf("strat %d - %d\n", strat1, strat2);
-        fight(champions[legume], champions[fruit+6], champions, weapons, protections, healings, nbChampions, nbWeapons, nbProtections, nbHealings, team1, team2, stratTeam1, stratTeam2, screenSize);
+        fight(package->champions[legume], package->champions[fruit+6], package, team1, team2, stratTeam1, stratTeam2, screenSize);
       
       } else if(strcmp(command,"clear") == 0) system("clear");
       else if(strcmp(command, "help") == 0) help();
@@ -484,5 +484,5 @@ void readCommands(Champion **champions, Weapon **weapons, Protection **protectio
     play = replay(command);
   }
   free(command);
-  exitGame(champions, weapons, protections, healings, strategy, nbChampions, nbWeapons, nbProtections, nbHealings, nbStrategies, team1, team2);
+  exitGame(package, team1, team2);
 }
